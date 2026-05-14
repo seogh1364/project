@@ -41,7 +41,7 @@
 ### 👥 팀원 역할
 * **PM (Product Manager):** [김종훈]
 * **Tech Lead:** [박지영.]
-* **UI/UX Designer:** [최형선]
+* **UI/UX Designer:** [최형선.]
 * **QA Engineer:** [우준혁]
 * **Scrum Master:** [배형석]
 * **Tech Writer:** [배형석..]
