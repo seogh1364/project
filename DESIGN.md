@@ -22,3 +22,4 @@ You are generating UI code. You MUST strictly follow the design tokens below usi
 
 ---
 **User Request:**
+(여기에 만들고 싶은 컴포넌트를 적으세요. 예: "메인 화면 상단 네비게이션 바 만들어줘")
