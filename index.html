@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailwind UI Skeleton</title>
+    <link href="./dist/output.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <style>
+        body { font-family: 'Pretendard', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans antialiased">
+
+    <div class="max-w-6xl mx-auto p-6 md:p-12 space-y-16">
+        
+        <header class="text-center space-y-4">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-800">
+                디자인 시스템 뼈대 파일
+            </h1>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto">
+                DESIGN.md 규칙에 따라 작성된 Tailwind CSS 템플릿입니다. 컴포넌트의 간격, 색상, 그리고 트랜지션을 확인해보세요.
+            </p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <article class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-extrabold tracking-tight text-slate-800 mb-3">프라이머리 액션</h2>
+                    <p class="text-slate-500">주요 액션을 유도하는 카드. 버튼에는 브랜드의 Primary 색상이 적용되어 있음.</p>
+                </div>
+                <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
+                    시작하기
+                </button>
+            </article>
+
+            <article class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-extrabold tracking-tight text-slate-800 mb-3">세컨더리 액션</h2>
+                    <p class="text-slate-500">보조적인 정보나 기능을 제공함. 버튼에는 Secondary 색상이 적용됨.</p>
+                </div>
+                <button class="w-full bg-slate-800 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
+                    자세히 보기
+                </button>
+            </article>
+
+            <article class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-extrabold tracking-tight text-slate-800 mb-3">텍스트 포인트</h2>
+                    <p class="text-slate-500">
+                        본문 내에서 특정 요소를 강조할 때는 <span class="text-indigo-600 font-bold hover:text-indigo-700 cursor-pointer transition-all duration-300">텍스트 프라이머리 색상</span>을 활용하여 시선을 유도.
+                    </p>
+                </div>
+                <button class="w-full text-indigo-600 hover:text-indigo-700 font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
+                    설정 관리
+                </button>
+            </article>
+
+        </main>
+    </div>
+
+</body>
+</html>
