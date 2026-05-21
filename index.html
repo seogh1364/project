@@ -3,63 +3,725 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tailwind UI Skeleton</title>
-    <link href="./dist/output.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <link rel="icon" href="favicon.ico?v=1.1" type="image/x-icon">
+    <title>만원 데이트 - 대학생 맞춤 가성비 데이트</title>
     <style>
-        body { font-family: 'Pretendard', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap');
+
+        @layer reset, base, layout, components, screens, responsive;
+
+        @layer reset {
+            *, *::before, *::after { box-sizing: border-box; }
+            * { margin: 0; padding: 0; }
+            html, body { width: 100%; overflow-x: hidden; }
+            img { display: block; max-width: 100%; }
+            button, input { font: inherit; }
+        }
+
+        @layer base {
+            :root {
+                --font-sans: 'Noto Sans KR', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+                --font-display: 'Jua', var(--font-sans);
+                --color-brand-50: #fff8f2;
+                --color-brand-100: #fff1e7;
+                --color-brand-500: #ff8e8e;
+                --color-brand-600: #ff6e87;
+                --color-brown-700: #5d4037;
+                --color-gray-50: #fcfcfc;
+                --color-gray-100: #f9f9f9;
+                --color-gray-200: #f5f5f5;
+                --color-gray-300: #eeeeee;
+                --color-gray-400: #dddddd;
+                --color-gray-500: #aaaaaa;
+                --color-gray-600: #999999;
+                --color-gray-700: #888888;
+                --color-gray-800: #666666;
+                --color-gray-900: #333333;
+                --color-white: #ffffff;
+                --color-green-50: #e8f5e9;
+                --color-green-500: #4caf50;
+                --color-purple-50: #f3e5f5;
+                --color-purple-500: #9c27b0;
+                --color-yellow-50: #fff9c4;
+                --color-yellow-600: #fbc02d;
+                --space-1: 4px;
+                --space-2: 8px;
+                --space-3: 12px;
+                --space-4: 16px;
+                --space-5: 20px;
+                --space-6: 24px;
+                --space-8: 32px;
+                --space-10: 40px;
+                --space-12: 48px;
+                --space-15: 60px;
+                --radius-lg: 12px;
+                --radius-xl: 15px;
+                --radius-2xl: 24px;
+                --radius-full: 999px;
+                --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.02);
+                --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.03);
+                --shadow-xl: 0 16px 36px rgba(255, 110, 135, 0.18);
+                --container-max: 1100px;
+                --transition-default: all 300ms ease;
+            }
+
+            body {
+                min-height: 100vh;
+                font-family: var(--font-sans);
+                color: var(--color-gray-900);
+                line-height: 1.6;
+                background: var(--color-white);
+            }
+
+            a { color: inherit; text-decoration: none; }
+            button, a, input { transition: var(--transition-default); }
+            button { cursor: pointer; }
+            :focus-visible { outline: 3px solid rgba(255, 110, 135, 0.35); outline-offset: 3px; }
+        }
+
+        @layer layout {
+            .container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 15px; }
+            .header { min-height: 80px; display: flex; align-items: center; background: var(--color-white); border-bottom: 1px solid var(--color-gray-100); }
+            .header-flex { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+            .app-shell { position: relative; background: var(--color-white); }
+            .main-content { background: var(--color-brand-50); padding: var(--space-10) 0; }
+            .main-flex { display: flex; flex-direction: column; align-items: center; gap: var(--space-6); text-align: center; }
+            .hero-left, .hero-right { width: 100%; }
+            .hero-left { flex: 1.2; }
+            .hero-right { order: -1; }
+            .recommend-section { padding: var(--space-10) 0; background: var(--color-white); }
+            .recommend-container { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-5); }
+            .course-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-5); width: 100%; }
+        }
+
+        @layer components {
+            .logo-wrapper { display: inline-flex; align-items: center; gap: var(--space-2); }
+            .logo-wrapper:hover { transform: translateY(-1px); }
+            .logo-symbol { width: 40px; height: 40px; object-fit: contain; }
+            .logo-text { font-family: var(--font-display); font-size: 28px; color: var(--color-brown-700); }
+            .wish-btn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; border-radius: var(--radius-full); background: var(--color-brand-100); color: var(--color-brand-600); font-size: 24px; }
+            .wish-btn:hover { background: var(--color-brand-500); color: var(--color-white); box-shadow: var(--shadow-xl); }
+            .main-img { width: min(80%, 480px); height: auto; margin: 0 auto; }
+            .main-title { margin-bottom: var(--space-5); font-size: 28px; font-weight: 900; line-height: 1.3; }
+            .highlight-pink { color: var(--color-brand-600); }
+            .sub-title { margin-bottom: 35px; color: var(--color-gray-700); font-size: 18px; font-weight: 700; }
+            .search-card { padding: var(--space-5); border-radius: var(--radius-2xl); background: var(--color-white); box-shadow: var(--shadow-md); }
+            .card-label { margin-bottom: 15px; font-weight: 700; }
+            .input-row { display: flex; flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 15px; }
+            .price-box { display: flex; flex: 1; align-items: center; min-height: 52px; padding: 0 15px; border: 1px solid var(--color-gray-300); border-radius: var(--radius-lg); background: var(--color-gray-50); }
+            .currency { display: flex; align-items: center; justify-content: flex-start; width: 25px; height: 50px; margin-right: 10px; flex-shrink: 0; border-right: 1px solid var(--color-gray-300); background: var(--color-gray-100); color: #555555; font-size: 18px; font-weight: 700; }
+            .price-input { display: flex; flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; }
+            .unit { color: var(--color-gray-800); font-weight: 700; }
+            .submit-btn, .tag, .more-btn, .retry-btn, .action-btn { border: 0; border-radius: var(--radius-lg); font-weight: 700; white-space: nowrap; }
+            .submit-btn { width: 100%; min-height: 50px; padding: 0 var(--space-5); background: var(--color-brand-500); color: var(--color-white); }
+            .submit-btn:hover, .retry-btn:hover { background: var(--color-brand-600); box-shadow: var(--shadow-xl); transform: translateY(-1px); }
+            .quick-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+            .tag { padding: var(--space-2) 15px; background: var(--color-gray-200); color: var(--color-gray-800); font-size: 14px; }
+            .tag:hover { background: var(--color-brand-100); color: var(--color-brand-600); }
+            .tip { margin-top: 15px; color: var(--color-gray-600); font-size: 16px; }
+            .section-header { width: 100%; }
+            .section-title { font-family: var(--font-display); font-size: 32px; }
+            .course-card { display: flex; min-height: auto; flex-direction: column; padding: 15px var(--space-5); border: 1px solid var(--color-gray-300); border-radius: var(--radius-2xl); background: var(--color-white); text-align: center; box-shadow: var(--shadow-sm); }
+            .course-card:hover { box-shadow: var(--shadow-xl); transform: translateY(-2px); }
+            .card-top { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+            .card-desc { margin-top: 5px; color: var(--color-gray-800); font-size: 13px; }
+            .card-green { border-top: 8px solid var(--color-green-50); }
+            .card-purple { border-top: 8px solid var(--color-purple-50); }
+            .card-yellow { border-top: 8px solid var(--color-yellow-50); }
+            .price-tag { display: inline-block; margin-bottom: 15px; padding: var(--space-1) var(--space-3); border-radius: var(--radius-xl); font-size: 12px; font-weight: 700; }
+            .card-green .price-tag, .green-btn { background: var(--color-green-50); color: var(--color-green-500); }
+            .card-purple .price-tag { background: var(--color-purple-50); color: var(--color-purple-500); }
+            .card-yellow .price-tag { background: var(--color-yellow-50); color: var(--color-yellow-600); }
+            .card-info { margin-top: 10px; color: var(--color-gray-800); font-size: 13px; }
+            .course-path { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; padding: 10px 0; }
+            .path-node { display: flex; flex: 1 1 70px; flex-direction: column; align-items: center; gap: 5px; }
+            .node-icon { font-size: 20px; }
+            .node-name { color: var(--color-gray-900); font-size: 11px; font-weight: 700; }
+            .node-price { color: var(--color-gray-600); font-size: 10px; }
+            .path-arrow { color: var(--color-gray-400); font-size: 12px; }
+            .more-btn { margin-top: auto; padding: 5%; border-top: 1px dashed currentColor; font-size: 13px; background: transparent; }
+            .card-green .more-btn { color: var(--color-green-500); }
+            .card-purple .more-btn { color: var(--color-purple-500); }
+            .card-yellow .more-btn { color: var(--color-yellow-600); }
+            .more-btn:hover { transform: translateY(-1px); }
+            .result-summary { padding: var(--space-10) 0; border-bottom: 1px solid var(--color-gray-200); background: #fffdf8; }
+            .summary-container { display: flex; align-items: center; justify-content: space-between; }
+            .search-retry-box { display: flex; width: 100%; flex-direction: column; align-items: flex-start; gap: var(--space-5); }
+            .summary-title { font-size: 20px; font-weight: 700; }
+            .retry-btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px var(--space-5); border: 1px solid var(--color-brand-500); border-radius: 30px; background: var(--color-white); color: var(--color-brand-500); font-size: 14px; }
+            .retry-btn:hover { color: var(--color-white); }
+            .action-btn { width: 100%; margin-top: 15px; padding: var(--space-3) 0; font-size: 14px; }
+            .action-stack { display: grid; gap: var(--space-2); margin-top: 15px; }
+            .action-stack .action-btn { margin-top: 0; }
+            .green-btn:hover { background: var(--color-green-500); color: var(--color-white); }
+            .save-btn { border: 1px solid transparent; background: var(--color-brand-100); color: var(--color-brand-600); }
+            .save-btn:hover, .save-btn.is-saved { background: var(--color-brand-500); color: var(--color-white); box-shadow: var(--shadow-xl); }
+            .save-status { min-height: 20px; margin-top: var(--space-2); color: var(--color-brand-600); font-size: 13px; font-weight: 700; text-align: center; }
+            .result-flex-layout { display: flex; width: 100%; flex-direction: column; gap: 30px; align-items: flex-start; }
+            .saved-courses { width: 100%; margin-top: var(--space-5); padding-top: var(--space-5); border-top: 1px solid var(--color-gray-200); }
+            .saved-courses-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-3); }
+            .saved-courses-title { color: var(--color-brown-700); font-size: 18px; font-weight: 900; }
+            .saved-count { flex: 0 0 auto; padding: 2px var(--space-3); border-radius: var(--radius-full); background: var(--color-brand-100); color: var(--color-brand-600); font-size: 12px; font-weight: 900; }
+            .saved-course-list { display: grid; gap: var(--space-3); }
+            .saved-empty { padding: var(--space-4); border: 1px dashed var(--color-gray-300); border-radius: var(--radius-lg); background: var(--color-gray-50); color: var(--color-gray-700); font-size: 14px; text-align: center; }
+            .saved-course-item { display: grid; gap: var(--space-2); padding: var(--space-4); border: 1px solid var(--color-gray-300); border-radius: var(--radius-lg); background: var(--color-white); box-shadow: var(--shadow-sm); }
+            .saved-course-title { color: var(--color-brown-700); font-size: 15px; font-weight: 900; }
+            .saved-course-meta, .saved-course-route { color: var(--color-gray-700); font-size: 12px; line-height: 1.5; }
+            .saved-course-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+            .saved-course-price { color: var(--color-brand-600); font-size: 13px; font-weight: 900; }
+            .saved-course-delete { flex: 0 0 auto; border: 0; border-radius: var(--radius-full); padding: var(--space-1) var(--space-3); background: var(--color-gray-200); color: var(--color-gray-800); font-size: 12px; font-weight: 700; }
+            .saved-course-delete:hover { background: var(--color-brand-100); color: var(--color-brand-600); }
+            .result-sidebar, .result-map-area { width: 100%; }
+            .map-container { width: 100%; height: 350px; overflow: hidden; border: 1px solid var(--color-gray-300); border-radius: var(--radius-2xl); background: var(--color-gray-50); box-shadow: var(--shadow-sm); }
+            .map-placeholder { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; background: var(--color-gray-100); color: var(--color-gray-500); font-size: 16px; text-align: center; }
+            /* JS가 hidden 속성과 .is-open 클래스를 함께 토글해서 상세 가이드 모달을 열고 닫습니다. */
+            .guide-modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: flex-start; justify-content: center; padding: var(--space-12) 0 0; background: rgba(255, 248, 242, 0.88); color: var(--color-gray-900); opacity: 0; pointer-events: none; transition: opacity 240ms ease; }
+            .guide-modal.is-open { opacity: 1; pointer-events: auto; }
+            .guide-modal[hidden] { display: none; }
+            .guide-panel { width: min(100%, 980px); max-height: calc(100vh - var(--space-12)); display: flex; flex-direction: column; gap: var(--space-6); padding: var(--space-5); background: var(--color-brand-50); overflow-y: auto; box-shadow: var(--shadow-xl); }
+            .guide-header-card { display: grid; gap: var(--space-5); padding: var(--space-5); border-radius: var(--radius-2xl); background: var(--color-white); box-shadow: var(--shadow-sm); }
+            .guide-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
+            .guide-kicker { color: var(--color-brand-600); font-size: 13px; font-weight: 900; letter-spacing: 0.04em; }
+            .guide-title { margin-top: var(--space-1); color: var(--color-brown-700); font-size: 28px; font-weight: 900; line-height: 1.25; }
+            .guide-close { flex: 0 0 auto; width: 48px; height: 48px; border: 1px solid var(--color-gray-300); border-radius: var(--radius-full); background: var(--color-brand-100); color: var(--color-brand-600); font-size: 28px; line-height: 1; }
+            .guide-close:hover { background: var(--color-brand-500); color: var(--color-white); box-shadow: var(--shadow-xl); }
+            .guide-budget { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
+            .guide-budget-card { padding: var(--space-4); border: 1px solid var(--color-gray-300); border-radius: var(--radius-lg); background: var(--color-gray-50); color: var(--color-gray-800); font-size: 14px; }
+            .guide-budget-card strong { display: block; margin-top: var(--space-1); color: var(--color-brown-700); font-size: 18px; }
+            .guide-course-flow { display: grid; grid-template-columns: 1fr; gap: var(--space-4); align-items: stretch; }
+            .guide-stage { min-height: 190px; display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-4); padding: var(--space-5); border: 1px solid var(--color-gray-300); border-top: 8px solid var(--color-brand-100); border-radius: var(--radius-lg); background: var(--color-white); box-shadow: var(--shadow-sm); }
+            .guide-stage-icon { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--color-brand-100); font-size: 22px; }
+            .guide-stage strong { display: block; color: var(--color-brown-700); font-size: 18px; line-height: 1.3; }
+            .guide-stage span { color: var(--color-gray-800); font-size: 14px; }
+            .guide-stage-price { color: var(--color-brand-600); font-size: 15px; font-weight: 900; }
+            .guide-flow-arrow { display: none; align-self: center; color: var(--color-brand-600); font-size: 28px; font-weight: 900; }
+            /* data-map-target="guide-map" 영역은 지도 API 담당자가 실제 지도 컴포넌트로 교체할 자리입니다. */
+            .guide-map-preview { min-height: 280px; display: flex; align-items: center; justify-content: center; padding: var(--space-6); border: 1px solid var(--color-gray-300); border-radius: var(--radius-2xl); background: var(--color-white); box-shadow: var(--shadow-sm); text-align: center; }
+            .guide-map-preview strong { display: block; margin-bottom: var(--space-2); color: var(--color-brown-700); font-size: 26px; }
+            .guide-map-preview span { color: var(--color-gray-800); font-size: 15px; }
+        }
+
+        @layer screens {
+            /* JS가 .is-active를 토글해서 data-screen="home"과 data-screen="result" 화면을 교체합니다. */
+            .screen { display: none; opacity: 0; transform: translateY(10px); }
+            .screen.is-active { display: block; animation: screenIn 320ms ease both; }
+            .screen[aria-hidden="true"] { pointer-events: none; }
+            @keyframes screenIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+            @media (prefers-reduced-motion: reduce) {
+                .screen.is-active { animation: none; }
+                button, a, input { transition: none; }
+            }
+        }
+
+        @layer responsive {
+            @media (min-width: 768px) {
+                .container { padding: 0 var(--space-5); }
+                .input-row { flex-direction: row; }
+                .submit-btn { width: auto; }
+                .course-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+                .search-retry-box { flex-direction: row; align-items: center; justify-content: space-between; }
+                .summary-title { font-size: 26px; }
+            }
+
+            @media (min-width: 1024px) {
+                .main-content { padding: var(--space-15) 0; }
+                .main-flex { flex-direction: row; gap: var(--space-10); text-align: left; }
+                .hero-right { order: 0; flex: 1; text-align: right; }
+                .main-img { width: 100%; margin: 0; }
+                .main-title { font-size: 44px; }
+                .tip { font-size: 18px; }
+                .course-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); }
+                .course-card { min-height: 250px; }
+                .course-path { flex-wrap: nowrap; justify-content: space-between; gap: 0; }
+                .path-node { flex: 1; }
+                .result-flex-layout { flex-direction: row; }
+                .result-sidebar { flex: 1; max-width: 400px; }
+                .result-map-area { position: sticky; top: var(--space-5); flex: 2.5; }
+                .map-container { height: 600px; }
+                .guide-course-flow { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr); }
+                .guide-flow-arrow { display: block; }
+                .guide-stage { min-height: 300px; }
+                .guide-map-preview { min-height: 320px; }
+            }
+        }
     </style>
 </head>
-<body class="bg-slate-50 font-sans antialiased">
+<body>
+    <header class="header">
+        <div class="container header-flex">
+            <a href="#home" class="logo-wrapper" data-route="home" aria-label="만원 데이트 홈으로 이동">
+                <img src="만원 데이트 로고.PNG" alt="로고" class="logo-symbol">
+                <span class="logo-text">만원 데이트</span>
+            </a>
+            <button class="wish-btn" type="button" data-open-saved aria-label="저장한 코스 보기">♡</button>
+        </div>
+    </header>
 
-    <div class="max-w-6xl mx-auto p-6 md:p-12 space-y-16">
-        
-        <header class="text-center space-y-4">
-            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-800">
-                디자인 시스템 뼈대 파일
-            </h1>
-            <p class="text-lg text-slate-500 max-w-2xl mx-auto">
-                DESIGN.md 규칙에 따라 작성된 Tailwind CSS 템플릿입니다. 컴포넌트의 간격, 색상, 그리고 트랜지션을 확인해보세요.
-            </p>
-        </header>
+    <div class="app-shell">
+        <!-- JS screen hook: data-screen 값은 URL hash(#home/#result)와 showScreen()의 target 값과 맞춰 사용합니다. -->
+        <section class="screen is-active" data-screen="home" aria-hidden="false">
+            <main class="main-content">
+                <div class="container main-flex">
+                    <div class="hero-left">
+                        <h1 class="main-title">
+                            적은 돈으로,<br>
+                            더 <span class="highlight-pink">특별한</span> 데이트를.
+                        </h1>
+                        <p class="sub-title">
+                            돈 걱정 없이 즐길 수 있는<br>
+                            대학생 맞춤 데이트 코스를 추천해드려요!
+                        </p>
 
-        <main class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
-            <article class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full">
-                <div class="mb-8">
-                    <h2 class="text-2xl font-extrabold tracking-tight text-slate-800 mb-3">프라이머리 액션</h2>
-                    <p class="text-slate-500">주요 액션을 유도하는 카드. 버튼에는 브랜드의 Primary 색상이 적용되어 있음.</p>
+                        <!-- JS budget hooks: data-budget-form/input/selected-budget은 예산 입력값을 결과 화면에 넘기는 연결 지점입니다. -->
+                        <form class="search-card" data-budget-form>
+                            <p class="card-label">오늘 데이트에 사용할 금액은 얼마인가요?</p>
+                            <div class="input-row">
+                                <div class="price-box">
+                                    <span class="currency">₩</span>
+                                    <input class="price-input" data-budget-input type="text" inputmode="numeric" placeholder=" 예) 10,000">
+                                    <span class="unit">원</span>
+                                </div>
+                                <button class="submit-btn" type="submit">코스 추천 받기 &gt;</button>
+                            </div>
+                            <div class="quick-tags" aria-label="빠른 금액 선택">
+                                <button class="tag" type="button" data-budget="5000">5천원</button>
+                                <button class="tag" type="button" data-budget="10000">1만원</button>
+                                <button class="tag" type="button" data-budget="20000">2만원</button>
+                                <button class="tag" type="button" data-budget="30000">3만원</button>
+                            </div>
+                        </form>
+                        <p class="tip">💡 <span style="color: goldenrod;">팁!</span> 교통비, 입장료, 식비 등 모든 비용을 포함해 입력해 주세요!</p>
+                    </div>
+                    <div class="hero-right">
+                        <img src="웹 사이트 메인화면 일러.PNG" alt="데이트 일러스트" class="main-img">
+                    </div>
                 </div>
-                <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
-                    시작하기
-                </button>
-            </article>
+            </main>
 
-            <article class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full">
-                <div class="mb-8">
-                    <h2 class="text-2xl font-extrabold tracking-tight text-slate-800 mb-3">세컨더리 액션</h2>
-                    <p class="text-slate-500">보조적인 정보나 기능을 제공함. 버튼에는 Secondary 색상이 적용됨.</p>
+            <section class="recommend-section">
+                <div class="container recommend-container">
+                    <div class="section-header">
+                        <h2 class="section-title">추천 코스 미리보기 ❤️</h2>
+                    </div>
+
+                    <!-- JS course list hook: 나중에 추천 API를 붙이면 data-course-list 안의 카드들을 데이터로 렌더링하면 됩니다. -->
+                    <div class="course-grid" data-course-list>
+                        <article class="course-card card-green" data-course-card data-course-id="hangang-picnic">
+                            <div class="card-top">
+                                <span class="price-tag">총 9,800원</span>
+                                <h3>한강 피크닉 데이트</h3>
+                                <p class="card-desc">한강에서 여유롭게 즐기는 피크닉 코스</p>
+                                <div class="card-info">🕒 4~5시간 &nbsp; 👣 도보 위주</div>
+                            </div>
+                            <div class="course-path">
+                                <div class="path-node"><div class="node-icon">🍱</div><span class="node-name">편의점 간식</span><span class="node-price">3,000원</span></div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node"><div class="node-icon">🌳</div><span class="node-name">한강공원 산책</span><span class="node-price">0원</span></div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node"><div class="node-icon">🧺</div><span class="node-name">돗자리 피크닉</span><span class="node-price">4,000원</span></div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node"><div class="node-icon">🌉</div><span class="node-name">야경 감상</span><span class="node-price">2,800원</span></div>
+                            </div>
+                            <button type="button" class="more-btn" data-route="result" data-course-id="hangang-picnic">자세히 보기 &gt;</button>
+                        </article>
+
+                        <article class="course-card card-purple" data-course-card data-course-id="hangang-picnic-sample-2">
+                            <div class="card-top">
+                                <span class="price-tag">총 9,800원</span>
+                                <h3>한강 피크닉 데이트</h3>
+                                <p class="card-desc">한강에서 여유롭게 즐기는 피크닉 코스</p>
+                                <div class="card-info">🕒 4~5시간 &nbsp; 👣 도보 위주</div>
+                            </div>
+                            <div class="course-path">
+                                <div class="path-node"><div class="node-icon">🍱</div><span class="node-name">편의점 간식</span><span class="node-price">3,000원</span></div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node"><div class="node-icon">🌳</div><span class="node-name">한강공원 산책</span><span class="node-price">0원</span></div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node"><div class="node-icon">🧺</div><span class="node-name">돗자리 피크닉</span><span class="node-price">4,000원</span></div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node"><div class="node-icon">🌉</div><span class="node-name">야경 감상</span><span class="node-price">2,800원</span></div>
+                            </div>
+                            <button type="button" class="more-btn" data-route="result" data-course-id="hangang-picnic-sample-2">자세히 보기 &gt;</button>
+                        </article>
+
+                        <article class="course-card card-yellow" data-course-card data-course-id="hangang-picnic-sample-3">
+                            <div class="card-top">
+                                <span class="price-tag">총 9,800원</span>
+                                <h3>한강 피크닉 데이트</h3>
+                                <p class="card-desc">한강에서 여유롭게 즐기는 피크닉 코스</p>
+                                <div class="card-info">🕒 4~5시간 &nbsp; 👣 도보 위주</div>
+                            </div>
+                            <div class="course-path">
+                                <div class="path-node"><div class="node-icon">🍱</div><span class="node-name">편의점 간식</span><span class="node-price">3,000원</span></div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node"><div class="node-icon">🌳</div><span class="node-name">한강공원 산책</span><span class="node-price">0원</span></div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node"><div class="node-icon">🧺</div><span class="node-name">돗자리 피크닉</span><span class="node-price">4,000원</span></div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node"><div class="node-icon">🌉</div><span class="node-name">야경 감상</span><span class="node-price">2,800원</span></div>
+                            </div>
+                            <button type="button" class="more-btn" data-route="result" data-course-id="hangang-picnic-sample-3">자세히 보기 &gt;</button>
+                        </article>
+                    </div>
                 </div>
-                <button class="w-full bg-slate-800 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
-                    자세히 보기
-                </button>
-            </article>
+            </section>
+        </section>
 
-            <article class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full">
-                <div class="mb-8">
-                    <h2 class="text-2xl font-extrabold tracking-tight text-slate-800 mb-3">텍스트 포인트</h2>
-                    <p class="text-slate-500">
-                        본문 내에서 특정 요소를 강조할 때는 <span class="text-indigo-600 font-bold hover:text-indigo-700 cursor-pointer transition-all duration-300">텍스트 프라이머리 색상</span>을 활용하여 시선을 유도.
-                    </p>
+        <section class="screen" data-screen="result" aria-hidden="true">
+            <section class="result-summary">
+                <div class="container summary-container">
+                    <div class="search-retry-box">
+                        <h2 class="summary-title">
+                            <span class="highlight-pink" data-selected-budget>10,000원</span>으로 즐길 수 있는 추천 코스입니다!
+                        </h2>
+                        <button type="button" class="retry-btn" data-route="home">다시 검색하기 ↻</button>
+                    </div>
                 </div>
-                <button class="w-full text-indigo-600 hover:text-indigo-700 font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
-                    설정 관리
-                </button>
-            </article>
+            </section>
 
-        </main>
+            <section class="recommend-section">
+                <div class="container result-flex-layout">
+                    <div class="result-sidebar">
+                        <!-- JS selected course hook: 실제 데이터 연결 시 data-course-id 기준으로 결과 카드와 상세 가이드를 갱신합니다. -->
+                        <article class="course-card card-green" data-course-card data-course-id="hangang-picnic">
+                            <div class="card-top">
+                                <span class="price-tag">총 9,800원</span>
+                                <h3>한강 피크닉 데이트</h3>
+                                <p class="card-desc">한강에서 여유롭게 즐기는 피크닉 코스</p>
+                                <div class="card-info">🕒 4~5시간 &nbsp; 👣 도보 위주</div>
+                            </div>
+
+                            <div class="course-path">
+                                <div class="path-node"><div class="node-icon">🍱</div><span class="node-name">편의점 간식</span><span class="node-price">3,000원</span></div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node"><div class="node-icon">🌳</div><span class="node-name">한강공원 산책</span><span class="node-price">0원</span></div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node"><div class="node-icon">🧺</div><span class="node-name">돗자리 피크닉</span><span class="node-price">4,000원</span></div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node"><div class="node-icon">🌉</div><span class="node-name">야경 감상</span><span class="node-price">2,800원</span></div>
+                            </div>
+
+                            <div class="action-stack">
+                                <button class="action-btn save-btn" type="button" data-save-course data-course-id="hangang-picnic">나만의 코스 저장</button>
+                                <button class="action-btn green-btn" type="button" data-guide-open data-course-id="hangang-picnic">코스 상세 가이드 보기</button>
+                            </div>
+                            <p class="save-status" data-save-status aria-live="polite"></p>
+                        </article>
+
+                        <section class="saved-courses" id="saved-courses" data-saved-courses-panel aria-labelledby="saved-courses-title">
+                            <div class="saved-courses-header">
+                                <h3 class="saved-courses-title" id="saved-courses-title">나만의 데이트 코스</h3>
+                                <span class="saved-count" data-saved-count>0개</span>
+                            </div>
+                            <div class="saved-course-list" data-saved-course-list></div>
+                            <p class="saved-empty" data-saved-empty>저장된 코스가 아직 없어요. 마음에 드는 코스를 저장해보세요.</p>
+                        </section>
+                    </div>
+
+                    <div class="result-map-area">
+                        <div id="map" class="map-container" data-map-target="result-map">
+                            <div class="map-placeholder">📍 여기에 지도 API가 연결될 예정입니다.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
     </div>
 
+    <!-- JS guide hook: data-guide-modal은 상세 가이드 열기/닫기 상태를 제어하는 모달 루트입니다. -->
+    <div class="guide-modal" data-guide-modal data-course-id="hangang-picnic" hidden role="dialog" aria-modal="true" aria-labelledby="guide-title">
+        <article class="guide-panel">
+            <section class="guide-header-card">
+                <header class="guide-header">
+                    <div>
+                        <p class="guide-kicker">COURSE GUIDE</p>
+                        <h2 class="guide-title" id="guide-title">한강 피크닉 데이트<br>상세 가이드</h2>
+                    </div>
+                    <button class="guide-close" type="button" data-guide-close aria-label="상세 가이드 닫기">×</button>
+                </header>
+
+                <div class="guide-budget" aria-label="예산 요약">
+                    <div class="guide-budget-card" data-guide-summary="budget">총 예산<strong>9,800원</strong></div>
+                    <div class="guide-budget-card" data-guide-summary="duration">소요 시간<strong>4~5시간</strong></div>
+                    <div class="guide-budget-card" data-guide-summary="transport">이동 방식<strong>도보 위주</strong></div>
+                </div>
+            </section>
+
+            <section class="guide-course-flow" aria-label="코스 상세 순서" data-guide-flow>
+                <article class="guide-stage" data-guide-stage="snack">
+                    <span class="guide-stage-icon">🍱</span>
+                    <div><strong>편의점 간식 구매</strong><span>음료와 간단한 도시락을 준비해요.</span></div>
+                    <p class="guide-stage-price">3,000원</p>
+                </article>
+                <div class="guide-flow-arrow">→</div>
+                <article class="guide-stage" data-guide-stage="walk">
+                    <span class="guide-stage-icon">🌳</span>
+                    <div><strong>한강공원 산책</strong><span>강변 길을 천천히 걸으며 자리를 찾아요.</span></div>
+                    <p class="guide-stage-price">0원</p>
+                </article>
+                <div class="guide-flow-arrow">→</div>
+                <article class="guide-stage" data-guide-stage="picnic">
+                    <span class="guide-stage-icon">🧺</span>
+                    <div><strong>돗자리 피크닉</strong><span>돗자리와 소품을 챙겨 여유롭게 쉬어요.</span></div>
+                    <p class="guide-stage-price">4,000원</p>
+                </article>
+                <div class="guide-flow-arrow">→</div>
+                <article class="guide-stage" data-guide-stage="night-view">
+                    <span class="guide-stage-icon">🌉</span>
+                    <div><strong>야경 감상</strong><span>해질 무렵 다리 근처에서 야경을 즐겨요.</span></div>
+                    <p class="guide-stage-price">2,800원</p>
+                </article>
+            </section>
+
+            <section class="guide-map-preview" aria-label="지도 API 영역" data-map-target="guide-map">
+                <div>
+                    <strong>지도 API</strong>
+                    <span>추후 지도 담당자가 경로와 장소 마커를 연결할 영역입니다.</span>
+                </div>
+            </section>
+        </article>
+    </div>
+
+        <script>
+        (() => {
+            // DOM hooks: HTML/CSS와 JS를 연결하는 계약입니다. 마크업을 바꿀 때 data-* 이름은 먼저 JS 담당자와 맞춰 주세요.
+            const dom = {
+                screens: Array.from(document.querySelectorAll('[data-screen]')),
+                budgetInput: document.querySelector('[data-budget-input]'),
+                selectedBudget: document.querySelector('[data-selected-budget]'),
+                budgetForm: document.querySelector('[data-budget-form]'),
+                routeButtons: Array.from(document.querySelectorAll('[data-route]')),
+                budgetButtons: Array.from(document.querySelectorAll('[data-budget]')),
+                openSavedButton: document.querySelector('[data-open-saved]'),
+                currentCourseCard: document.querySelector('[data-screen="result"] [data-course-card]'),
+                saveCourseButton: document.querySelector('[data-save-course]'),
+                saveStatus: document.querySelector('[data-save-status]'),
+                savedCoursesPanel: document.querySelector('[data-saved-courses-panel]'),
+                savedCourseList: document.querySelector('[data-saved-course-list]'),
+                savedEmpty: document.querySelector('[data-saved-empty]'),
+                savedCount: document.querySelector('[data-saved-count]'),
+                guideModal: document.querySelector('[data-guide-modal]'),
+                guideOpenButton: document.querySelector('[data-guide-open]'),
+                guideCloseButton: document.querySelector('[data-guide-close]'),
+            };
+
+            // TODO(JS 담당): 실제 코스 데이터가 생기면 data-course-id를 기준으로 카드, 상세 가이드, 지도 마커를 갱신하면 됩니다.
+            const DEFAULT_BUDGET_TEXT = '10,000원';
+            const GUIDE_TRANSITION_MS = 240;
+            const SAVED_COURSES_KEY = 'manwon-date.savedCourses';
+
+            // 예산 입력값은 숫자만 뽑아서 한국식 금액 표기로 통일합니다.
+            const formatBudget = (value) => {
+                const digits = String(value || '').replace(/[^0-9]/g, '');
+                if (!digits) return DEFAULT_BUDGET_TEXT;
+                return `${Number(digits).toLocaleString('ko-KR')}원`;
+            };
+
+            // localStorage 저장소: GitHub Pages처럼 서버가 없는 환경에서도 내 브라우저 안에 저장됩니다.
+            const readSavedCourses = () => {
+                try {
+                    const saved = JSON.parse(localStorage.getItem(SAVED_COURSES_KEY) || '[]');
+                    return Array.isArray(saved) ? saved : [];
+                } catch {
+                    return [];
+                }
+            };
+
+            const writeSavedCourses = (courses) => {
+                try {
+                    localStorage.setItem(SAVED_COURSES_KEY, JSON.stringify(courses));
+                    return true;
+                } catch {
+                    setSaveMessage('브라우저 저장소를 사용할 수 없어요.');
+                    return false;
+                }
+            };
+
+            const getText = (root, selector, fallback = '') => root?.querySelector(selector)?.textContent.trim() || fallback;
+
+            // 현재 결과 카드의 DOM에서 저장할 코스 정보를 읽습니다. 나중에 결과 카드가 데이터로 바뀌어도 이 함수만 맞추면 됩니다.
+            const collectCurrentCourse = () => {
+                const card = dom.currentCourseCard;
+                const steps = Array.from(card?.querySelectorAll('.path-node') || []).map((node) => ({
+                    icon: getText(node, '.node-icon'),
+                    name: getText(node, '.node-name'),
+                    price: getText(node, '.node-price'),
+                }));
+
+                return {
+                    id: card?.dataset.courseId || dom.saveCourseButton?.dataset.courseId || `course-${Date.now()}`,
+                    title: getText(card, 'h3', '이름 없는 코스'),
+                    description: getText(card, '.card-desc'),
+                    totalPrice: getText(card, '.price-tag'),
+                    meta: getText(card, '.card-info'),
+                    steps,
+                    savedAt: new Date().toISOString(),
+                };
+            };
+
+            const setSaveMessage = (message) => {
+                if (!dom.saveStatus) return;
+                dom.saveStatus.textContent = message;
+            };
+
+            const createSavedCourseItem = (course) => {
+                const item = document.createElement('article');
+                item.className = 'saved-course-item';
+                item.dataset.savedCourseId = course.id;
+
+                const title = document.createElement('h4');
+                title.className = 'saved-course-title';
+                title.textContent = course.title;
+
+                const meta = document.createElement('p');
+                meta.className = 'saved-course-meta';
+                meta.textContent = [course.description, course.meta].filter(Boolean).join(' · ');
+
+                const route = document.createElement('p');
+                route.className = 'saved-course-route';
+                route.textContent = course.steps.map((step) => step.name).filter(Boolean).join(' → ');
+
+                const footer = document.createElement('div');
+                footer.className = 'saved-course-footer';
+
+                const price = document.createElement('span');
+                price.className = 'saved-course-price';
+                price.textContent = course.totalPrice;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'saved-course-delete';
+                deleteButton.type = 'button';
+                deleteButton.dataset.deleteSavedCourse = course.id;
+                deleteButton.textContent = '삭제';
+
+                footer.append(price, deleteButton);
+                item.append(title, meta, route, footer);
+                return item;
+            };
+
+            const renderSavedCourses = () => {
+                const courses = readSavedCourses();
+                const currentCourseId = collectCurrentCourse().id;
+                const isCurrentSaved = courses.some((course) => course.id === currentCourseId);
+
+                if (dom.savedCount) dom.savedCount.textContent = `${courses.length}개`;
+                if (dom.savedEmpty) dom.savedEmpty.hidden = courses.length > 0;
+                if (dom.savedCourseList) dom.savedCourseList.replaceChildren(...courses.map(createSavedCourseItem));
+                if (dom.saveCourseButton) {
+                    dom.saveCourseButton.classList.toggle('is-saved', isCurrentSaved);
+                    dom.saveCourseButton.textContent = isCurrentSaved ? '저장 완료' : '나만의 코스 저장';
+                    dom.saveCourseButton.setAttribute('aria-pressed', String(isCurrentSaved));
+                }
+            };
+
+            const saveCurrentCourse = () => {
+                const course = collectCurrentCourse();
+                const courses = readSavedCourses();
+                if (courses.some((savedCourse) => savedCourse.id === course.id)) {
+                    setSaveMessage('이미 저장된 코스예요.');
+                    return;
+                }
+                if (!writeSavedCourses([course, ...courses])) return;
+                renderSavedCourses();
+                setSaveMessage('나만의 데이트 코스에 저장했어요.');
+            };
+
+            const deleteSavedCourse = (courseId) => {
+                const nextCourses = readSavedCourses().filter((course) => course.id !== courseId);
+                if (!writeSavedCourses(nextCourses)) return;
+                renderSavedCourses();
+                setSaveMessage('저장한 코스를 삭제했어요.');
+            };
+
+            // 화면 전환: data-screen 값과 URL hash를 맞춰 홈/결과 섹션만 보여줍니다.
+            const showScreen = (target, options = {}) => {
+                const next = target === 'result' ? 'result' : 'home';
+                dom.screens.forEach((screen) => {
+                    const isActive = screen.dataset.screen === next;
+                    screen.classList.toggle('is-active', isActive);
+                    screen.setAttribute('aria-hidden', String(!isActive));
+                });
+                if (options.updateHash !== false) {
+                    history.pushState({ screen: next }, '', `#${next}`);
+                }
+                if (next === 'result') renderSavedCourses();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            const scrollToSavedCourses = () => {
+                dom.savedCoursesPanel?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            };
+
+            // data-route 버튼은 별도 html 파일로 이동하지 않고 SPA 화면만 교체합니다.
+            dom.routeButtons.forEach((trigger) => {
+                trigger.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    showScreen(trigger.dataset.route);
+                });
+            });
+
+            dom.openSavedButton?.addEventListener('click', () => {
+                showScreen('result');
+                window.setTimeout(scrollToSavedCourses, 320);
+            });
+
+            // 빠른 금액 버튼: data-budget 값만 바꾸면 버튼 금액도 쉽게 추가할 수 있습니다.
+            dom.budgetButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    dom.budgetInput.value = Number(button.dataset.budget).toLocaleString('ko-KR');
+                    dom.budgetInput.focus();
+                });
+            });
+
+            // 검색 폼 제출: 현재는 예산 텍스트만 결과 화면으로 넘기고, 추천 로직은 추후 연결 예정입니다.
+            dom.budgetForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                dom.selectedBudget.textContent = formatBudget(dom.budgetInput.value);
+                showScreen('result');
+            });
+
+            dom.saveCourseButton?.addEventListener('click', saveCurrentCourse);
+            dom.savedCourseList?.addEventListener('click', (event) => {
+                const deleteButton = event.target.closest('[data-delete-saved-course]');
+                if (!deleteButton) return;
+                deleteSavedCourse(deleteButton.dataset.deleteSavedCourse);
+            });
+
+            // 상세 가이드 열기: hidden 제거 후 .is-open을 붙여 CSS transition이 실행되게 합니다.
+            const openGuide = () => {
+                dom.guideModal.hidden = false;
+                dom.guideModal.getBoundingClientRect();
+                dom.guideModal.classList.add('is-open');
+                dom.guideCloseButton.focus();
+            };
+
+            // 상세 가이드 닫기: transition이 끝난 뒤 hidden을 다시 붙여 탭 이동 대상에서 제외합니다.
+            const closeGuide = () => {
+                dom.guideModal.classList.remove('is-open');
+                window.setTimeout(() => {
+                    dom.guideModal.hidden = true;
+                    dom.guideOpenButton.focus();
+                }, GUIDE_TRANSITION_MS);
+            };
+
+            dom.guideOpenButton.addEventListener('click', openGuide);
+            dom.guideCloseButton.addEventListener('click', closeGuide);
+            dom.guideModal.addEventListener('click', (event) => {
+                if (event.target === dom.guideModal) closeGuide();
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && !dom.guideModal.hidden) closeGuide();
+            });
+
+            // 브라우저 뒤로가기/앞으로가기도 현재 hash 기준으로 화면을 다시 맞춥니다.
+            window.addEventListener('popstate', () => {
+                showScreen(location.hash.replace('#', ''), { updateHash: false });
+            });
+
+            // 초기 진입: index.html#result로 바로 열면 결과 화면부터 보여줍니다.
+            renderSavedCourses();
+            showScreen(location.hash.replace('#', ''), { updateHash: false });
+        })();
+    </script>
 </body>
 </html>
