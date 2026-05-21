@@ -39,7 +39,7 @@
 * **리뷰 룰:** `main` 브랜치 병합 전 최소 1명 이상 승인 필요
 
 ### 👥 팀원 역할
-* **PM (Product Manager):** [김종훈]
+* **PM (Product Manager):** [김종훈..]
 * **Tech Lead:** [박지영.]
 * **UI/UX Designer:** [최형선.]
 * **QA Engineer:** [우준혁..]
