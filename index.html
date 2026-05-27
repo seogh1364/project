@@ -1,272 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon.ico?v=1.1" type="image/x-icon">
     <title>만원 데이트 - 대학생 맞춤 가성비 데이트</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap');
-
-        @layer reset, base, layout, components, screens, responsive;
-
-        @layer reset {
-            *, *::before, *::after { box-sizing: border-box; }
-            * { margin: 0; padding: 0; }
-            html, body { width: 100%; overflow-x: hidden; }
-            img { display: block; max-width: 100%; }
-            button, input { font: inherit; }
-        }
-
-        @layer base {
-            :root {
-                --font-sans: 'Noto Sans KR', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-                --font-display: 'Jua', var(--font-sans);
-                --color-brand-50: #fff8f2;
-                --color-brand-100: #fff1e7;
-                --color-brand-500: #ff8e8e;
-                --color-brand-600: #ff6e87;
-                --color-brown-700: #5d4037;
-                --color-gray-50: #fcfcfc;
-                --color-gray-100: #f9f9f9;
-                --color-gray-200: #f5f5f5;
-                --color-gray-300: #eeeeee;
-                --color-gray-400: #dddddd;
-                --color-gray-500: #aaaaaa;
-                --color-gray-600: #999999;
-                --color-gray-700: #888888;
-                --color-gray-800: #666666;
-                --color-gray-900: #333333;
-                --color-white: #ffffff;
-                --color-green-50: #e8f5e9;
-                --color-green-500: #4caf50;
-                --color-purple-50: #f3e5f5;
-                --color-purple-500: #9c27b0;
-                --color-yellow-50: #fff9c4;
-                --color-yellow-600: #fbc02d;
-                --space-1: 4px;
-                --space-2: 8px;
-                --space-3: 12px;
-                --space-4: 16px;
-                --space-5: 20px;
-                --space-6: 24px;
-                --space-8: 32px;
-                --space-10: 40px;
-                --space-12: 48px;
-                --space-15: 60px;
-                --radius-lg: 12px;
-                --radius-xl: 15px;
-                --radius-2xl: 24px;
-                --radius-full: 999px;
-                --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.02);
-                --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.03);
-                --shadow-xl: 0 16px 36px rgba(255, 110, 135, 0.18);
-                --container-max: 1100px;
-                --transition-default: all 300ms ease;
-            }
-
-            body {
-                min-height: 100vh;
-                font-family: var(--font-sans);
-                color: var(--color-gray-900);
-                line-height: 1.6;
-                background: var(--color-white);
-            }
-
-            a { color: inherit; text-decoration: none; }
-            button, a, input { transition: var(--transition-default); }
-            button { cursor: pointer; }
-            :focus-visible { outline: 3px solid rgba(255, 110, 135, 0.35); outline-offset: 3px; }
-        }
-
-        @layer layout {
-            .container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 15px; }
-            .header { min-height: 80px; display: flex; align-items: center; background: var(--color-white); border-bottom: 1px solid var(--color-gray-100); }
-            .header-flex { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-            .app-shell { position: relative; background: var(--color-white); }
-            .main-content { background: var(--color-brand-50); padding: var(--space-10) 0; }
-            .main-flex { display: flex; flex-direction: column; align-items: center; gap: var(--space-6); text-align: center; }
-            .hero-left, .hero-right { width: 100%; }
-            .hero-left { flex: 1.2; }
-            .hero-right { order: -1; }
-            .recommend-section { padding: var(--space-10) 0; background: var(--color-white); }
-            .recommend-container { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-5); }
-            .course-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-5); width: 100%; }
-        }
-
-        @layer components {
-            .logo-wrapper { display: inline-flex; align-items: center; gap: var(--space-2); }
-            .logo-wrapper:hover { transform: translateY(-1px); }
-            .logo-symbol { width: 40px; height: 40px; object-fit: contain; }
-            .logo-text { font-family: var(--font-display); font-size: 28px; color: var(--color-brown-700); }
-            .menu-btn { display: inline-flex; min-width: 112px; min-height: 48px; align-items: center; justify-content: center; gap: var(--space-2); padding: 0 var(--space-5); border: 1px solid var(--color-brand-500); border-radius: var(--radius-full); background: var(--color-white); color: #ff4f58; font-size: 16px; font-weight: 900; }
-            .menu-btn:hover, .menu-btn[aria-expanded="true"] { background: var(--color-brand-100); box-shadow: var(--shadow-xl); transform: translateY(-1px); }
-            .menu-btn-icon { font-size: 22px; line-height: 1; }
-            .list-menu { position: fixed; top: 70px; right: max(20px, calc((100vw - var(--container-max)) / 2)); z-index: 900; width: min(320px, calc(100vw - 32px)); padding: var(--space-6); border: 1px solid var(--color-gray-300); border-radius: var(--radius-lg); background: var(--color-white); box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12); opacity: 0; transform: translateY(-8px); pointer-events: none; transition: opacity 180ms ease, transform 180ms ease; }
-            .list-menu.is-open { opacity: 1; transform: translateY(0); pointer-events: auto; }
-            .list-menu[hidden] { display: none; }
-            .list-menu-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-5); }
-            .list-menu-title { color: #ff4f58; font-size: 22px; font-weight: 900; }
-            .list-menu-close { width: 32px; height: 32px; border: 0; border-radius: var(--radius-full); background: transparent; color: var(--color-gray-500); font-size: 30px; line-height: 1; }
-            .list-menu-close:hover { color: #ff4f58; background: var(--color-brand-100); }
-            .list-menu-items { display: grid; }
-            .list-menu-item { display: grid; grid-template-columns: 34px 1fr; align-items: center; gap: var(--space-3); min-height: 68px; border: 0; border-bottom: 1px solid var(--color-gray-300); background: transparent; color: var(--color-gray-900); font-size: 17px; font-weight: 900; text-align: left; }
-            .list-menu-item:first-child { border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: linear-gradient(135deg, rgba(255, 110, 135, 0.15), rgba(255, 241, 231, 0.8)); color: #ff4f58; }
-            .list-menu-item:last-child { border-bottom: 0; }
-            .list-menu-item:hover { color: #ff4f58; background: var(--color-brand-50); }
-            .list-menu-icon { display: inline-flex; align-items: center; justify-content: center; font-size: 24px; line-height: 1; }
-            .main-img { width: min(80%, 480px); height: auto; margin: 0 auto; }
-            .main-title { margin-bottom: var(--space-5); font-size: 28px; font-weight: 900; line-height: 1.3; }
-            .highlight-pink { color: var(--color-brand-600); }
-            .sub-title { margin-bottom: 35px; color: var(--color-gray-700); font-size: 18px; font-weight: 700; }
-            .search-card { padding: var(--space-5); border-radius: var(--radius-2xl); background: var(--color-white); box-shadow: var(--shadow-md); }
-            .card-label { margin-bottom: 15px; font-weight: 700; }
-            .input-row { display: flex; flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 15px; }
-            .price-box { display: flex; flex: 1; align-items: center; min-height: 52px; padding: 0 15px; border: 1px solid var(--color-gray-300); border-radius: var(--radius-lg); background: var(--color-gray-50); }
-            .currency { display: flex; align-items: center; justify-content: flex-start; width: 25px; height: 50px; margin-right: 10px; flex-shrink: 0; border-right: 1px solid var(--color-gray-300); background: var(--color-gray-100); color: #555555; font-size: 18px; font-weight: 700; }
-            .price-input { display: flex; flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; }
-            .unit { color: var(--color-gray-800); font-weight: 700; }
-            .submit-btn, .tag, .more-btn, .retry-btn, .action-btn { border: 0; border-radius: var(--radius-lg); font-weight: 700; white-space: nowrap; }
-            .submit-btn { width: 100%; min-height: 50px; padding: 0 var(--space-5); background: var(--color-brand-500); color: var(--color-white); }
-            .submit-btn:hover, .retry-btn:hover { background: var(--color-brand-600); box-shadow: var(--shadow-xl); transform: translateY(-1px); }
-            .quick-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-            .tag { padding: var(--space-2) 15px; background: var(--color-gray-200); color: var(--color-gray-800); font-size: 14px; }
-            .tag:hover { background: var(--color-brand-100); color: var(--color-brand-600); }
-            .tip { margin-top: 15px; color: var(--color-gray-600); font-size: 16px; }
-            .section-header { width: 100%; }
-            .section-title { font-family: var(--font-display); font-size: 32px; }
-            .course-card { display: flex; min-height: auto; flex-direction: column; padding: 15px var(--space-5); border: 1px solid var(--color-gray-300); border-radius: var(--radius-2xl); background: var(--color-white); text-align: center; box-shadow: var(--shadow-sm); }
-            .course-card:hover { box-shadow: var(--shadow-xl); transform: translateY(-2px); }
-            .card-top { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
-            .card-desc { margin-top: 5px; color: var(--color-gray-800); font-size: 13px; }
-            .card-green { border-top: 8px solid var(--color-green-50); }
-            .card-purple { border-top: 8px solid var(--color-purple-50); }
-            .card-yellow { border-top: 8px solid var(--color-yellow-50); }
-            .price-tag { display: inline-block; margin-bottom: 15px; padding: var(--space-1) var(--space-3); border-radius: var(--radius-xl); font-size: 12px; font-weight: 700; }
-            .card-green .price-tag, .green-btn { background: var(--color-green-50); color: var(--color-green-500); }
-            .card-purple .price-tag { background: var(--color-purple-50); color: var(--color-purple-500); }
-            .card-yellow .price-tag { background: var(--color-yellow-50); color: var(--color-yellow-600); }
-            .card-info { margin-top: 10px; color: var(--color-gray-800); font-size: 13px; }
-            .course-path { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; padding: 10px 0; }
-            .path-node { display: flex; flex: 1 1 70px; flex-direction: column; align-items: center; gap: 5px; }
-            .node-icon { font-size: 20px; }
-            .node-name { color: var(--color-gray-900); font-size: 11px; font-weight: 700; }
-            .node-price { color: var(--color-gray-600); font-size: 10px; }
-            .path-arrow { color: var(--color-gray-400); font-size: 12px; }
-            .more-btn { margin-top: auto; padding: 5%; border-top: 1px dashed currentColor; font-size: 13px; background: transparent; }
-            .card-green .more-btn { color: var(--color-green-500); }
-            .card-purple .more-btn { color: var(--color-purple-500); }
-            .card-yellow .more-btn { color: var(--color-yellow-600); }
-            .more-btn:hover { transform: translateY(-1px); }
-            .result-summary { padding: var(--space-10) 0; border-bottom: 1px solid var(--color-gray-200); background: #fffdf8; }
-            .summary-container { display: flex; align-items: center; justify-content: space-between; }
-            .search-retry-box { display: flex; width: 100%; flex-direction: column; align-items: flex-start; gap: var(--space-5); }
-            .summary-title { font-size: 20px; font-weight: 700; }
-            .retry-btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px var(--space-5); border: 1px solid var(--color-brand-500); border-radius: 30px; background: var(--color-white); color: var(--color-brand-500); font-size: 14px; }
-            .retry-btn:hover { color: var(--color-white); }
-            .action-btn { width: 100%; margin-top: 15px; padding: var(--space-3) 0; font-size: 14px; }
-            .action-stack { display: grid; gap: var(--space-2); margin-top: 15px; }
-            .action-stack .action-btn { margin-top: 0; }
-            .green-btn:hover { background: var(--color-green-500); color: var(--color-white); }
-            .save-btn { border: 1px solid transparent; background: var(--color-brand-100); color: var(--color-brand-600); }
-            .save-btn:hover, .save-btn.is-saved { background: var(--color-brand-500); color: var(--color-white); box-shadow: var(--shadow-xl); }
-            .save-status { min-height: 20px; margin-top: var(--space-2); color: var(--color-brand-600); font-size: 13px; font-weight: 700; text-align: center; }
-            .result-flex-layout { display: flex; width: 100%; max-width: 1500px; flex-direction: column; gap: 30px; align-items: flex-start; }
-            .date-ratio-card { width: 100%; margin-top: var(--space-5); padding: var(--space-5); border: 1px solid var(--color-gray-300); border-top: 8px solid var(--color-green-50); border-radius: var(--radius-2xl); background: var(--color-white); box-shadow: var(--shadow-sm); }
-            .date-ratio-title { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-8); color: var(--color-gray-900); font-size: 20px; font-weight: 900; }
-            .date-ratio-icon { font-size: 22px; line-height: 1; }
-            .date-ratio-slider { width: 100%; accent-color: var(--color-brand-500); }
-            .date-ratio-labels { display: flex; align-items: center; justify-content: space-between; margin-top: var(--space-3); color: var(--color-gray-900); font-size: 14px; }
-            .result-saved-panel { width: 100%; min-width: 0; }
-            .saved-courses { width: 100%; padding: var(--space-5); border: 1px solid var(--color-gray-300); border-radius: var(--radius-2xl); background: var(--color-white); box-shadow: var(--shadow-sm); }
-            .saved-courses-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-3); }
-            .saved-courses-title { color: var(--color-brown-700); font-size: 18px; font-weight: 900; }
-            .saved-count { flex: 0 0 auto; padding: 2px var(--space-3); border-radius: var(--radius-full); background: var(--color-brand-100); color: var(--color-brand-600); font-size: 12px; font-weight: 900; }
-            .saved-course-list { display: grid; gap: var(--space-3); }
-            .saved-empty { padding: var(--space-4); border: 1px dashed var(--color-gray-300); border-radius: var(--radius-lg); background: var(--color-gray-50); color: var(--color-gray-700); font-size: 14px; text-align: center; }
-            .saved-course-item { display: grid; gap: var(--space-2); padding: var(--space-4); border: 1px solid var(--color-gray-300); border-radius: var(--radius-lg); background: var(--color-white); box-shadow: var(--shadow-sm); }
-            .saved-course-title { color: var(--color-brown-700); font-size: 15px; font-weight: 900; }
-            .saved-course-meta, .saved-course-route { color: var(--color-gray-700); font-size: 12px; line-height: 1.5; }
-            .saved-course-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
-            .saved-course-price { color: var(--color-brand-600); font-size: 13px; font-weight: 900; }
-            .saved-course-delete { flex: 0 0 auto; border: 0; border-radius: var(--radius-full); padding: var(--space-1) var(--space-3); background: var(--color-gray-200); color: var(--color-gray-800); font-size: 12px; font-weight: 700; }
-            .saved-course-delete:hover { background: var(--color-brand-100); color: var(--color-brand-600); }
-            .result-sidebar, .result-map-area { width: 100%; min-width: 0; }
-            .map-container { width: 100%; height: 350px; overflow: hidden; border: 1px solid var(--color-gray-300); border-radius: var(--radius-2xl); background: var(--color-gray-50); box-shadow: var(--shadow-sm); }
-            .map-placeholder { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; background: var(--color-gray-100); color: var(--color-gray-500); font-size: 16px; text-align: center; }
-            /* JS媛 hidden ?띿꽦怨?.is-open ?대옒?ㅻ? ?④퍡 ?좉??댁꽌 ?곸꽭 媛?대뱶 紐⑤떖???닿퀬 ?レ뒿?덈떎. */
-            .guide-modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: flex-start; justify-content: center; padding: var(--space-12) 0 0; background: rgba(255, 248, 242, 0.88); color: var(--color-gray-900); opacity: 0; pointer-events: none; transition: opacity 240ms ease; }
-            .guide-modal.is-open { opacity: 1; pointer-events: auto; }
-            .guide-modal[hidden] { display: none; }
-            .guide-panel { width: min(100%, 980px); max-height: calc(100vh - var(--space-12)); display: flex; flex-direction: column; gap: var(--space-6); padding: var(--space-5); background: var(--color-brand-50); overflow-y: auto; box-shadow: var(--shadow-xl); }
-            .guide-header-card { display: grid; gap: var(--space-5); padding: var(--space-5); border-radius: var(--radius-2xl); background: var(--color-white); box-shadow: var(--shadow-sm); }
-            .guide-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
-            .guide-kicker { color: var(--color-brand-600); font-size: 13px; font-weight: 900; letter-spacing: 0.04em; }
-            .guide-title { margin-top: var(--space-1); color: var(--color-brown-700); font-size: 28px; font-weight: 900; line-height: 1.25; }
-            .guide-close { flex: 0 0 auto; width: 48px; height: 48px; border: 1px solid var(--color-gray-300); border-radius: var(--radius-full); background: var(--color-brand-100); color: var(--color-brand-600); font-size: 28px; line-height: 1; }
-            .guide-close:hover { background: var(--color-brand-500); color: var(--color-white); box-shadow: var(--shadow-xl); }
-            .guide-budget { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
-            .guide-budget-card { padding: var(--space-4); border: 1px solid var(--color-gray-300); border-radius: var(--radius-lg); background: var(--color-gray-50); color: var(--color-gray-800); font-size: 14px; }
-            .guide-budget-card strong { display: block; margin-top: var(--space-1); color: var(--color-brown-700); font-size: 18px; }
-            .guide-course-flow { display: grid; grid-template-columns: 1fr; gap: var(--space-4); align-items: stretch; }
-            .guide-stage { min-height: 190px; display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-4); padding: var(--space-5); border: 1px solid var(--color-gray-300); border-top: 8px solid var(--color-brand-100); border-radius: var(--radius-lg); background: var(--color-white); box-shadow: var(--shadow-sm); }
-            .guide-stage-icon { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--color-brand-100); font-size: 22px; }
-            .guide-stage strong { display: block; color: var(--color-brown-700); font-size: 18px; line-height: 1.3; }
-            .guide-stage span { color: var(--color-gray-800); font-size: 14px; }
-            .guide-stage-price { color: var(--color-brand-600); font-size: 15px; font-weight: 900; }
-            .guide-flow-arrow { display: none; align-self: center; color: var(--color-brand-600); font-size: 28px; font-weight: 900; }
-            /* data-map-target="guide-map" ?곸뿭? 吏??API ?대떦?먭? ?ㅼ젣 吏??而댄룷?뚰듃濡?援먯껜???먮━?낅땲?? */
-            .guide-map-preview { min-height: 280px; display: flex; align-items: center; justify-content: center; padding: var(--space-6); border: 1px solid var(--color-gray-300); border-radius: var(--radius-2xl); background: var(--color-white); box-shadow: var(--shadow-sm); text-align: center; }
-            .guide-map-preview strong { display: block; margin-bottom: var(--space-2); color: var(--color-brown-700); font-size: 26px; }
-            .guide-map-preview span { color: var(--color-gray-800); font-size: 15px; }
-        }
-
-        @layer screens {
-            /* JS가 .is-active를 옮겨 각 data-screen 화면을 전환합니다. */
-            .screen { display: none; opacity: 0; transform: translateY(10px); }
-            .screen.is-active { display: block; animation: screenIn 320ms ease both; }
-            .screen[aria-hidden="true"] { pointer-events: none; }
-            @keyframes screenIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-            @media (prefers-reduced-motion: reduce) {
-                .screen.is-active { animation: none; }
-                button, a, input { transition: none; }
-            }
-        }
-
-        @layer responsive {
-            @media (min-width: 768px) {
-                .container { padding: 0 var(--space-5); }
-                .input-row { flex-direction: row; }
-                .submit-btn { width: auto; }
-                .course-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-                .search-retry-box { flex-direction: row; align-items: center; justify-content: space-between; }
-                .summary-title { font-size: 26px; }
-            }
-
-            @media (min-width: 1024px) {
-                .main-content { padding: var(--space-15) 0; }
-                .main-flex { flex-direction: row; gap: var(--space-10); text-align: left; }
-                .hero-right { order: 0; flex: 1; text-align: right; }
-                .main-img { width: 100%; margin: 0; }
-                .main-title { font-size: 44px; }
-                .tip { font-size: 18px; }
-                .course-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); }
-                .course-card { min-height: 250px; }
-                .course-path { flex-wrap: nowrap; justify-content: space-between; gap: 0; }
-                .path-node { flex: 1; }
-                .result-flex-layout { flex-direction: row; align-items: flex-start; }
-                .result-sidebar { flex: 1; max-width: 400px; }
-                .result-map-area { position: sticky; top: var(--space-5); flex: 2.5; }
-                .result-saved-panel { position: sticky; top: var(--space-5); flex: 0 0 300px; }
-                .map-container { height: 600px; }
-                .guide-course-flow { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr); }
-                .guide-flow-arrow { display: block; }
-                .guide-stage { min-height: 300px; }
-                .guide-map-preview { min-height: 320px; }
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="main.css?v=20260527">
 </head>
+
 <body>
     <header class="header">
         <div class="container header-flex">
@@ -274,7 +16,8 @@
                 <img src="만원 데이트 로고.PNG" alt="로고" class="logo-symbol">
                 <span class="logo-text">만원 데이트</span>
             </a>
-            <button class="menu-btn" type="button" data-open-saved aria-label="목록 열기" aria-expanded="false" aria-controls="list-menu">
+            <button class="menu-btn" type="button" data-open-saved aria-label="목록 열기" aria-expanded="false"
+                aria-controls="list-menu">
                 <span class="menu-btn-icon" aria-hidden="true">☰</span>
                 목록
             </button>
@@ -317,7 +60,8 @@
                             <div class="input-row">
                                 <div class="price-box">
                                     <span class="currency">₩</span>
-                                    <input class="price-input" data-budget-input type="text" inputmode="numeric" placeholder="예: 10,000">
+                                    <input class="price-input" data-budget-input type="text" inputmode="numeric"
+                                        placeholder="예: 10,000">
                                     <span class="unit">원</span>
                                 </div>
                                 <button class="submit-btn" type="submit">코스 추천 받기 &gt;</button>
@@ -344,38 +88,60 @@
                     </div>
 
                     <div class="course-grid">
-                        <article class="course-card card-green" data-course-card data-course-id="seongsan-walk">
+                        <article class="course-card card-green" data-course-card data-course-id="seongsan-walk"
+                            data-guide-image="course-img/성산.png">
                             <div class="card-top">
                                 <span class="price-tag">총 3~4만원</span>
                                 <h3>성산 산책</h3>
                                 <p class="card-desc">성산에서 가볍게 즐기는 산책 코스</p>
-                                <div class="card-info">약 2시간 &nbsp; 🚶 도보 위주</div>
+                                <div class="card-info">약 2시간 · 도보 위주</div>
                             </div>
                             <div class="course-path">
-                                <div class="path-node"><div class="node-icon">🍗</div><span class="node-name">베이직 프라이드 치킨</span><span class="node-price">26,000원</span></div>
+                                <div class="path-node">
+                                    <div class="node-icon">🍗</div><span class="node-name">베이직 프라이드 치킨</span><span
+                                        class="node-price">26,000원</span>
+                                </div>
                                 <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">☕</div><span class="node-name">베케이션 카페</span><span class="node-price">10,000원</span></div>
+                                <div class="path-node">
+                                    <div class="node-icon">☕</div><span class="node-name">베케이션 카페</span><span
+                                        class="node-price">10,000원</span>
+                                </div>
                                 <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">🌳</div><span class="node-name">성산 산책</span><span class="node-price">0원</span></div>
+                                <div class="path-node">
+                                    <div class="node-icon">🌳</div><span class="node-name">성산 산책</span><span
+                                        class="node-price">0원</span>
+                                </div>
                             </div>
-                            <button type="button" class="more-btn" data-route="result" data-course-id="seongsan-walk">자세히 보기 &gt;</button>
+                            <button type="button" class="more-btn" data-route="result"
+                                data-course-id="seongsan-walk">자세히 보기 &gt;</button>
                         </article>
 
-                        <article class="course-card card-green" data-course-card data-course-id="hongjecheon-walk">
+                        <article class="course-card card-green" data-course-card data-course-id="hongjecheon-walk"
+                            data-guide-image="course-img/홍제천.png">
                             <div class="card-top">
                                 <span class="price-tag">총 5~6만원</span>
                                 <h3>홍제천 산책 데이트</h3>
                                 <p class="card-desc">홍제천에서 가볍게 즐기는 산책 코스</p>
-                                <div class="card-info">약 2시간 &nbsp; 🚶 도보 위주</div>
+                                <div class="card-info">약 2시간 · 도보 위주</div>
                             </div>
                             <div class="course-path">
-                                <div class="path-node"><div class="node-icon">🍝</div><span class="node-name">까르보네</span><span class="node-price">3~4만원</span></div>
+                                <div class="path-node">
+                                    <div class="node-icon">🍝</div><span class="node-name">까르보네</span><span
+                                        class="node-price">3~4만원</span>
+                                </div>
                                 <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">☕</div><span class="node-name">하흘</span><span class="node-price">12000</span></div>
+                                <div class="path-node">
+                                    <div class="node-icon">☕</div><span class="node-name">하흘</span><span
+                                        class="node-price">12000</span>
+                                </div>
                                 <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">🌳</div><span class="node-name">홍제천 산책</span><span class="node-price">0원</span></div>
+                                <div class="path-node">
+                                    <div class="node-icon">🌳</div><span class="node-name">홍제천 산책</span><span
+                                        class="node-price">0원</span>
+                                </div>
                             </div>
-                            <button type="button" class="more-btn" data-route="result" data-course-id="hongjecheon-walk">자세히 보기 &gt;</button>
+                            <button type="button" class="more-btn" data-route="result"
+                                data-course-id="hongjecheon-walk">자세히 보기 &gt;</button>
                         </article>
                     </div>
                 </div>
@@ -390,170 +156,679 @@
                     </div>
 
                     <div class="course-grid" data-course-list>
-                        <article class="course-card card-green" data-course-card data-course-id="seongsan-walk">
+                        <article class="course-card card-green" data-course-card data-course-id="seongsan-walk"
+                            data-guide-image="course-img/성산.png">
                             <div class="card-top">
                                 <span class="price-tag">총 3~4만원</span>
                                 <h3>성산 산책</h3>
                                 <p class="card-desc">성산에서 가볍게 즐기는 산책 코스</p>
-                                <div class="card-info">약 2시간 &nbsp; 🚶 도보 위주</div>
+                                <div class="card-info">약 2시간 · 도보 위주</div>
                             </div>
                             <div class="course-path">
-                                <div class="path-node"><div class="node-icon">🍗</div><span class="node-name">베이직 프라이드 치킨</span><span class="node-price">26,000원</span></div>
+                                <div class="path-node">
+                                    <div class="node-icon">🍗</div><span class="node-name">베이직 프라이드 치킨</span><span
+                                        class="node-price">26,000원</span>
+                                </div>
                                 <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">☕</div><span class="node-name">베케이션 카페</span><span class="node-price">10,000원</span></div>
+                                <div class="path-node">
+                                    <div class="node-icon">☕</div><span class="node-name">베케이션 카페</span><span
+                                        class="node-price">10,000원</span>
+                                </div>
                                 <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">🌳</div><span class="node-name">성산 산책</span><span class="node-price">0원</span></div>
+                                <div class="path-node">
+                                    <div class="node-icon">🌳</div><span class="node-name">성산 산책</span><span
+                                        class="node-price">0원</span>
+                                </div>
                             </div>
-                            <button type="button" class="more-btn" data-route="result" data-course-id="seongsan-walk">자세히 보기 &gt;</button>
-                        </article>
-
-                        <article class="course-card card-green" data-course-card data-course-id="hongjecheon-walk">
-                            <div class="card-top">
-                                <span class="price-tag">총 5~6만원</span>
-                                <h3>홍제천 산책 데이트</h3>
-                                <p class="card-desc">홍제천에서 가볍게 즐기는 산책 코스</p>
-                                <div class="card-info">약 2시간 &nbsp; 🚶 도보 위주</div>
-                            </div>
-                            <div class="course-path">
-                                <div class="path-node"><div class="node-icon">🍝</div><span class="node-name">까르보네</span><span class="node-price">3~4만원</span></div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">☕</div><span class="node-name">하흘</span><span class="node-price">12000</span></div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">🌳</div><span class="node-name">홍제천 산책</span><span class="node-price">0원</span></div>
-                            </div>
-                            <button type="button" class="more-btn" data-route="result" data-course-id="hongjecheon-walk">자세히 보기 &gt;</button>
-                        </article>
-
-                        <article class="course-card card-green" data-course-card data-course-id="yeonnam-mmmua-walk">
-                            <div class="card-top">
-                                <span class="price-tag">총 3~4만원</span>
-                                <h3>연남동 산책 데이트</h3>
-                                <p class="card-desc">식사 후 경의선 숲길과 카페를 즐기는 연남동 코스</p>
-                                <div class="card-info">약 2시간 40분~3시간 &nbsp; 🚶 도보 위주</div>
-                            </div>
-                            <div class="course-path">
-                                <div class="path-node"><div class="node-icon">🍽️</div><span class="node-name">음무아 연남점</span><span class="node-price">식사</span></div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">🌿</div><span class="node-name">경의선 숲길</span><span class="node-price">산책</span></div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">🎁</div><span class="node-name">소품샵 구경</span><span class="node-price">구경</span></div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">☕</div><span class="node-name">브레디포스트 연남점</span><span class="node-price">카페</span></div>
-                            </div>
-                            <button type="button" class="more-btn" data-route="result" data-course-id="yeonnam-mmmua-walk">자세히 보기 &gt;</button>
-                        </article>
-
-                        <article class="course-card card-green" data-course-card data-course-id="yeonnam-toma-caricature">
-                            <div class="card-top">
-                                <span class="price-tag">총 5~6만원</span>
-                                <h3>연남동 이색 데이트</h3>
-                                <p class="card-desc">식사, 캐리커쳐, 골목 산책, 카페로 이어지는 연남동 코스</p>
-                                <div class="card-info">약 3시간 10분~3시간 40분 &nbsp; 🚶 도보 위주</div>
-                            </div>
-                            <div class="course-path">
-                                <div class="path-node"><div class="node-icon">🍝</div><span class="node-name">연남토마</span><span class="node-price">식사</span></div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">🎨</div><span class="node-name">도토리 캐리커쳐</span><span class="node-price">체험</span></div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">🏘️</div><span class="node-name">연남동 골목 산책</span><span class="node-price">산책</span></div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">☕</div><span class="node-name">연남동 벚꽃집</span><span class="node-price">카페</span></div>
-                            </div>
-                            <button type="button" class="more-btn" data-route="result" data-course-id="yeonnam-toma-caricature">자세히 보기 &gt;</button>
-                        </article>
-                    </div>
-                </div>
-            </section>
-        </section>
-
-        <section class="screen" data-screen="result" aria-hidden="true">
-            <section class="result-summary">
-                <div class="container summary-container">
-                    <div class="search-retry-box">
-                        <h2 class="summary-title">
-                            <span class="highlight-pink" data-selected-budget>10,000원</span>으로 즐길 수 있는 추천 코스입니다!
-                        </h2>
-                        <button type="button" class="retry-btn" data-route="home">다시 검색하기</button>
-                    </div>
-                </div>
-            </section>
-
-            <section class="recommend-section">
-                <div class="container result-flex-layout">
-                    <div class="result-sidebar">
-                        <article class="course-card card-green" data-course-card data-course-id="seongsan-walk">
-                            <div class="card-top">
-                                <span class="price-tag">총 3~4만원</span>
-                                <h3>성산 산책</h3>
-                                <p class="card-desc">성산에서 가볍게 즐기는 산책 코스</p>
-                                <div class="card-info">약 2시간 &nbsp; 🚶 도보 위주</div>
-                            </div>
-
-                            <div class="course-path">
-                                <div class="path-node"><div class="node-icon">🍗</div><span class="node-name">베이직 프라이드 치킨</span><span class="node-price">26,000원</span></div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">☕</div><span class="node-name">베케이션 카페</span><span class="node-price">10,000원</span></div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node"><div class="node-icon">🌳</div><span class="node-name">성산 산책</span><span class="node-price">0원</span></div>
-                            </div>
-
                             <div class="action-stack">
-                                <button class="action-btn save-btn" type="button" data-save-course data-course-id="seongsan-walk">나만의 코스 저장</button>
-                                <button class="action-btn green-btn" type="button" data-guide-open data-course-id="seongsan-walk">코스 상세 가이드 보기</button>
+                                <button class="action-btn save-btn" type="button" data-save-course
+                                    data-course-id="seongsan-walk">나만의 코스 저장</button>
+                                <button class="action-btn green-btn" type="button" data-guide-open
+                                    data-course-id="seongsan-walk">코스 상세 가이드 보기</button>
                             </div>
                             <p class="save-status" data-save-status aria-live="polite"></p>
                         </article>
 
-                        <section class="date-ratio-card" aria-labelledby="date-ratio-title">
-                            <h3 class="date-ratio-title" id="date-ratio-title">
-                                <span class="date-ratio-icon" aria-hidden="true">🌳</span>
-                                데이트 비중
-                            </h3>
-                            <input class="date-ratio-slider" type="range" min="0" max="100" value="50" aria-label="데이트 비중">
-                            <div class="date-ratio-labels" aria-hidden="true">
-                                <span>길거리 데이트</span>
-                                <span>음식 데이트</span>
+                        <article class="course-card card-green" data-course-card data-course-id="hongjecheon-walk"
+                            data-guide-image="course-img/홍제천.png">
+                            <div class="card-top">
+                                <span class="price-tag">총 5~6만원</span>
+                                <h3>홍제천 산책 데이트</h3>
+                                <p class="card-desc">홍제천에서 가볍게 즐기는 산책 코스</p>
+                                <div class="card-info">약 2시간 · 도보 위주</div>
                             </div>
-                        </section>
-                    </div>
-
-                    <div class="result-map-area">
-                        <div id="map" class="map-container" data-map-target="result-map">
-                            <div class="map-placeholder">📍 여기에 지도 API가 연결될 예정입니다.</div>
-                        </div>
-                    </div>
-
-                    <aside class="result-saved-panel">
-                        <section class="saved-courses" data-saved-courses-panel aria-labelledby="result-saved-courses-title">
-                            <div class="saved-courses-header">
-                                <h3 class="saved-courses-title" id="result-saved-courses-title">나만의 데이트 코스</h3>
-                                <span class="saved-count" data-saved-count>0개</span>
+                            <div class="course-path">
+                                <div class="path-node">
+                                    <div class="node-icon">🍝</div><span class="node-name">까르보네</span><span
+                                        class="node-price">3~4만원</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node">
+                                    <div class="node-icon">☕</div><span class="node-name">하흘</span><span
+                                        class="node-price">12000</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node">
+                                    <div class="node-icon">🌳</div><span class="node-name">홍제천 산책</span><span
+                                        class="node-price">0원</span>
+                                </div>
                             </div>
-                            <div class="saved-course-list" data-saved-course-list></div>
-                            <p class="saved-empty" data-saved-empty>저장된 코스가 아직 없어요. 마음에 드는 코스를 저장해보세요.</p>
-                        </section>
-                    </aside>
+                            <div class="action-stack">
+                                <button class="action-btn save-btn" type="button" data-save-course
+                                    data-course-id="hongjecheon-walk">나만의 코스 저장</button>
+                                <button class="action-btn green-btn" type="button" data-guide-open
+                                    data-course-id="hongjecheon-walk">코스 상세 가이드 보기</button>
+                            </div>
+                            <p class="save-status" data-save-status aria-live="polite"></p>
+                        </article>
+
+                        <article class="course-card card-green" data-course-card
+                            data-course-id="mangwon-zero-deepblue-market"
+                            data-guide-image="course-img/망원 감성.png">
+                            <div class="card-top">
+                                <span class="price-tag">총 32,000~40,000원</span>
+                                <h3>망원 감성 데이트</h3>
+                                <p class="card-desc">망원에서 소품샵, 카페, 시장 먹거리, 사진, 산책을 즐기는 코스</p>
+                                <div class="card-info">약 4~5시간 · 도보 위주</div>
+                            </div>
+                            <div class="course-path">
+                                <div class="path-node" data-step-desc="문구류와 포스터를 가볍게 구경하는 시작 코스입니다.">
+                                    <div class="node-icon">🛍️</div><span class="node-name">제로스페이스</span><span
+                                        class="node-price">0원</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="음료를 마시며 차분하게 대화하기 좋은 카페 코스입니다.">
+                                    <div class="node-icon">☕</div><span class="node-name">딥블루레이크</span><span
+                                        class="node-price">12,000~16,000원</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="간식 2~3개를 나눠 먹으며 예산을 맞추기 좋은 코스입니다.">
+                                    <div class="node-icon">🥟</div><span class="node-name">망원시장 먹거리</span><span
+                                        class="node-price">15,000~22,000원</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="마지막에 사진으로 추억을 남기는 선택 코스입니다.">
+                                    <div class="node-icon">📷</div><span class="node-name">망원동 네컷사진</span><span
+                                        class="node-price">5,000~8,000원</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="소품샵과 골목을 천천히 걷는 무료 마무리 코스입니다.">
+                                    <div class="node-icon">🌿</div><span class="node-name">망리단길 산책</span><span
+                                        class="node-price">0원</span>
+                                </div>
+                            </div>
+                            <div class="action-stack">
+                                <button class="action-btn save-btn" type="button" data-save-course
+                                    data-course-id="mangwon-zero-deepblue-market">나만의 코스 저장</button>
+                                <button class="action-btn green-btn" type="button" data-guide-open
+                                    data-course-id="mangwon-zero-deepblue-market">코스 상세 가이드 보기</button>
+                            </div>
+                            <p class="save-status" data-save-status aria-live="polite"></p>
+                        </article>
+
+                        <article class="course-card card-green" data-course-card data-course-id="mangwon-poeunro-tea"
+                            data-guide-image="course-img/망원 포은로.png">
+                            <div class="card-top">
+                                <span class="price-tag">총 49,000~58,000원</span>
+                                <h3>망원 포은로 데이트</h3>
+                                <p class="card-desc">망원역과 포은로 주변에서 서점, 식사, 티룸, 산책을 즐기는 코스</p>
+                                <div class="card-info">약 4~5시간 · 도보 위주</div>
+                            </div>
+                            <div class="course-path">
+                                <div class="path-node" data-step-desc="독립출판물과 엽서류를 조용히 둘러보기 좋은 서점 코스입니다.">
+                                    <div class="node-icon">📚</div><span class="node-name">가가77페이지</span><span
+                                        class="node-price">0원</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="돈카츠 정식 중심으로 든든하게 식사하는 코스입니다.">
+                                    <div class="node-icon">🍱</div><span class="node-name">헤키 망원</span><span
+                                        class="node-price">31,000~36,000원</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="차와 디저트로 오래 앉아 이야기하기 좋은 티룸 코스입니다.">
+                                    <div class="node-icon">🍵</div><span class="node-name">티노마드</span><span
+                                        class="node-price">18,000~22,000원</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="망원2동 쪽으로 빠지지 않는 짧은 산책 마무리입니다.">
+                                    <div class="node-icon">🌿</div><span class="node-name">포은로 산책</span><span
+                                        class="node-price">0원</span>
+                                </div>
+                            </div>
+                            <div class="action-stack">
+                                <button class="action-btn save-btn" type="button" data-save-course
+                                    data-course-id="mangwon-poeunro-tea">나만의 코스 저장</button>
+                                <button class="action-btn green-btn" type="button" data-guide-open
+                                    data-course-id="mangwon-poeunro-tea">코스 상세 가이드 보기</button>
+                            </div>
+                            <p class="save-status" data-save-status aria-live="polite"></p>
+                        </article>
+
+                        <article class="course-card card-green" data-course-card data-course-id="yeonnam-mmmua-walk"
+                            data-guide-image="course-img/연남 산책.png">
+                            <div class="card-top">
+                                <span class="price-tag">총 3~4만원</span>
+                                <h3>연남동 산책 데이트</h3>
+                                <p class="card-desc">식사 후 경의선 숲길과 카페를 즐기는 연남동 코스</p>
+                                <div class="card-info">약 2시간 40분~3시간 · 도보 위주</div>
+                            </div>
+                            <div class="course-path">
+                                <div class="path-node" data-step-desc="홍대입구역에서 만나 식사로 데이트를 시작하기 좋은 연남동 맛집 코스입니다.">
+                                    <div class="node-icon">🍽️</div><span class="node-name">음무아 연남점</span><span
+                                        class="node-price">식사</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="식사 후 연트럴파크 중심부를 따라 천천히 걷는 산책 코스입니다.">
+                                    <div class="node-icon">🌿</div><span class="node-name">경의선 숲길</span><span
+                                        class="node-price">산책</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="숲길 주변의 아기자기한 가게를 둘러보며 가볍게 쉬어가는 코스입니다.">
+                                    <div class="node-icon">🎁</div><span class="node-name">소품샵 구경</span><span
+                                        class="node-price">구경</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="빈티지한 분위기의 카페에서 디저트와 대화로 마무리하는 코스입니다.">
+                                    <div class="node-icon">☕</div><span class="node-name">브레디포스트 연남점</span><span
+                                        class="node-price">카페</span>
+                                </div>
+                            </div>
+                            <div class="action-stack">
+                                <button class="action-btn save-btn" type="button" data-save-course
+                                    data-course-id="yeonnam-mmmua-walk">나만의 코스 저장</button>
+                                <button class="action-btn green-btn" type="button" data-guide-open
+                                    data-course-id="yeonnam-mmmua-walk">코스 상세 가이드 보기</button>
+                            </div>
+                            <p class="save-status" data-save-status aria-live="polite"></p>
+                        </article>
+
+                        <article class="course-card card-green" data-course-card
+                            data-course-id="yeonnam-toma-caricature"
+                            data-guide-image="course-img/연남 이색.png">
+                            <div class="card-top">
+                                <span class="price-tag">총 5~6만원</span>
+                                <h3>연남동 이색 데이트</h3>
+                                <p class="card-desc">식사, 캐리커쳐, 골목 산책, 카페로 이어지는 연남동 코스</p>
+                                <div class="card-info">약 3시간 10분~3시간 40분 · 도보 위주</div>
+                            </div>
+                            <div class="course-path">
+                                <div class="path-node" data-step-desc="홍대입구역에서 걸어가 식사로 시작하는 연남동 메인 코스입니다.">
+                                    <div class="node-icon">🍝</div><span class="node-name">연남토마</span><span
+                                        class="node-price">식사</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="둘만의 모습을 그림으로 남길 수 있는 이색 체험 코스입니다.">
+                                    <div class="node-icon">🎨</div><span class="node-name">도토리 캐리커쳐</span><span
+                                        class="node-price">체험</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="주택가 골목과 작은 가게들을 구경하며 카페로 이동하는 코스입니다.">
+                                    <div class="node-icon">🏘️</div><span class="node-name">연남동 골목 산책</span><span
+                                        class="node-price">산책</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="단독주택 감성의 카페에서 음료를 마시며 마무리하는 코스입니다.">
+                                    <div class="node-icon">☕</div><span class="node-name">연남동 벚꽃집</span><span
+                                        class="node-price">카페</span>
+                                </div>
+                            </div>
+                            <div class="action-stack">
+                                <button class="action-btn save-btn" type="button" data-save-course
+                                    data-course-id="yeonnam-toma-caricature">나만의 코스 저장</button>
+                                <button class="action-btn green-btn" type="button" data-guide-open
+                                    data-course-id="yeonnam-toma-caricature">코스 상세 가이드 보기</button>
+                            </div>
+                            <p class="save-status" data-save-status aria-live="polite"></p>
+                        </article>
+                        <article class="course-card card-green" data-course-card data-course-id="seogyo-3-4"
+                            data-guide-image="course-img/서교동 디자인.png">
+                            <div class="card-top">
+                                <span class="price-tag">총 41,000원</span>
+                                <h3>서교동 디자인 데이트</h3>
+                                <p class="card-desc">서교동에서 여유롭게 즐기는 데이트 코스</p>
+                                <div class="card-info">3~4시간 · 도보 위주</div>
+                            </div>
+                            <div class="course-path">
+                                <div class="path-node" data-step-desc="디자인 소품과 아이디어 상품을 둘러보며 대화를 시작하기 좋은 코스입니다.">
+                                    <div class="node-icon">🎨</div><span class="node-name">KT&G 상상마당</span><span
+                                        class="node-price">0원</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="마제소바로 든든하게 식사하며 예산을 맞추기 좋은 코스입니다.">
+                                    <div class="node-icon">🍜</div><span class="node-name">칸다소바 홍대점</span><span
+                                        class="node-price">22,000원</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="시그니처 커피를 마시며 여유롭게 쉬어가는 카페 코스입니다.">
+                                    <div class="node-icon">☕</div><span class="node-name">테일러커피 서교점</span><span
+                                        class="node-price">14,000원</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="홍대 거리에서 가볍게 사진을 남기며 마무리하는 추억 코스입니다.">
+                                    <div class="node-icon">📷</div><span class="node-name">인근 네컷 사진관</span><span
+                                        class="node-price">5,000원</span>
+                                </div>
+                            </div>
+                            <div class="action-stack">
+                                <button class="action-btn save-btn" type="button" data-save-course
+                                    data-course-id="seogyo-3-4">나만의 코스 저장</button>
+                                <button class="action-btn green-btn" type="button" data-guide-open
+                                    data-course-id="seogyo-3-4">코스 상세 가이드 보기</button>
+                            </div>
+                            <p class="save-status" data-save-status aria-live="polite"></p>
+                        </article>
+
+                        <article class="course-card card-green" data-course-card data-course-id="seogyo-5-6"
+                            data-guide-image="course-img/서교동 무드.png">
+                            <div class="card-top">
+                                <span class="price-tag">총 60,000원</span>
+                                <h3>서교동 무드 데이트</h3>
+                                <p class="card-desc">서교동에서 여유롭게 즐기는 데이트 코스</p>
+                                <div class="card-info">4~5시간 · 도보 위주</div>
+                            </div>
+                            <div class="course-path">
+                                <div class="path-node" data-step-desc="감성적인 문구와 생활 소품을 여유롭게 구경하는 편집샵 코스입니다.">
+                                    <div class="node-icon">🛍️</div><span class="node-name">오브젝트 서교점</span><span
+                                        class="node-price">0원</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="캐주얼한 분위기에서 피자를 나눠 먹는 든든한 식사 코스입니다.">
+                                    <div class="node-icon">🍕</div><span class="node-name">피자네버슬립스</span><span
+                                        class="node-price">35,000원</span>
+                                </div>
+                                <div class="path-arrow">→</div>
+                                <div class="path-node" data-step-desc="은은한 조명 아래 가벼운 칵테일로 대화하기 좋은 마무리 코스입니다.">
+                                    <div class="node-icon">🍸</div><span class="node-name">자세(JASE)</span><span
+                                        class="node-price">25,000원</span>
+                                </div>
+                            </div>
+                            <div class="action-stack">
+                                <button class="action-btn save-btn" type="button" data-save-course
+                                    data-course-id="seogyo-5-6">나만의 코스 저장</button>
+                                <button class="action-btn green-btn" type="button" data-guide-open
+                                    data-course-id="seogyo-5-6">코스 상세 가이드 보기</button>
+                            </div>
+                            <p class="save-status" data-save-status aria-live="polite"></p>
+                        </article>
+                    </div>
                 </div>
             </section>
         </section>
 
-        <section class="screen" data-screen="saved" aria-hidden="true">
-            <section class="recommend-section">
-                <div class="container recommend-container">
-                    <section class="saved-courses" id="saved-courses" data-saved-courses-panel aria-labelledby="saved-courses-title">
+
+    </div>
+    </div>
+    </section>
+    </section>
+
+
+
+    <section class="screen" data-screen="result" aria-hidden="true">
+        <section class="result-summary">
+            <div class="container summary-container">
+                <div class="search-retry-box">
+                    <h2 class="summary-title">
+                        <span class="highlight-pink" data-selected-budget>10,000원</span>으로 즐길 수 있는 추천 코스입니다!
+                    </h2>
+                    <button type="button" class="retry-btn" data-route="home">다시 검색하기</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="recommend-section">
+            <div class="container result-flex-layout">
+                <div class="result-sidebar">
+                    <article class="course-card card-green" data-course-card data-course-id="seongsan-walk"
+                        data-guide-image="course-img/성산.png">
+                        <div class="card-top">
+                            <span class="price-tag">총 3~4만원</span>
+                            <h3>성산 산책</h3>
+                            <p class="card-desc">성산에서 가볍게 즐기는 산책 코스</p>
+                            <div class="card-info">약 2시간 · 도보 위주</div>
+                        </div>
+
+                        <div class="course-path">
+                            <div class="path-node">
+                                <div class="node-icon">🍗</div><span class="node-name">베이직 프라이드 치킨</span><span
+                                    class="node-price">26,000원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node">
+                                <div class="node-icon">☕</div><span class="node-name">베케이션 카페</span><span
+                                    class="node-price">10,000원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node">
+                                <div class="node-icon">🌳</div><span class="node-name">성산 산책</span><span
+                                    class="node-price">0원</span>
+                            </div>
+                        </div>
+
+                        <div class="action-stack">
+                            <button class="action-btn save-btn" type="button" data-save-course
+                                data-course-id="seongsan-walk">나만의 코스 저장</button>
+                            <button class="action-btn green-btn" type="button" data-guide-open
+                                data-course-id="seongsan-walk">코스 상세 가이드 보기</button>
+                        </div>
+                        <p class="save-status" data-save-status aria-live="polite"></p>
+                    </article>
+
+                    <article class="course-card card-green" data-course-card data-course-id="hongjecheon-walk"
+                        data-guide-image="course-img/홍제천.png">
+                        <div class="card-top">
+                            <span class="price-tag">총 5~6만원</span>
+                            <h3>홍제천 산책 데이트</h3>
+                            <p class="card-desc">홍제천에서 가볍게 즐기는 산책 코스</p>
+                            <div class="card-info">약 2시간 · 도보 위주</div>
+                        </div>
+                        <div class="course-path">
+                            <div class="path-node">
+                                <div class="node-icon">🍝</div><span class="node-name">까르보네</span><span
+                                    class="node-price">3~4만원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node">
+                                <div class="node-icon">☕</div><span class="node-name">하흘</span><span
+                                    class="node-price">12000</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node">
+                                <div class="node-icon">🌳</div><span class="node-name">홍제천 산책</span><span
+                                    class="node-price">0원</span>
+                            </div>
+                        </div>
+                        <div class="action-stack">
+                            <button class="action-btn save-btn" type="button" data-save-course
+                                data-course-id="hongjecheon-walk">나만의 코스 저장</button>
+                            <button class="action-btn green-btn" type="button" data-guide-open
+                                data-course-id="hongjecheon-walk">코스 상세 가이드 보기</button>
+                        </div>
+                        <p class="save-status" data-save-status aria-live="polite"></p>
+                    </article>
+
+                    <article class="course-card card-green" data-course-card
+                        data-course-id="mangwon-zero-deepblue-market"
+                        data-guide-image="course-img/망원 감성.png">
+                        <div class="card-top">
+                            <span class="price-tag">총 32,000~40,000원</span>
+                            <h3>망원 감성 데이트</h3>
+                            <p class="card-desc">망원에서 소품샵, 카페, 시장 먹거리, 사진, 산책을 즐기는 코스</p>
+                            <div class="card-info">약 4~5시간 · 도보 위주</div>
+                        </div>
+                        <div class="course-path">
+                            <div class="path-node" data-step-desc="문구류와 포스터를 가볍게 구경하는 시작 코스입니다.">
+                                <div class="node-icon">🛍️</div><span class="node-name">제로스페이스</span><span
+                                    class="node-price">0원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="음료를 마시며 차분하게 대화하기 좋은 카페 코스입니다.">
+                                <div class="node-icon">☕</div><span class="node-name">딥블루레이크</span><span
+                                    class="node-price">12,000~16,000원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="간식 2~3개를 나눠 먹으며 예산을 맞추기 좋은 코스입니다.">
+                                <div class="node-icon">🥟</div><span class="node-name">망원시장 먹거리</span><span
+                                    class="node-price">15,000~22,000원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="마지막에 사진으로 추억을 남기는 선택 코스입니다.">
+                                <div class="node-icon">📷</div><span class="node-name">망원동 네컷사진</span><span
+                                    class="node-price">5,000~8,000원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="소품샵과 골목을 천천히 걷는 무료 마무리 코스입니다.">
+                                <div class="node-icon">🌿</div><span class="node-name">망리단길 산책</span><span
+                                    class="node-price">0원</span>
+                            </div>
+                        </div>
+                        <div class="action-stack">
+                            <button class="action-btn save-btn" type="button" data-save-course
+                                data-course-id="mangwon-zero-deepblue-market">나만의 코스 저장</button>
+                            <button class="action-btn green-btn" type="button" data-guide-open
+                                data-course-id="mangwon-zero-deepblue-market">코스 상세 가이드 보기</button>
+                        </div>
+                        <p class="save-status" data-save-status aria-live="polite"></p>
+                    </article>
+
+                    <article class="course-card card-green" data-course-card data-course-id="mangwon-poeunro-tea"
+                        data-guide-image="course-img/망원 포은로.png">
+                        <div class="card-top">
+                            <span class="price-tag">총 49,000~58,000원</span>
+                            <h3>망원 포은로 데이트</h3>
+                            <p class="card-desc">망원역과 포은로 주변에서 서점, 식사, 티룸, 산책을 즐기는 코스</p>
+                            <div class="card-info">약 4~5시간 · 도보 위주</div>
+                        </div>
+                        <div class="course-path">
+                            <div class="path-node" data-step-desc="독립출판물과 엽서류를 조용히 둘러보기 좋은 서점 코스입니다.">
+                                <div class="node-icon">📚</div><span class="node-name">가가77페이지</span><span
+                                    class="node-price">0원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="돈카츠 정식 중심으로 든든하게 식사하는 코스입니다.">
+                                <div class="node-icon">🍱</div><span class="node-name">헤키 망원</span><span
+                                    class="node-price">31,000~36,000원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="차와 디저트로 오래 앉아 이야기하기 좋은 티룸 코스입니다.">
+                                <div class="node-icon">🍵</div><span class="node-name">티노마드</span><span
+                                    class="node-price">18,000~22,000원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="망원2동 쪽으로 빠지지 않는 짧은 산책 마무리입니다.">
+                                <div class="node-icon">🌿</div><span class="node-name">포은로 산책</span><span
+                                    class="node-price">0원</span>
+                            </div>
+                        </div>
+                        <div class="action-stack">
+                            <button class="action-btn save-btn" type="button" data-save-course
+                                data-course-id="mangwon-poeunro-tea">나만의 코스 저장</button>
+                            <button class="action-btn green-btn" type="button" data-guide-open
+                                data-course-id="mangwon-poeunro-tea">코스 상세 가이드 보기</button>
+                        </div>
+                        <p class="save-status" data-save-status aria-live="polite"></p>
+                    </article>
+
+                    <article class="course-card card-green" data-course-card data-course-id="yeonnam-mmmua-walk"
+                        data-guide-image="course-img/연남 산책.png">
+                        <div class="card-top">
+                            <span class="price-tag">총 3~4만원</span>
+                            <h3>연남동 산책 데이트</h3>
+                            <p class="card-desc">식사 후 경의선 숲길과 카페를 즐기는 연남동 코스</p>
+                            <div class="card-info">약 2시간 40분~3시간 · 도보 위주</div>
+                        </div>
+                        <div class="course-path">
+                            <div class="path-node" data-step-desc="홍대입구역에서 만나 식사로 데이트를 시작하기 좋은 연남동 맛집 코스입니다.">
+                                <div class="node-icon">🍽️</div><span class="node-name">음무아 연남점</span><span
+                                    class="node-price">식사</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="식사 후 연트럴파크 중심부를 따라 천천히 걷는 산책 코스입니다.">
+                                <div class="node-icon">🌿</div><span class="node-name">경의선 숲길</span><span
+                                    class="node-price">산책</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="숲길 주변의 아기자기한 가게를 둘러보며 가볍게 쉬어가는 코스입니다.">
+                                <div class="node-icon">🎁</div><span class="node-name">소품샵 구경</span><span
+                                    class="node-price">구경</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="빈티지한 분위기의 카페에서 디저트와 대화로 마무리하는 코스입니다.">
+                                <div class="node-icon">☕</div><span class="node-name">브레디포스트 연남점</span><span
+                                    class="node-price">카페</span>
+                            </div>
+                        </div>
+                        <div class="action-stack">
+                            <button class="action-btn save-btn" type="button" data-save-course
+                                data-course-id="yeonnam-mmmua-walk">나만의 코스 저장</button>
+                            <button class="action-btn green-btn" type="button" data-guide-open
+                                data-course-id="yeonnam-mmmua-walk">코스 상세 가이드 보기</button>
+                        </div>
+                        <p class="save-status" data-save-status aria-live="polite"></p>
+                    </article>
+
+                    <article class="course-card card-green" data-course-card data-course-id="yeonnam-toma-caricature"
+                        data-guide-image="course-img/연남 이색.png">
+                        <div class="card-top">
+                            <span class="price-tag">총 5~6만원</span>
+                            <h3>연남동 이색 데이트</h3>
+                            <p class="card-desc">식사, 캐리커쳐, 골목 산책, 카페로 이어지는 연남동 코스</p>
+                            <div class="card-info">약 3시간 10분~3시간 40분 · 도보 위주</div>
+                        </div>
+                        <div class="course-path">
+                            <div class="path-node" data-step-desc="홍대입구역에서 걸어가 식사로 시작하는 연남동 메인 코스입니다.">
+                                <div class="node-icon">🍝</div><span class="node-name">연남토마</span><span
+                                    class="node-price">식사</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="둘만의 모습을 그림으로 남길 수 있는 이색 체험 코스입니다.">
+                                <div class="node-icon">🎨</div><span class="node-name">도토리 캐리커쳐</span><span
+                                    class="node-price">체험</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="주택가 골목과 작은 가게들을 구경하며 카페로 이동하는 코스입니다.">
+                                <div class="node-icon">🏘️</div><span class="node-name">연남동 골목 산책</span><span
+                                    class="node-price">산책</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="단독주택 감성의 카페에서 음료를 마시며 마무리하는 코스입니다.">
+                                <div class="node-icon">☕</div><span class="node-name">연남동 벚꽃집</span><span
+                                    class="node-price">카페</span>
+                            </div>
+                        </div>
+                        <div class="action-stack">
+                            <button class="action-btn save-btn" type="button" data-save-course
+                                data-course-id="yeonnam-toma-caricature">나만의 코스 저장</button>
+                            <button class="action-btn green-btn" type="button" data-guide-open
+                                data-course-id="yeonnam-toma-caricature">코스 상세 가이드 보기</button>
+                        </div>
+                        <p class="save-status" data-save-status aria-live="polite"></p>
+                    </article>
+
+                    <article class="course-card card-green" data-course-card data-course-id="seogyo-3-4"
+                        data-guide-image="course-img/서교동 디자인.png">
+                        <div class="card-top">
+                            <span class="price-tag">총 41,000원</span>
+                            <h3>서교동 디자인 데이트</h3>
+                            <p class="card-desc">서교동에서 여유롭게 즐기는 데이트 코스</p>
+                            <div class="card-info">3~4시간 · 도보 위주</div>
+                        </div>
+                        <div class="course-path">
+                            <div class="path-node" data-step-desc="디자인 소품과 아이디어 상품을 둘러보며 대화를 시작하기 좋은 코스입니다.">
+                                <div class="node-icon">🎨</div><span class="node-name">KT&G 상상마당</span><span
+                                    class="node-price">0원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="마제소바로 든든하게 식사하며 예산을 맞추기 좋은 코스입니다.">
+                                <div class="node-icon">🍜</div><span class="node-name">칸다소바 홍대점</span><span
+                                    class="node-price">22,000원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="시그니처 커피를 마시며 여유롭게 쉬어가는 카페 코스입니다.">
+                                <div class="node-icon">☕</div><span class="node-name">테일러커피 서교점</span><span
+                                    class="node-price">14,000원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="홍대 거리에서 가볍게 사진을 남기며 마무리하는 추억 코스입니다.">
+                                <div class="node-icon">📷</div><span class="node-name">인근 네컷 사진관</span><span
+                                    class="node-price">5,000원</span>
+                            </div>
+                        </div>
+                        <div class="action-stack">
+                            <button class="action-btn save-btn" type="button" data-save-course
+                                data-course-id="seogyo-3-4">나만의 코스 저장</button>
+                            <button class="action-btn green-btn" type="button" data-guide-open
+                                data-course-id="seogyo-3-4">코스 상세 가이드 보기</button>
+                        </div>
+                        <p class="save-status" data-save-status aria-live="polite"></p>
+                    </article>
+
+                    <article class="course-card card-green" data-course-card data-course-id="seogyo-5-6"
+                        data-guide-image="course-img/서교동 무드.png">
+                        <div class="card-top">
+                            <span class="price-tag">총 60,000원</span>
+                            <h3>서교동 무드 데이트</h3>
+                            <p class="card-desc">서교동에서 여유롭게 즐기는 데이트 코스</p>
+                            <div class="card-info">4~5시간 · 도보 위주</div>
+                        </div>
+                        <div class="course-path">
+                            <div class="path-node" data-step-desc="감성적인 문구와 생활 소품을 여유롭게 구경하는 편집샵 코스입니다.">
+                                <div class="node-icon">🛍️</div><span class="node-name">오브젝트 서교점</span><span
+                                    class="node-price">0원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="캐주얼한 분위기에서 피자를 나눠 먹는 든든한 식사 코스입니다.">
+                                <div class="node-icon">🍕</div><span class="node-name">피자네버슬립스</span><span
+                                    class="node-price">35,000원</span>
+                            </div>
+                            <div class="path-arrow">→</div>
+                            <div class="path-node" data-step-desc="은은한 조명 아래 가벼운 칵테일로 대화하기 좋은 마무리 코스입니다.">
+                                <div class="node-icon">🍸</div><span class="node-name">자세(JASE)</span><span
+                                    class="node-price">25,000원</span>
+                            </div>
+                        </div>
+                        <div class="action-stack">
+                            <button class="action-btn save-btn" type="button" data-save-course
+                                data-course-id="seogyo-5-6">나만의 코스 저장</button>
+                            <button class="action-btn green-btn" type="button" data-guide-open
+                                data-course-id="seogyo-5-6">코스 상세 가이드 보기</button>
+                        </div>
+                        <p class="save-status" data-save-status aria-live="polite"></p>
+                    </article>
+
+
+                    <section class="date-ratio-card" aria-labelledby="date-ratio-title">
+                        <h3 class="date-ratio-title" id="date-ratio-title">
+                            <span class="date-ratio-icon" aria-hidden="true">🌳</span>
+                            데이트 비중
+                        </h3>
+                        <input class="date-ratio-slider" type="range" min="0" max="100" value="50" aria-label="데이트 비중">
+                        <div class="date-ratio-labels" aria-hidden="true">
+                            <span>길거리 데이트</span>
+                            <span>음식 데이트</span>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="result-map-area">
+                    <div id="map" class="map-container" data-map-target="result-map">
+                        <div class="map-placeholder">📍 여기에 지도 API가 연결될 예정입니다.</div>
+                    </div>
+                </div>
+
+                <aside class="result-saved-panel">
+                    <section class="saved-courses" data-saved-courses-panel
+                        aria-labelledby="result-saved-courses-title">
                         <div class="saved-courses-header">
-                            <h3 class="saved-courses-title" id="saved-courses-title">나만의 데이트 코스</h3>
+                            <h3 class="saved-courses-title" id="result-saved-courses-title">나만의 데이트 코스</h3>
                             <span class="saved-count" data-saved-count>0개</span>
                         </div>
                         <div class="saved-course-list" data-saved-course-list></div>
                         <p class="saved-empty" data-saved-empty>저장된 코스가 아직 없어요. 마음에 드는 코스를 저장해보세요.</p>
                     </section>
-                </div>
-            </section>
+                </aside>
+            </div>
         </section>
+    </section>
+
+    <section class="screen" data-screen="saved" aria-hidden="true">
+        <section class="recommend-section">
+            <div class="container recommend-container">
+                <section class="saved-courses" id="saved-courses" data-saved-courses-panel
+                    aria-labelledby="saved-courses-title">
+                    <div class="saved-courses-header">
+                        <h3 class="saved-courses-title" id="saved-courses-title">나만의 데이트 코스</h3>
+                        <span class="saved-count" data-saved-count>0개</span>
+                    </div>
+                    <div class="saved-course-list" data-saved-course-list></div>
+                    <p class="saved-empty" data-saved-empty>저장된 코스가 아직 없어요. 마음에 드는 코스를 저장해보세요.</p>
+                </section>
+            </div>
+        </section>
+    </section>
     </div>
 
-    <div class="guide-modal" data-guide-modal data-course-id="seongsan-walk" hidden role="dialog" aria-modal="true" aria-labelledby="guide-title">
+    <div class="guide-modal" data-guide-modal data-course-id="seongsan-walk" hidden role="dialog" aria-modal="true"
+        aria-labelledby="guide-title">
         <article class="guide-panel">
             <section class="guide-header-card">
                 <header class="guide-header">
@@ -591,115 +866,13 @@
                 </article>
             </section>
 
-            <section class="guide-map-preview" aria-label="지도 API 영역" data-map-target="guide-map">
-                <div>
-                    <strong>지도 API</strong>
-                    <span>추후 지도 영역에 경로와 장소 마커가 연결될 예정입니다.</span>
-                </div>
+            <section class="guide-image-preview" aria-label="코스 상세 이미지 영역" data-guide-image-target="guide-main-image">
+                <img src="course-img/성산.png" alt="코스 상세 참고 이미지" class="guide-detail-image" loading="lazy"
+                    decoding="async">
             </section>
         </article>
     </div>
-    <script src="app.js" defer></script>
-    <script>
-        (() => {
-            const screens = Array.from(document.querySelectorAll('[data-screen]'));
-            const savedLists = Array.from(document.querySelectorAll('[data-saved-course-list]'));
-            const savedCounts = Array.from(document.querySelectorAll('[data-saved-count]'));
-            const savedEmptyMessages = Array.from(document.querySelectorAll('[data-saved-empty]'));
-            const savedKey = 'manwon-date.savedCourses';
-
-            const showScreen = (target) => {
-                const next = ['home', 'courses', 'result', 'saved'].includes(target) ? target : 'home';
-                screens.forEach((screen) => {
-                    const isActive = screen.dataset.screen === next;
-                    screen.classList.toggle('is-active', isActive);
-                    screen.setAttribute('aria-hidden', String(!isActive));
-                });
-                history.pushState({ screen: next }, '', `#${next}`);
-                if (next === 'saved' || next === 'result') renderSavedCourses();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            };
-
-            const readSavedCourses = () => {
-                try {
-                    const saved = JSON.parse(localStorage.getItem(savedKey) || '[]');
-                    return Array.isArray(saved) ? saved : [];
-                } catch {
-                    return [];
-                }
-            };
-
-            const createSavedCourseItem = (course) => {
-                const item = document.createElement('article');
-                item.className = 'saved-course-item';
-                item.dataset.savedCourseId = course.id;
-                item.innerHTML = `
-                    <h4 class="saved-course-title"></h4>
-                    <p class="saved-course-meta"></p>
-                    <p class="saved-course-route"></p>
-                    <div class="saved-course-footer">
-                        <span class="saved-course-price"></span>
-                        <button class="saved-course-delete" type="button">삭제</button>
-                    </div>
-                `;
-                item.querySelector('.saved-course-title').textContent = course.title || '이름 없는 코스';
-                item.querySelector('.saved-course-meta').textContent = [course.description, course.meta].filter(Boolean).join(' · ');
-                item.querySelector('.saved-course-route').textContent = (course.steps || []).map((step) => step.name).filter(Boolean).join(' → ');
-                item.querySelector('.saved-course-price').textContent = course.totalPrice || '';
-                item.querySelector('.saved-course-delete').dataset.deleteSavedCourse = course.id;
-                return item;
-            };
-
-            const renderSavedCourses = () => {
-                const courses = readSavedCourses();
-                savedCounts.forEach((count) => {
-                    count.textContent = `${courses.length}개`;
-                });
-                savedEmptyMessages.forEach((message) => {
-                    message.hidden = courses.length > 0;
-                });
-                savedLists.forEach((list) => {
-                    list.replaceChildren(...courses.map(createSavedCourseItem));
-                });
-            };
-
-            document.querySelector('[data-menu-action="browse"]')?.addEventListener('click', (event) => {
-                event.preventDefault();
-                event.stopImmediatePropagation();
-                showScreen('courses');
-            }, true);
-
-            document.querySelector('[data-menu-action="saved"]')?.addEventListener('click', (event) => {
-                event.preventDefault();
-                event.stopImmediatePropagation();
-                showScreen('saved');
-            }, true);
-
-            document.querySelectorAll('[data-route="result"]').forEach((button) => {
-                button.addEventListener('click', (event) => {
-                    if (!button.dataset.courseId) return;
-                    event.preventDefault();
-                    event.stopImmediatePropagation();
-                    showScreen('result');
-                }, true);
-            });
-
-            savedLists.forEach((list) => {
-                list.addEventListener('click', (event) => {
-                    const deleteButton = event.target.closest('[data-delete-saved-course]');
-                    if (!deleteButton) return;
-                    const nextCourses = readSavedCourses().filter((course) => course.id !== deleteButton.dataset.deleteSavedCourse);
-                    localStorage.setItem(savedKey, JSON.stringify(nextCourses));
-                    renderSavedCourses();
-                });
-            });
-
-            window.addEventListener('popstate', () => {
-                showScreen(location.hash.replace('#', ''));
-            });
-
-            renderSavedCourses();
-        })();
-    </script>
+    <script src="app.js?v=20260528" defer></script>
 </body>
+
 </html>
