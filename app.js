@@ -51,6 +51,73 @@
         return getCourseById(card?.dataset.courseId) || courses[0] || null;
     };
 
+    const getMapCourseId = (fallback = '') => fallback || getResultCards()[0]?.dataset.courseId || courses[0]?.id || '';
+
+    const setMapPlaceholder = (message) => {
+        const mapContainer = document.getElementById('map');
+        if (mapContainer) {
+            mapContainer.innerHTML = `<div class="map-placeholder">${escapeHTML(message)}</div>`;
+        }
+    };
+
+    const initMap = async (courseId = '') => {
+        const mapContainer = document.getElementById('map');
+        const course = getCourseById(getMapCourseId(courseId));
+        if (!mapContainer || !course) return;
+
+        if (!window.kakao?.maps?.services) {
+            setMapPlaceholder('📍 지도 API를 불러오는 중입니다.');
+            return;
+        }
+
+        const placeNames = (course.places || [])
+            .map((place) => place.mapName || place.name)
+            .filter(Boolean);
+        if (placeNames.length === 0) {
+            setMapPlaceholder('📍 지도에 표시할 장소 정보가 없어요.');
+            return;
+        }
+
+        setMapPlaceholder('📍 선택한 코스 지도를 불러오는 중입니다.');
+        const places = new window.kakao.maps.services.Places();
+        const searchResults = await Promise.all(placeNames.map((placeName) => new Promise((resolve) => {
+            places.keywordSearch(placeName, (data, status) => {
+                const matchedPlace = status === window.kakao.maps.services.Status.OK ? data[0] : null;
+                resolve(matchedPlace ? { title: placeName, lat: matchedPlace.y, lng: matchedPlace.x } : null);
+            });
+        })));
+        const mapSpots = searchResults.filter(Boolean);
+
+        if (mapSpots.length === 0) {
+            setMapPlaceholder('📍 좌표를 찾지 못했어요. 장소명을 확인해 주세요.');
+            return;
+        }
+
+        mapContainer.innerHTML = '';
+        const map = new window.kakao.maps.Map(mapContainer, {
+            center: new window.kakao.maps.LatLng(mapSpots[0].lat, mapSpots[0].lng),
+            level: 4,
+        });
+        const bounds = new window.kakao.maps.LatLngBounds();
+        const linePath = mapSpots.map((spot) => {
+            const position = new window.kakao.maps.LatLng(spot.lat, spot.lng);
+            bounds.extend(position);
+            new window.kakao.maps.Marker({ map, position, title: spot.title });
+            return position;
+        });
+
+        if (linePath.length > 1) {
+            new window.kakao.maps.Polyline({
+                path: linePath,
+                strokeWeight: 4,
+                strokeColor: '#ff6e87',
+                strokeOpacity: 0.8,
+                strokeStyle: 'solid',
+            }).setMap(map);
+            map.setBounds(bounds);
+        }
+    };
+
     const getCourseMeta = (course) => [course.duration, course.transport].filter(Boolean).join(' · ') || course.meta || '';
 
     const generatePlacesHTML = (course) => course.places.map((place, index) => {
@@ -225,6 +292,9 @@
             history.pushState({ screen: next }, '', `#${next}`);
         }
         if (next === 'result' || next === 'saved') renderSavedCourses();
+        if (next === 'result') {
+            window.setTimeout(() => initMap(getMapCourseId()), 120);
+        }
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
@@ -406,7 +476,10 @@
             event.preventDefault();
             showScreen(routeButton.dataset.route);
             if (routeButton.dataset.route === 'result' && routeButton.dataset.courseId) {
-                window.setTimeout(() => scrollToResultCard(routeButton.dataset.courseId), 360);
+                window.setTimeout(() => {
+                    scrollToResultCard(routeButton.dataset.courseId);
+                    initMap(routeButton.dataset.courseId);
+                }, 360);
             }
         }
     });
