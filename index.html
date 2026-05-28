@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon.ico?v=1.1" type="image/x-icon">
     <title>만원 데이트 - 대학생 맞춤 가성비 데이트</title>
-    <link rel="stylesheet" href="main.css?v=20260527">
+    <link rel="stylesheet" href="main.css?v=20260528">
 </head>
 
 <body>
@@ -73,7 +73,7 @@
                                 <button class="tag" type="button" data-budget="30000">3만원</button>
                             </div>
                         </form>
-                        <p class="tip">💡 위치 기반 추천은 추후 지도 API와 연결될 예정입니다.</p>
+                        <p class="tip">💡 코스 상세 가이드에서 코스별 이미지와 순서를 확인할 수 있습니다.</p>
                     </div>
                     <div class="hero-right">
                         <img src="웹 사이트 메인화면 일러.PNG" alt="데이트 코스 일러스트" class="main-img">
@@ -86,64 +86,7 @@
                     <div class="section-header">
                         <h2 class="section-title">추천 코스 미리보기 ❤️</h2>
                     </div>
-
-                    <div class="course-grid">
-                        <article class="course-card card-green" data-course-card data-course-id="seongsan-walk"
-                            data-guide-image="course-img/성산.png">
-                            <div class="card-top">
-                                <span class="price-tag">총 3~4만원</span>
-                                <h3>성산 산책</h3>
-                                <p class="card-desc">성산에서 가볍게 즐기는 산책 코스</p>
-                                <div class="card-info">약 2시간 · 도보 위주</div>
-                            </div>
-                            <div class="course-path">
-                                <div class="path-node">
-                                    <div class="node-icon">🍗</div><span class="node-name">베이직 프라이드 치킨</span><span
-                                        class="node-price">26,000원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node">
-                                    <div class="node-icon">☕</div><span class="node-name">베케이션 카페</span><span
-                                        class="node-price">10,000원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node">
-                                    <div class="node-icon">🌳</div><span class="node-name">성산 산책</span><span
-                                        class="node-price">0원</span>
-                                </div>
-                            </div>
-                            <button type="button" class="more-btn" data-route="result"
-                                data-course-id="seongsan-walk">자세히 보기 &gt;</button>
-                        </article>
-
-                        <article class="course-card card-green" data-course-card data-course-id="hongjecheon-walk"
-                            data-guide-image="course-img/홍제천.png">
-                            <div class="card-top">
-                                <span class="price-tag">총 5~6만원</span>
-                                <h3>홍제천 산책 데이트</h3>
-                                <p class="card-desc">홍제천에서 가볍게 즐기는 산책 코스</p>
-                                <div class="card-info">약 2시간 · 도보 위주</div>
-                            </div>
-                            <div class="course-path">
-                                <div class="path-node">
-                                    <div class="node-icon">🍝</div><span class="node-name">까르보네</span><span
-                                        class="node-price">3~4만원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node">
-                                    <div class="node-icon">☕</div><span class="node-name">하흘</span><span
-                                        class="node-price">12000</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node">
-                                    <div class="node-icon">🌳</div><span class="node-name">홍제천 산책</span><span
-                                        class="node-price">0원</span>
-                                </div>
-                            </div>
-                            <button type="button" class="more-btn" data-route="result"
-                                data-course-id="hongjecheon-walk">자세히 보기 &gt;</button>
-                        </article>
-                    </div>
+                    <div class="course-grid" id="home-course-grid" data-home-course-grid></div>
                 </div>
             </section>
         </section>
@@ -154,677 +97,73 @@
                     <div class="section-header">
                         <h2 class="section-title">코스 둘러보기 ❤️</h2>
                     </div>
-
-                    <div class="course-grid" data-course-list>
-                        <article class="course-card card-green" data-course-card data-course-id="seongsan-walk"
-                            data-guide-image="course-img/성산.png">
-                            <div class="card-top">
-                                <span class="price-tag">총 3~4만원</span>
-                                <h3>성산 산책</h3>
-                                <p class="card-desc">성산에서 가볍게 즐기는 산책 코스</p>
-                                <div class="card-info">약 2시간 · 도보 위주</div>
-                            </div>
-                            <div class="course-path">
-                                <div class="path-node">
-                                    <div class="node-icon">🍗</div><span class="node-name">베이직 프라이드 치킨</span><span
-                                        class="node-price">26,000원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node">
-                                    <div class="node-icon">☕</div><span class="node-name">베케이션 카페</span><span
-                                        class="node-price">10,000원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node">
-                                    <div class="node-icon">🌳</div><span class="node-name">성산 산책</span><span
-                                        class="node-price">0원</span>
-                                </div>
-                            </div>
-                            <div class="action-stack">
-                                <button class="action-btn save-btn" type="button" data-save-course
-                                    data-course-id="seongsan-walk">나만의 코스 저장</button>
-                                <button class="action-btn green-btn" type="button" data-guide-open
-                                    data-course-id="seongsan-walk">코스 상세 가이드 보기</button>
-                            </div>
-                            <p class="save-status" data-save-status aria-live="polite"></p>
-                        </article>
-
-                        <article class="course-card card-green" data-course-card data-course-id="hongjecheon-walk"
-                            data-guide-image="course-img/홍제천.png">
-                            <div class="card-top">
-                                <span class="price-tag">총 5~6만원</span>
-                                <h3>홍제천 산책 데이트</h3>
-                                <p class="card-desc">홍제천에서 가볍게 즐기는 산책 코스</p>
-                                <div class="card-info">약 2시간 · 도보 위주</div>
-                            </div>
-                            <div class="course-path">
-                                <div class="path-node">
-                                    <div class="node-icon">🍝</div><span class="node-name">까르보네</span><span
-                                        class="node-price">3~4만원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node">
-                                    <div class="node-icon">☕</div><span class="node-name">하흘</span><span
-                                        class="node-price">12000</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node">
-                                    <div class="node-icon">🌳</div><span class="node-name">홍제천 산책</span><span
-                                        class="node-price">0원</span>
-                                </div>
-                            </div>
-                            <div class="action-stack">
-                                <button class="action-btn save-btn" type="button" data-save-course
-                                    data-course-id="hongjecheon-walk">나만의 코스 저장</button>
-                                <button class="action-btn green-btn" type="button" data-guide-open
-                                    data-course-id="hongjecheon-walk">코스 상세 가이드 보기</button>
-                            </div>
-                            <p class="save-status" data-save-status aria-live="polite"></p>
-                        </article>
-
-                        <article class="course-card card-green" data-course-card
-                            data-course-id="mangwon-zero-deepblue-market"
-                            data-guide-image="course-img/망원 감성.png">
-                            <div class="card-top">
-                                <span class="price-tag">총 32,000~40,000원</span>
-                                <h3>망원 감성 데이트</h3>
-                                <p class="card-desc">망원에서 소품샵, 카페, 시장 먹거리, 사진, 산책을 즐기는 코스</p>
-                                <div class="card-info">약 4~5시간 · 도보 위주</div>
-                            </div>
-                            <div class="course-path">
-                                <div class="path-node" data-step-desc="문구류와 포스터를 가볍게 구경하는 시작 코스입니다.">
-                                    <div class="node-icon">🛍️</div><span class="node-name">제로스페이스</span><span
-                                        class="node-price">0원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="음료를 마시며 차분하게 대화하기 좋은 카페 코스입니다.">
-                                    <div class="node-icon">☕</div><span class="node-name">딥블루레이크</span><span
-                                        class="node-price">12,000~16,000원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="간식 2~3개를 나눠 먹으며 예산을 맞추기 좋은 코스입니다.">
-                                    <div class="node-icon">🥟</div><span class="node-name">망원시장 먹거리</span><span
-                                        class="node-price">15,000~22,000원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="마지막에 사진으로 추억을 남기는 선택 코스입니다.">
-                                    <div class="node-icon">📷</div><span class="node-name">망원동 네컷사진</span><span
-                                        class="node-price">5,000~8,000원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="소품샵과 골목을 천천히 걷는 무료 마무리 코스입니다.">
-                                    <div class="node-icon">🌿</div><span class="node-name">망리단길 산책</span><span
-                                        class="node-price">0원</span>
-                                </div>
-                            </div>
-                            <div class="action-stack">
-                                <button class="action-btn save-btn" type="button" data-save-course
-                                    data-course-id="mangwon-zero-deepblue-market">나만의 코스 저장</button>
-                                <button class="action-btn green-btn" type="button" data-guide-open
-                                    data-course-id="mangwon-zero-deepblue-market">코스 상세 가이드 보기</button>
-                            </div>
-                            <p class="save-status" data-save-status aria-live="polite"></p>
-                        </article>
-
-                        <article class="course-card card-green" data-course-card data-course-id="mangwon-poeunro-tea"
-                            data-guide-image="course-img/망원 포은로.png">
-                            <div class="card-top">
-                                <span class="price-tag">총 49,000~58,000원</span>
-                                <h3>망원 포은로 데이트</h3>
-                                <p class="card-desc">망원역과 포은로 주변에서 서점, 식사, 티룸, 산책을 즐기는 코스</p>
-                                <div class="card-info">약 4~5시간 · 도보 위주</div>
-                            </div>
-                            <div class="course-path">
-                                <div class="path-node" data-step-desc="독립출판물과 엽서류를 조용히 둘러보기 좋은 서점 코스입니다.">
-                                    <div class="node-icon">📚</div><span class="node-name">가가77페이지</span><span
-                                        class="node-price">0원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="돈카츠 정식 중심으로 든든하게 식사하는 코스입니다.">
-                                    <div class="node-icon">🍱</div><span class="node-name">헤키 망원</span><span
-                                        class="node-price">31,000~36,000원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="차와 디저트로 오래 앉아 이야기하기 좋은 티룸 코스입니다.">
-                                    <div class="node-icon">🍵</div><span class="node-name">티노마드</span><span
-                                        class="node-price">18,000~22,000원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="망원2동 쪽으로 빠지지 않는 짧은 산책 마무리입니다.">
-                                    <div class="node-icon">🌿</div><span class="node-name">포은로 산책</span><span
-                                        class="node-price">0원</span>
-                                </div>
-                            </div>
-                            <div class="action-stack">
-                                <button class="action-btn save-btn" type="button" data-save-course
-                                    data-course-id="mangwon-poeunro-tea">나만의 코스 저장</button>
-                                <button class="action-btn green-btn" type="button" data-guide-open
-                                    data-course-id="mangwon-poeunro-tea">코스 상세 가이드 보기</button>
-                            </div>
-                            <p class="save-status" data-save-status aria-live="polite"></p>
-                        </article>
-
-                        <article class="course-card card-green" data-course-card data-course-id="yeonnam-mmmua-walk"
-                            data-guide-image="course-img/연남 산책.png">
-                            <div class="card-top">
-                                <span class="price-tag">총 3~4만원</span>
-                                <h3>연남동 산책 데이트</h3>
-                                <p class="card-desc">식사 후 경의선 숲길과 카페를 즐기는 연남동 코스</p>
-                                <div class="card-info">약 2시간 40분~3시간 · 도보 위주</div>
-                            </div>
-                            <div class="course-path">
-                                <div class="path-node" data-step-desc="홍대입구역에서 만나 식사로 데이트를 시작하기 좋은 연남동 맛집 코스입니다.">
-                                    <div class="node-icon">🍽️</div><span class="node-name">음무아 연남점</span><span
-                                        class="node-price">식사</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="식사 후 연트럴파크 중심부를 따라 천천히 걷는 산책 코스입니다.">
-                                    <div class="node-icon">🌿</div><span class="node-name">경의선 숲길</span><span
-                                        class="node-price">산책</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="숲길 주변의 아기자기한 가게를 둘러보며 가볍게 쉬어가는 코스입니다.">
-                                    <div class="node-icon">🎁</div><span class="node-name">소품샵 구경</span><span
-                                        class="node-price">구경</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="빈티지한 분위기의 카페에서 디저트와 대화로 마무리하는 코스입니다.">
-                                    <div class="node-icon">☕</div><span class="node-name">브레디포스트 연남점</span><span
-                                        class="node-price">카페</span>
-                                </div>
-                            </div>
-                            <div class="action-stack">
-                                <button class="action-btn save-btn" type="button" data-save-course
-                                    data-course-id="yeonnam-mmmua-walk">나만의 코스 저장</button>
-                                <button class="action-btn green-btn" type="button" data-guide-open
-                                    data-course-id="yeonnam-mmmua-walk">코스 상세 가이드 보기</button>
-                            </div>
-                            <p class="save-status" data-save-status aria-live="polite"></p>
-                        </article>
-
-                        <article class="course-card card-green" data-course-card
-                            data-course-id="yeonnam-toma-caricature"
-                            data-guide-image="course-img/연남 이색.png">
-                            <div class="card-top">
-                                <span class="price-tag">총 5~6만원</span>
-                                <h3>연남동 이색 데이트</h3>
-                                <p class="card-desc">식사, 캐리커쳐, 골목 산책, 카페로 이어지는 연남동 코스</p>
-                                <div class="card-info">약 3시간 10분~3시간 40분 · 도보 위주</div>
-                            </div>
-                            <div class="course-path">
-                                <div class="path-node" data-step-desc="홍대입구역에서 걸어가 식사로 시작하는 연남동 메인 코스입니다.">
-                                    <div class="node-icon">🍝</div><span class="node-name">연남토마</span><span
-                                        class="node-price">식사</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="둘만의 모습을 그림으로 남길 수 있는 이색 체험 코스입니다.">
-                                    <div class="node-icon">🎨</div><span class="node-name">도토리 캐리커쳐</span><span
-                                        class="node-price">체험</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="주택가 골목과 작은 가게들을 구경하며 카페로 이동하는 코스입니다.">
-                                    <div class="node-icon">🏘️</div><span class="node-name">연남동 골목 산책</span><span
-                                        class="node-price">산책</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="단독주택 감성의 카페에서 음료를 마시며 마무리하는 코스입니다.">
-                                    <div class="node-icon">☕</div><span class="node-name">연남동 벚꽃집</span><span
-                                        class="node-price">카페</span>
-                                </div>
-                            </div>
-                            <div class="action-stack">
-                                <button class="action-btn save-btn" type="button" data-save-course
-                                    data-course-id="yeonnam-toma-caricature">나만의 코스 저장</button>
-                                <button class="action-btn green-btn" type="button" data-guide-open
-                                    data-course-id="yeonnam-toma-caricature">코스 상세 가이드 보기</button>
-                            </div>
-                            <p class="save-status" data-save-status aria-live="polite"></p>
-                        </article>
-                        <article class="course-card card-green" data-course-card data-course-id="seogyo-3-4"
-                            data-guide-image="course-img/서교동 디자인.png">
-                            <div class="card-top">
-                                <span class="price-tag">총 41,000원</span>
-                                <h3>서교동 디자인 데이트</h3>
-                                <p class="card-desc">서교동에서 여유롭게 즐기는 데이트 코스</p>
-                                <div class="card-info">3~4시간 · 도보 위주</div>
-                            </div>
-                            <div class="course-path">
-                                <div class="path-node" data-step-desc="디자인 소품과 아이디어 상품을 둘러보며 대화를 시작하기 좋은 코스입니다.">
-                                    <div class="node-icon">🎨</div><span class="node-name">KT&G 상상마당</span><span
-                                        class="node-price">0원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="마제소바로 든든하게 식사하며 예산을 맞추기 좋은 코스입니다.">
-                                    <div class="node-icon">🍜</div><span class="node-name">칸다소바 홍대점</span><span
-                                        class="node-price">22,000원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="시그니처 커피를 마시며 여유롭게 쉬어가는 카페 코스입니다.">
-                                    <div class="node-icon">☕</div><span class="node-name">테일러커피 서교점</span><span
-                                        class="node-price">14,000원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="홍대 거리에서 가볍게 사진을 남기며 마무리하는 추억 코스입니다.">
-                                    <div class="node-icon">📷</div><span class="node-name">인근 네컷 사진관</span><span
-                                        class="node-price">5,000원</span>
-                                </div>
-                            </div>
-                            <div class="action-stack">
-                                <button class="action-btn save-btn" type="button" data-save-course
-                                    data-course-id="seogyo-3-4">나만의 코스 저장</button>
-                                <button class="action-btn green-btn" type="button" data-guide-open
-                                    data-course-id="seogyo-3-4">코스 상세 가이드 보기</button>
-                            </div>
-                            <p class="save-status" data-save-status aria-live="polite"></p>
-                        </article>
-
-                        <article class="course-card card-green" data-course-card data-course-id="seogyo-5-6"
-                            data-guide-image="course-img/서교동 무드.png">
-                            <div class="card-top">
-                                <span class="price-tag">총 60,000원</span>
-                                <h3>서교동 무드 데이트</h3>
-                                <p class="card-desc">서교동에서 여유롭게 즐기는 데이트 코스</p>
-                                <div class="card-info">4~5시간 · 도보 위주</div>
-                            </div>
-                            <div class="course-path">
-                                <div class="path-node" data-step-desc="감성적인 문구와 생활 소품을 여유롭게 구경하는 편집샵 코스입니다.">
-                                    <div class="node-icon">🛍️</div><span class="node-name">오브젝트 서교점</span><span
-                                        class="node-price">0원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="캐주얼한 분위기에서 피자를 나눠 먹는 든든한 식사 코스입니다.">
-                                    <div class="node-icon">🍕</div><span class="node-name">피자네버슬립스</span><span
-                                        class="node-price">35,000원</span>
-                                </div>
-                                <div class="path-arrow">→</div>
-                                <div class="path-node" data-step-desc="은은한 조명 아래 가벼운 칵테일로 대화하기 좋은 마무리 코스입니다.">
-                                    <div class="node-icon">🍸</div><span class="node-name">자세(JASE)</span><span
-                                        class="node-price">25,000원</span>
-                                </div>
-                            </div>
-                            <div class="action-stack">
-                                <button class="action-btn save-btn" type="button" data-save-course
-                                    data-course-id="seogyo-5-6">나만의 코스 저장</button>
-                                <button class="action-btn green-btn" type="button" data-guide-open
-                                    data-course-id="seogyo-5-6">코스 상세 가이드 보기</button>
-                            </div>
-                            <p class="save-status" data-save-status aria-live="polite"></p>
-                        </article>
-                    </div>
+                    <div class="course-grid" id="browse-course-grid" data-browse-course-grid></div>
                 </div>
             </section>
         </section>
 
-
-    </div>
-    </div>
-    </section>
-    </section>
-
-
-
-    <section class="screen" data-screen="result" aria-hidden="true">
-        <section class="result-summary">
-            <div class="container summary-container">
-                <div class="search-retry-box">
-                    <h2 class="summary-title">
-                        <span class="highlight-pink" data-selected-budget>10,000원</span>으로 즐길 수 있는 추천 코스입니다!
-                    </h2>
-                    <button type="button" class="retry-btn" data-route="home">다시 검색하기</button>
-                </div>
-            </div>
-        </section>
-
-        <section class="recommend-section">
-            <div class="container result-flex-layout">
-                <div class="result-sidebar">
-                    <article class="course-card card-green" data-course-card data-course-id="seongsan-walk"
-                        data-guide-image="course-img/성산.png">
-                        <div class="card-top">
-                            <span class="price-tag">총 3~4만원</span>
-                            <h3>성산 산책</h3>
-                            <p class="card-desc">성산에서 가볍게 즐기는 산책 코스</p>
-                            <div class="card-info">약 2시간 · 도보 위주</div>
-                        </div>
-
-                        <div class="course-path">
-                            <div class="path-node">
-                                <div class="node-icon">🍗</div><span class="node-name">베이직 프라이드 치킨</span><span
-                                    class="node-price">26,000원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node">
-                                <div class="node-icon">☕</div><span class="node-name">베케이션 카페</span><span
-                                    class="node-price">10,000원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node">
-                                <div class="node-icon">🌳</div><span class="node-name">성산 산책</span><span
-                                    class="node-price">0원</span>
-                            </div>
-                        </div>
-
-                        <div class="action-stack">
-                            <button class="action-btn save-btn" type="button" data-save-course
-                                data-course-id="seongsan-walk">나만의 코스 저장</button>
-                            <button class="action-btn green-btn" type="button" data-guide-open
-                                data-course-id="seongsan-walk">코스 상세 가이드 보기</button>
-                        </div>
-                        <p class="save-status" data-save-status aria-live="polite"></p>
-                    </article>
-
-                    <article class="course-card card-green" data-course-card data-course-id="hongjecheon-walk"
-                        data-guide-image="course-img/홍제천.png">
-                        <div class="card-top">
-                            <span class="price-tag">총 5~6만원</span>
-                            <h3>홍제천 산책 데이트</h3>
-                            <p class="card-desc">홍제천에서 가볍게 즐기는 산책 코스</p>
-                            <div class="card-info">약 2시간 · 도보 위주</div>
-                        </div>
-                        <div class="course-path">
-                            <div class="path-node">
-                                <div class="node-icon">🍝</div><span class="node-name">까르보네</span><span
-                                    class="node-price">3~4만원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node">
-                                <div class="node-icon">☕</div><span class="node-name">하흘</span><span
-                                    class="node-price">12000</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node">
-                                <div class="node-icon">🌳</div><span class="node-name">홍제천 산책</span><span
-                                    class="node-price">0원</span>
-                            </div>
-                        </div>
-                        <div class="action-stack">
-                            <button class="action-btn save-btn" type="button" data-save-course
-                                data-course-id="hongjecheon-walk">나만의 코스 저장</button>
-                            <button class="action-btn green-btn" type="button" data-guide-open
-                                data-course-id="hongjecheon-walk">코스 상세 가이드 보기</button>
-                        </div>
-                        <p class="save-status" data-save-status aria-live="polite"></p>
-                    </article>
-
-                    <article class="course-card card-green" data-course-card
-                        data-course-id="mangwon-zero-deepblue-market"
-                        data-guide-image="course-img/망원 감성.png">
-                        <div class="card-top">
-                            <span class="price-tag">총 32,000~40,000원</span>
-                            <h3>망원 감성 데이트</h3>
-                            <p class="card-desc">망원에서 소품샵, 카페, 시장 먹거리, 사진, 산책을 즐기는 코스</p>
-                            <div class="card-info">약 4~5시간 · 도보 위주</div>
-                        </div>
-                        <div class="course-path">
-                            <div class="path-node" data-step-desc="문구류와 포스터를 가볍게 구경하는 시작 코스입니다.">
-                                <div class="node-icon">🛍️</div><span class="node-name">제로스페이스</span><span
-                                    class="node-price">0원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="음료를 마시며 차분하게 대화하기 좋은 카페 코스입니다.">
-                                <div class="node-icon">☕</div><span class="node-name">딥블루레이크</span><span
-                                    class="node-price">12,000~16,000원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="간식 2~3개를 나눠 먹으며 예산을 맞추기 좋은 코스입니다.">
-                                <div class="node-icon">🥟</div><span class="node-name">망원시장 먹거리</span><span
-                                    class="node-price">15,000~22,000원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="마지막에 사진으로 추억을 남기는 선택 코스입니다.">
-                                <div class="node-icon">📷</div><span class="node-name">망원동 네컷사진</span><span
-                                    class="node-price">5,000~8,000원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="소품샵과 골목을 천천히 걷는 무료 마무리 코스입니다.">
-                                <div class="node-icon">🌿</div><span class="node-name">망리단길 산책</span><span
-                                    class="node-price">0원</span>
-                            </div>
-                        </div>
-                        <div class="action-stack">
-                            <button class="action-btn save-btn" type="button" data-save-course
-                                data-course-id="mangwon-zero-deepblue-market">나만의 코스 저장</button>
-                            <button class="action-btn green-btn" type="button" data-guide-open
-                                data-course-id="mangwon-zero-deepblue-market">코스 상세 가이드 보기</button>
-                        </div>
-                        <p class="save-status" data-save-status aria-live="polite"></p>
-                    </article>
-
-                    <article class="course-card card-green" data-course-card data-course-id="mangwon-poeunro-tea"
-                        data-guide-image="course-img/망원 포은로.png">
-                        <div class="card-top">
-                            <span class="price-tag">총 49,000~58,000원</span>
-                            <h3>망원 포은로 데이트</h3>
-                            <p class="card-desc">망원역과 포은로 주변에서 서점, 식사, 티룸, 산책을 즐기는 코스</p>
-                            <div class="card-info">약 4~5시간 · 도보 위주</div>
-                        </div>
-                        <div class="course-path">
-                            <div class="path-node" data-step-desc="독립출판물과 엽서류를 조용히 둘러보기 좋은 서점 코스입니다.">
-                                <div class="node-icon">📚</div><span class="node-name">가가77페이지</span><span
-                                    class="node-price">0원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="돈카츠 정식 중심으로 든든하게 식사하는 코스입니다.">
-                                <div class="node-icon">🍱</div><span class="node-name">헤키 망원</span><span
-                                    class="node-price">31,000~36,000원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="차와 디저트로 오래 앉아 이야기하기 좋은 티룸 코스입니다.">
-                                <div class="node-icon">🍵</div><span class="node-name">티노마드</span><span
-                                    class="node-price">18,000~22,000원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="망원2동 쪽으로 빠지지 않는 짧은 산책 마무리입니다.">
-                                <div class="node-icon">🌿</div><span class="node-name">포은로 산책</span><span
-                                    class="node-price">0원</span>
-                            </div>
-                        </div>
-                        <div class="action-stack">
-                            <button class="action-btn save-btn" type="button" data-save-course
-                                data-course-id="mangwon-poeunro-tea">나만의 코스 저장</button>
-                            <button class="action-btn green-btn" type="button" data-guide-open
-                                data-course-id="mangwon-poeunro-tea">코스 상세 가이드 보기</button>
-                        </div>
-                        <p class="save-status" data-save-status aria-live="polite"></p>
-                    </article>
-
-                    <article class="course-card card-green" data-course-card data-course-id="yeonnam-mmmua-walk"
-                        data-guide-image="course-img/연남 산책.png">
-                        <div class="card-top">
-                            <span class="price-tag">총 3~4만원</span>
-                            <h3>연남동 산책 데이트</h3>
-                            <p class="card-desc">식사 후 경의선 숲길과 카페를 즐기는 연남동 코스</p>
-                            <div class="card-info">약 2시간 40분~3시간 · 도보 위주</div>
-                        </div>
-                        <div class="course-path">
-                            <div class="path-node" data-step-desc="홍대입구역에서 만나 식사로 데이트를 시작하기 좋은 연남동 맛집 코스입니다.">
-                                <div class="node-icon">🍽️</div><span class="node-name">음무아 연남점</span><span
-                                    class="node-price">식사</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="식사 후 연트럴파크 중심부를 따라 천천히 걷는 산책 코스입니다.">
-                                <div class="node-icon">🌿</div><span class="node-name">경의선 숲길</span><span
-                                    class="node-price">산책</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="숲길 주변의 아기자기한 가게를 둘러보며 가볍게 쉬어가는 코스입니다.">
-                                <div class="node-icon">🎁</div><span class="node-name">소품샵 구경</span><span
-                                    class="node-price">구경</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="빈티지한 분위기의 카페에서 디저트와 대화로 마무리하는 코스입니다.">
-                                <div class="node-icon">☕</div><span class="node-name">브레디포스트 연남점</span><span
-                                    class="node-price">카페</span>
-                            </div>
-                        </div>
-                        <div class="action-stack">
-                            <button class="action-btn save-btn" type="button" data-save-course
-                                data-course-id="yeonnam-mmmua-walk">나만의 코스 저장</button>
-                            <button class="action-btn green-btn" type="button" data-guide-open
-                                data-course-id="yeonnam-mmmua-walk">코스 상세 가이드 보기</button>
-                        </div>
-                        <p class="save-status" data-save-status aria-live="polite"></p>
-                    </article>
-
-                    <article class="course-card card-green" data-course-card data-course-id="yeonnam-toma-caricature"
-                        data-guide-image="course-img/연남 이색.png">
-                        <div class="card-top">
-                            <span class="price-tag">총 5~6만원</span>
-                            <h3>연남동 이색 데이트</h3>
-                            <p class="card-desc">식사, 캐리커쳐, 골목 산책, 카페로 이어지는 연남동 코스</p>
-                            <div class="card-info">약 3시간 10분~3시간 40분 · 도보 위주</div>
-                        </div>
-                        <div class="course-path">
-                            <div class="path-node" data-step-desc="홍대입구역에서 걸어가 식사로 시작하는 연남동 메인 코스입니다.">
-                                <div class="node-icon">🍝</div><span class="node-name">연남토마</span><span
-                                    class="node-price">식사</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="둘만의 모습을 그림으로 남길 수 있는 이색 체험 코스입니다.">
-                                <div class="node-icon">🎨</div><span class="node-name">도토리 캐리커쳐</span><span
-                                    class="node-price">체험</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="주택가 골목과 작은 가게들을 구경하며 카페로 이동하는 코스입니다.">
-                                <div class="node-icon">🏘️</div><span class="node-name">연남동 골목 산책</span><span
-                                    class="node-price">산책</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="단독주택 감성의 카페에서 음료를 마시며 마무리하는 코스입니다.">
-                                <div class="node-icon">☕</div><span class="node-name">연남동 벚꽃집</span><span
-                                    class="node-price">카페</span>
-                            </div>
-                        </div>
-                        <div class="action-stack">
-                            <button class="action-btn save-btn" type="button" data-save-course
-                                data-course-id="yeonnam-toma-caricature">나만의 코스 저장</button>
-                            <button class="action-btn green-btn" type="button" data-guide-open
-                                data-course-id="yeonnam-toma-caricature">코스 상세 가이드 보기</button>
-                        </div>
-                        <p class="save-status" data-save-status aria-live="polite"></p>
-                    </article>
-
-                    <article class="course-card card-green" data-course-card data-course-id="seogyo-3-4"
-                        data-guide-image="course-img/서교동 디자인.png">
-                        <div class="card-top">
-                            <span class="price-tag">총 41,000원</span>
-                            <h3>서교동 디자인 데이트</h3>
-                            <p class="card-desc">서교동에서 여유롭게 즐기는 데이트 코스</p>
-                            <div class="card-info">3~4시간 · 도보 위주</div>
-                        </div>
-                        <div class="course-path">
-                            <div class="path-node" data-step-desc="디자인 소품과 아이디어 상품을 둘러보며 대화를 시작하기 좋은 코스입니다.">
-                                <div class="node-icon">🎨</div><span class="node-name">KT&G 상상마당</span><span
-                                    class="node-price">0원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="마제소바로 든든하게 식사하며 예산을 맞추기 좋은 코스입니다.">
-                                <div class="node-icon">🍜</div><span class="node-name">칸다소바 홍대점</span><span
-                                    class="node-price">22,000원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="시그니처 커피를 마시며 여유롭게 쉬어가는 카페 코스입니다.">
-                                <div class="node-icon">☕</div><span class="node-name">테일러커피 서교점</span><span
-                                    class="node-price">14,000원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="홍대 거리에서 가볍게 사진을 남기며 마무리하는 추억 코스입니다.">
-                                <div class="node-icon">📷</div><span class="node-name">인근 네컷 사진관</span><span
-                                    class="node-price">5,000원</span>
-                            </div>
-                        </div>
-                        <div class="action-stack">
-                            <button class="action-btn save-btn" type="button" data-save-course
-                                data-course-id="seogyo-3-4">나만의 코스 저장</button>
-                            <button class="action-btn green-btn" type="button" data-guide-open
-                                data-course-id="seogyo-3-4">코스 상세 가이드 보기</button>
-                        </div>
-                        <p class="save-status" data-save-status aria-live="polite"></p>
-                    </article>
-
-                    <article class="course-card card-green" data-course-card data-course-id="seogyo-5-6"
-                        data-guide-image="course-img/서교동 무드.png">
-                        <div class="card-top">
-                            <span class="price-tag">총 60,000원</span>
-                            <h3>서교동 무드 데이트</h3>
-                            <p class="card-desc">서교동에서 여유롭게 즐기는 데이트 코스</p>
-                            <div class="card-info">4~5시간 · 도보 위주</div>
-                        </div>
-                        <div class="course-path">
-                            <div class="path-node" data-step-desc="감성적인 문구와 생활 소품을 여유롭게 구경하는 편집샵 코스입니다.">
-                                <div class="node-icon">🛍️</div><span class="node-name">오브젝트 서교점</span><span
-                                    class="node-price">0원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="캐주얼한 분위기에서 피자를 나눠 먹는 든든한 식사 코스입니다.">
-                                <div class="node-icon">🍕</div><span class="node-name">피자네버슬립스</span><span
-                                    class="node-price">35,000원</span>
-                            </div>
-                            <div class="path-arrow">→</div>
-                            <div class="path-node" data-step-desc="은은한 조명 아래 가벼운 칵테일로 대화하기 좋은 마무리 코스입니다.">
-                                <div class="node-icon">🍸</div><span class="node-name">자세(JASE)</span><span
-                                    class="node-price">25,000원</span>
-                            </div>
-                        </div>
-                        <div class="action-stack">
-                            <button class="action-btn save-btn" type="button" data-save-course
-                                data-course-id="seogyo-5-6">나만의 코스 저장</button>
-                            <button class="action-btn green-btn" type="button" data-guide-open
-                                data-course-id="seogyo-5-6">코스 상세 가이드 보기</button>
-                        </div>
-                        <p class="save-status" data-save-status aria-live="polite"></p>
-                    </article>
-
-
-                    <section class="date-ratio-card" aria-labelledby="date-ratio-title">
-                        <h3 class="date-ratio-title" id="date-ratio-title">
-                            <span class="date-ratio-icon" aria-hidden="true">🌳</span>
-                            데이트 비중
-                        </h3>
-                        <input class="date-ratio-slider" type="range" min="0" max="100" value="50" aria-label="데이트 비중">
-                        <div class="date-ratio-labels" aria-hidden="true">
-                            <span>길거리 데이트</span>
-                            <span>음식 데이트</span>
-                        </div>
-                    </section>
-                </div>
-
-                <div class="result-map-area">
-                    <div id="map" class="map-container" data-map-target="result-map">
-                        <div class="map-placeholder">📍 여기에 지도 API가 연결될 예정입니다.</div>
+        <section class="screen" data-screen="result" aria-hidden="true">
+            <section class="result-summary">
+                <div class="container summary-container">
+                    <div class="search-retry-box">
+                        <h2 class="summary-title">
+                            <span class="highlight-pink" data-selected-budget>10,000원</span>으로 즐길 수 있는 추천 코스입니다!
+                        </h2>
+                        <button type="button" class="retry-btn" data-route="home">다시 검색하기</button>
                     </div>
                 </div>
+            </section>
 
-                <aside class="result-saved-panel">
-                    <section class="saved-courses" data-saved-courses-panel
-                        aria-labelledby="result-saved-courses-title">
+            <section class="recommend-section">
+                <div class="container result-flex-layout">
+                    <div class="result-sidebar">
+                        <div class="course-grid result-course-grid" id="result-course-grid"
+                            data-result-course-grid></div>
+
+                        <section class="date-ratio-card" aria-labelledby="date-ratio-title">
+                            <h3 class="date-ratio-title" id="date-ratio-title">
+                                <span class="date-ratio-icon" aria-hidden="true">🌳</span>
+                                데이트 비중
+                            </h3>
+                            <input class="date-ratio-slider" type="range" min="0" max="100" value="50"
+                                aria-label="데이트 비중">
+                            <div class="date-ratio-labels" aria-hidden="true">
+                                <span>길거리 데이트</span>
+                                <span>음식 데이트</span>
+                            </div>
+                        </section>
+                    </div>
+
+                    <aside class="result-saved-panel">
+                        <section class="saved-courses" data-saved-courses-panel
+                            aria-labelledby="result-saved-courses-title">
+                            <div class="saved-courses-header">
+                                <h3 class="saved-courses-title" id="result-saved-courses-title">나만의 데이트 코스</h3>
+                                <span class="saved-count" data-saved-count>0개</span>
+                            </div>
+                            <div class="saved-course-list" data-saved-course-list></div>
+                            <p class="saved-empty" data-saved-empty>저장된 코스가 아직 없어요. 마음에 드는 코스를 저장해보세요.</p>
+                        </section>
+                    </aside>
+                </div>
+            </section>
+        </section>
+
+        <section class="screen" data-screen="saved" aria-hidden="true">
+            <section class="recommend-section">
+                <div class="container recommend-container">
+                    <section class="saved-courses" id="saved-courses" data-saved-courses-panel
+                        aria-labelledby="saved-courses-title">
                         <div class="saved-courses-header">
-                            <h3 class="saved-courses-title" id="result-saved-courses-title">나만의 데이트 코스</h3>
+                            <h3 class="saved-courses-title" id="saved-courses-title">나만의 데이트 코스</h3>
                             <span class="saved-count" data-saved-count>0개</span>
                         </div>
                         <div class="saved-course-list" data-saved-course-list></div>
                         <p class="saved-empty" data-saved-empty>저장된 코스가 아직 없어요. 마음에 드는 코스를 저장해보세요.</p>
                     </section>
-                </aside>
-            </div>
+                </div>
+            </section>
         </section>
-    </section>
-
-    <section class="screen" data-screen="saved" aria-hidden="true">
-        <section class="recommend-section">
-            <div class="container recommend-container">
-                <section class="saved-courses" id="saved-courses" data-saved-courses-panel
-                    aria-labelledby="saved-courses-title">
-                    <div class="saved-courses-header">
-                        <h3 class="saved-courses-title" id="saved-courses-title">나만의 데이트 코스</h3>
-                        <span class="saved-count" data-saved-count>0개</span>
-                    </div>
-                    <div class="saved-course-list" data-saved-course-list></div>
-                    <p class="saved-empty" data-saved-empty>저장된 코스가 아직 없어요. 마음에 드는 코스를 저장해보세요.</p>
-                </section>
-            </div>
-        </section>
-    </section>
     </div>
 
     <div class="guide-modal" data-guide-modal data-course-id="seongsan-walk" hidden role="dialog" aria-modal="true"
@@ -846,25 +185,7 @@
                 </div>
             </section>
 
-            <section class="guide-course-flow" aria-label="코스 상세 순서" data-guide-flow>
-                <article class="guide-stage" data-guide-stage="snack">
-                    <span class="guide-stage-icon">🍗</span>
-                    <div><strong>베이직 프라이드 치킨</strong><span>가볍게 먹기 좋은 치킨으로 시작해요.</span></div>
-                    <p class="guide-stage-price">26,000원</p>
-                </article>
-                <div class="guide-flow-arrow">→</div>
-                <article class="guide-stage" data-guide-stage="walk">
-                    <span class="guide-stage-icon">☕</span>
-                    <div><strong>베케이션 카페</strong><span>카페에서 잠깐 쉬며 대화를 나눠요.</span></div>
-                    <p class="guide-stage-price">10,000원</p>
-                </article>
-                <div class="guide-flow-arrow">→</div>
-                <article class="guide-stage" data-guide-stage="picnic">
-                    <span class="guide-stage-icon">🌳</span>
-                    <div><strong>성산 산책</strong><span>성산 근처를 천천히 걸으며 마무리해요.</span></div>
-                    <p class="guide-stage-price">0원</p>
-                </article>
-            </section>
+            <section class="guide-course-flow" aria-label="코스 상세 순서" data-guide-flow></section>
 
             <section class="guide-image-preview" aria-label="코스 상세 이미지 영역" data-guide-image-target="guide-main-image">
                 <img src="course-img/성산.png" alt="코스 상세 참고 이미지" class="guide-detail-image" loading="lazy"
@@ -872,6 +193,8 @@
             </section>
         </article>
     </div>
+
+    <script src="data.js?v=20260528" defer></script>
     <script src="app.js?v=20260528" defer></script>
 </body>
 

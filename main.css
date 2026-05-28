@@ -184,6 +184,7 @@
             .saved-course-delete { flex: 0 0 auto; border: 0; border-radius: var(--radius-full); padding: var(--space-1) var(--space-3); background: var(--color-gray-200); color: var(--color-gray-800); font-size: 12px; font-weight: 700; }
             .saved-course-delete:hover { background: var(--color-brand-100); color: var(--color-brand-600); }
             .result-sidebar, .result-map-area { width: 100%; min-width: 0; }
+            .result-course-grid { grid-template-columns: 1fr; }
             .map-container { width: 100%; height: 350px; overflow: hidden; border: 1px solid var(--color-gray-300); border-radius: var(--radius-2xl); background: var(--color-gray-50); box-shadow: var(--shadow-sm); }
             .map-placeholder { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; background: var(--color-gray-100); color: var(--color-gray-500); font-size: 16px; text-align: center; }
             /* JS媛 hidden ?띿꽦怨?.is-open ?대옒?ㅻ? ?④퍡 ?좉??댁꽌 ?곸꽭 媛?대뱶 紐⑤떖???닿퀬 ?レ뒿?덈떎. */
@@ -248,6 +249,7 @@
                 .path-node { flex: 1; }
                 .result-flex-layout { flex-direction: row; align-items: flex-start; }
                 .result-sidebar { flex: 1; max-width: 400px; }
+                .result-sidebar .course-grid { grid-template-columns: 1fr; }
                 .result-map-area { position: sticky; top: var(--space-5); flex: 2.5; }
                 .result-saved-panel { position: sticky; top: var(--space-5); flex: 0 0 300px; }
                 .map-container { height: 600px; }
