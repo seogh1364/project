@@ -67,6 +67,40 @@ const COURSE_DATA = [
         ]
     },
     {
+        id: 'hapjeong-okdongsik-anthracite',
+        theme: 'card-green',
+        priceRange: '총 3~4만원',
+        maxPrice: 40000,
+        title: '합정동 골목 산책 데이트',
+        description: '합정에서 돼지곰탕, 카페 골목, 공장형 감성 카페, 한강 산책을 즐기는 코스',
+        duration: '약 3~4시간',
+        transport: '도보 위주',
+        guideImage: '웹 사이트 메인화면 일러.PNG',
+        places: [
+            { icon: '🍲', name: '옥동식', mapName: '옥동식 합정', priceText: '약 23,000원', description: '합정역 8번 출구에서 걸어가 깔끔한 돼지곰탕으로 편하게 식사하는 시작 코스입니다.' },
+            { icon: '🌿', name: '합정 카페 골목 산책', mapName: '합정 카페거리', priceText: '0원', description: '메인 거리보다 한적한 골목에서 작은 편집샵과 빈티지샵을 가볍게 둘러보는 산책 코스입니다.' },
+            { icon: '☕', name: '앤트러사이트 합정점', mapName: '앤트러사이트 합정점', priceText: '약 12,000원', description: '공장형 감성의 카페에서 커피와 디저트를 나누며 오래 이야기하기 좋은 코스입니다.' },
+            { icon: '🌅', name: '양화한강공원 산책', mapName: '양화한강공원', priceText: '약 5,000원', description: '노을 시간대에 편의점 음료와 간식을 들고 걷기 좋은 마무리 산책 코스입니다.' }
+        ]
+    },
+    {
+        id: 'hapjeong-donkatsu-photo',
+        theme: 'card-green',
+        priceRange: '총 5~6만원',
+        maxPrice: 60000,
+        title: '합정동 편집샵 무드 데이트',
+        description: '합정에서 돈까스, 편집샵 구경, 포토이즘, 감성 카페를 즐기는 코스',
+        duration: '약 3~4시간',
+        transport: '도보 위주',
+        guideImage: '웹 사이트 메인화면 일러.PNG',
+        places: [
+            { icon: '🍛', name: '최강금돈까스', mapName: '최강금돈까스 합정', priceText: '약 30,000원', description: '합정역에서 걸어가 두툼한 돈까스와 카레 조합으로 든든하게 시작하는 식사 코스입니다.' },
+            { icon: '🛍️', name: '소품샵 & 편집샵 구경', mapName: '합정역', priceText: '약 5,000원', description: 'LP샵, 빈티지샵, 향수샵이 있는 조용한 골목을 둘러보는 중간 코스입니다.' },
+            { icon: '📷', name: '포토이즘 합정점', mapName: '포토이즘 합정점', priceText: '약 8,000원', description: '흑백이나 감성 프레임으로 커플 사진을 남기는 가벼운 체험 코스입니다.' },
+            { icon: '☕', name: '카페 공명 합정점', mapName: '카페 공명 합정점', priceText: '약 15,000원', description: '한옥 감성이 섞인 분위기에서 비주얼 좋은 디저트와 음료로 마무리하는 코스입니다.' }
+        ]
+    },
+    {
         id: 'yeonnam-mmmua-walk',
         theme: 'card-green',
         priceRange: '총 3~4만원',
@@ -98,6 +132,40 @@ const COURSE_DATA = [
             { icon: '🎨', name: '도토리 캐리커쳐', priceText: '체험', description: '둘만의 모습을 그림으로 남길 수 있는 이색 체험 코스입니다.' },
             { icon: '🏘️', name: '연남동 골목 산책', priceText: '산책', description: '주택가 골목과 작은 가게들을 구경하며 카페로 이동하는 코스입니다.' },
             { icon: '☕', name: '연남동 벚꽃집', priceText: '카페', description: '단독주택 감성의 카페에서 음료를 마시며 마무리하는 코스입니다.' }
+        ]
+    },
+    {
+        id: 'yeonnam-toma-breadypost',
+        theme: 'card-green',
+        priceRange: '총 3~4만원',
+        maxPrice: 40000,
+        title: '연남동 토마 골목 데이트',
+        description: '연남토마에서 식사하고 경의선숲길, 브레디포스트, 홍대 거리를 즐기는 코스',
+        duration: '약 3~4시간',
+        transport: '도보 위주',
+        guideImage: '웹 사이트 메인화면 일러.PNG',
+        places: [
+            { icon: '🍝', name: '연남토마 연남본점', mapName: '연남토마 연남본점', priceText: '약 20,000원', description: '홍대입구역 3번 출구에서 걸어가 덮밥과 파스타로 무난하게 시작하는 식사 코스입니다.' },
+            { icon: '🌿', name: '경의선숲길 산책', mapName: '경의선숲길 연남동', priceText: '0원', description: '소품샵과 엽서샵을 둘러보며 한적한 연남동 골목 분위기를 즐기는 산책 코스입니다.' },
+            { icon: '☕', name: '브레디포스트 연남점', mapName: '브레디포스트 연남점', priceText: '약 12,000원', description: '프렌치토스트와 디저트가 유명한 카페에서 창가 분위기를 즐기는 코스입니다.' },
+            { icon: '🎶', name: '홍대 걷고싶은거리', mapName: '홍대 걷고싶은거리', priceText: '약 5,000원', description: '버스킹과 야간 거리 분위기를 구경하며 간식이나 음료로 마무리하는 코스입니다.' }
+        ]
+    },
+    {
+        id: 'yeonnam-heygeorge-overdeep',
+        theme: 'card-green',
+        priceRange: '총 5~6만원',
+        maxPrice: 60000,
+        title: '연남동 오버딥 무드 데이트',
+        description: '연남동 안쪽에서 양식, 골목 산책, 우드톤 카페, 홍대 거리를 즐기는 코스',
+        duration: '약 3~4시간',
+        transport: '도보 위주',
+        guideImage: '웹 사이트 메인화면 일러.PNG',
+        places: [
+            { icon: '🍽️', name: 'Hey George', mapName: 'Hey George 연남', priceText: '약 30,000원', description: '연남동 골목 안쪽의 조용한 양식 맛집에서 파스타와 음료로 시작하는 코스입니다.' },
+            { icon: '🏘️', name: '연남동 주택가 골목 산책', mapName: '연남동 골목길', priceText: '약 5,000원', description: '빈티지샵, 독립서점, 향수샵을 구경하며 메인 거리보다 조용하게 걷는 코스입니다.' },
+            { icon: '☕', name: 'Overdeep', mapName: 'Overdeep 연남', priceText: '약 13,000원', description: '우드톤 감성 카페에서 크림라떼와 바스크 치즈케이크를 나누는 디저트 코스입니다.' },
+            { icon: '🎶', name: '홍대 걷고싶은거리', mapName: '홍대 걷고싶은거리', priceText: '약 7,000원', description: '버스킹과 거리 공연을 보며 편의점 음료로 가볍게 마무리하는 산책 코스입니다.' }
         ]
     },
     {
