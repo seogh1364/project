@@ -34,7 +34,7 @@ const COURSE_DATA = [
     {
         id: 'mangwon-zero-deepblue-market',
         theme: 'card-green',
-        priceRange: '총 32,000~40,000원',
+        priceRange: '총 3~4만원',
         maxPrice: 40000,
         title: '망원 감성 데이트',
         description: '망원에서 소품샵, 카페, 시장 먹거리, 사진, 산책을 즐기는 코스',
@@ -52,7 +52,7 @@ const COURSE_DATA = [
     {
         id: 'mangwon-poeunro-tea',
         theme: 'card-green',
-        priceRange: '총 49,000~58,000원',
+        priceRange: '총 5~6만원',
         maxPrice: 58000,
         title: '망원 포은로 데이트',
         description: '망원역과 포은로 주변에서 서점, 식사, 티룸, 산책을 즐기는 코스',
@@ -64,6 +64,23 @@ const COURSE_DATA = [
             { icon: '🍱', name: '헤키 망원', priceText: '31,000~36,000원', description: '돈카츠 정식 중심으로 든든하게 식사하는 코스입니다.' },
             { icon: '🍵', name: '티노마드', priceText: '18,000~22,000원', description: '차와 디저트로 오래 앉아 이야기하기 좋은 티룸 코스입니다.' },
             { icon: '🌿', name: '포은로 산책', priceText: '0원', description: '망원2동 쪽으로 빠지지 않는 짧은 산책 마무리입니다.' }
+        ]
+    },
+    {
+        id: 'mangwon-market-dangdo-picnic',
+        theme: 'card-green',
+        priceRange: '총 4~5만원',
+        maxPrice: 50000,
+        title: '망원 피크닉 데이트',
+        description: '망원시장에서 먹거리를 사고 당도, 망리단길, 한강공원 피크닉까지 즐기는 코스',
+        duration: '약 4~5시간',
+        transport: '도보 위주',
+        guideImage: 'course-img/망원 감성.png',
+        places: [
+            { icon: '🥟', name: '망원시장 먹거리', mapName: '망원시장', priceText: '약 21,000원', description: '우이락 고추튀김, 고로케나 닭강정, 호떡처럼 든든한 먹거리와 피크닉 간식을 준비하는 시작 코스입니다.' },
+            { icon: '🍨', name: '당도 젤라또', mapName: '당도 망원', priceText: '약 11,000원', description: '망리단길 산책 중 들르기 좋은 젤라또 맛집에서 쌀, 소금 같은 진한 수제 맛을 가볍게 즐기는 디저트 코스입니다.' },
+            { icon: '🛍️', name: '망리단길 소품샵', mapName: '망리단길', priceText: '약 5,000원', description: '제로스페이스와 포롱포롱 잡화점 같은 골목 소품샵을 구경하고, 엽서나 스티커를 부담 없이 골라보는 코스입니다.' },
+            { icon: '🌅', name: '망원한강공원 피크닉', mapName: '망원한강공원', priceText: '약 8,000원', description: '시장과 당도에서 산 간식을 들고 한강공원으로 걸어가, 성산대교 뷰와 일몰을 보며 마무리하는 피크닉 코스입니다.' }
         ]
     },
     {
@@ -111,10 +128,10 @@ const COURSE_DATA = [
         transport: '도보 위주',
         guideImage: 'course-img/연남 산책.png',
         places: [
-            { icon: '🍽️', name: '음무아 연남점', priceText: '식사', description: '홍대입구역에서 만나 식사로 데이트를 시작하기 좋은 연남동 맛집 코스입니다.' },
+            { icon: '🍽️', name: '음무아 연남점', mapName: '음무아 연남점', priceText: '약 27,000원', description: '홍대입구역에서 만나 식사로 데이트를 시작하기 좋은 연남동 맛집 코스입니다.' },
             { icon: '🌿', name: '경의선 숲길', priceText: '산책', description: '식사 후 연트럴파크 중심부를 따라 천천히 걷는 산책 코스입니다.' },
             { icon: '🎁', name: '소품샵 구경', priceText: '구경', description: '숲길 주변의 아기자기한 가게를 둘러보며 가볍게 쉬어가는 코스입니다.' },
-            { icon: '☕', name: '브레디포스트 연남점', priceText: '카페', description: '빈티지한 분위기의 카페에서 디저트와 대화로 마무리하는 코스입니다.' }
+            { icon: '☕', name: '카페 공명 연남점', mapName: '카페 공명 연남점', priceText: '약 15,000원', description: '카페에서 음료와 디저트를 나누며 대화로 마무리하는 코스입니다.' }
         ]
     },
     {
@@ -128,10 +145,10 @@ const COURSE_DATA = [
         transport: '도보 위주',
         guideImage: 'course-img/연남 이색.png',
         places: [
-            { icon: '🍝', name: '연남토마', priceText: '식사', description: '홍대입구역에서 걸어가 식사로 시작하는 연남동 메인 코스입니다.' },
-            { icon: '🎨', name: '도토리 캐리커쳐', priceText: '체험', description: '둘만의 모습을 그림으로 남길 수 있는 이색 체험 코스입니다.' },
+            { icon: '🍝', name: '연남토마 본점', mapName: '연남토마 본점', priceText: '약 33,000원', description: '홍대입구역에서 걸어가 식사로 시작하는 연남동 메인 코스입니다.' },
+            { icon: '🎨', name: '도토리 캐리커쳐', mapName: '도토리 캐리커쳐 연남본점', priceText: '약 14,000원', description: '둘만의 모습을 그림으로 남길 수 있는 이색 체험 코스입니다.' },
             { icon: '🏘️', name: '연남동 골목 산책', priceText: '산책', description: '주택가 골목과 작은 가게들을 구경하며 카페로 이동하는 코스입니다.' },
-            { icon: '☕', name: '연남동 벚꽃집', priceText: '카페', description: '단독주택 감성의 카페에서 음료를 마시며 마무리하는 코스입니다.' }
+            { icon: '☕', name: '연남동집', mapName: '연남동집', priceText: '약 13,000~15,000원', description: '카페에서 음료와 디저트를 나누며 마무리하는 코스입니다.' }
         ]
     },
     {
@@ -171,7 +188,7 @@ const COURSE_DATA = [
     {
         id: 'seogyo-3-4',
         theme: 'card-green',
-        priceRange: '총 41,000원',
+        priceRange: '총 3~4만원',
         maxPrice: 41000,
         title: '서교동 디자인 데이트',
         description: '서교동에서 디자인 소품, 식사, 카페, 사진을 즐기는 코스',
@@ -188,7 +205,7 @@ const COURSE_DATA = [
     {
         id: 'seogyo-5-6',
         theme: 'card-green',
-        priceRange: '총 60,000원',
+        priceRange: '총 5~6만원',
         maxPrice: 60000,
         title: '서교동 무드 데이트',
         description: '서교동에서 소품샵, 피자, 칵테일을 즐기는 분위기 코스',

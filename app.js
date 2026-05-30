@@ -17,18 +17,21 @@
         savedCourseLists: Array.from(document.querySelectorAll('[data-saved-course-list]')),
         savedEmptyMessages: Array.from(document.querySelectorAll('[data-saved-empty]')),
         savedCounts: Array.from(document.querySelectorAll('[data-saved-count]')),
-        guideModal: document.querySelector('[data-guide-modal]'),
+        guideScreen: document.querySelector('[data-guide-screen]'),
         guideCloseButton: document.querySelector('[data-guide-close]'),
+        guideSaveButton: document.querySelector('[data-guide-save]'),
         guideTitle: document.querySelector('.guide-title'),
         guideFlow: document.querySelector('[data-guide-flow]'),
-        guideImage: document.querySelector('.guide-detail-image'),
+        guideMap: document.querySelector('[data-guide-map]'),
+        guideMapPlaceholder: document.querySelector('[data-guide-map-placeholder]'),
     };
 
     const DEFAULT_BUDGET_TEXT = '10,000원';
-    const GUIDE_TRANSITION_MS = 240;
     const SAVED_COURSES_KEY = 'manwon-date.savedCourses';
-    const DEFAULT_GUIDE_IMAGE = '웹 사이트 메인화면 일러.PNG';
-    let lastGuideTrigger = null;
+    const SAVE_MESSAGE_DURATION_MS = 5000;
+    const SAVE_MESSAGE_FADE_MS = 450;
+    const saveMessageTimers = new WeakMap();
+    let guideReturnScreen = 'result';
 
     const escapeHTML = (value = '') => String(value)
         .replace(/&/g, '&amp;')
@@ -47,9 +50,12 @@
     const getResultCards = () => Array.from(document.querySelectorAll('[data-screen="result"] [data-course-card]'));
     const getCourseCard = (trigger) => trigger?.closest('[data-course-card]') || getResultCards()[0] || null;
     const getCourseFromTrigger = (trigger) => {
+        const triggerCourseId = trigger?.dataset.courseId || trigger?.closest('[data-course-id]')?.dataset.courseId;
+        if (triggerCourseId) return getCourseById(triggerCourseId) || courses[0] || null;
         const card = getCourseCard(trigger);
         return getCourseById(card?.dataset.courseId) || courses[0] || null;
     };
+    const getScreenFromTrigger = (trigger) => trigger?.closest('[data-screen]')?.dataset.screen || 'result';
 
     const getMapCourseId = (fallback = '') => fallback || getResultCards()[0]?.dataset.courseId || courses[0]?.id || '';
 
@@ -121,12 +127,9 @@
     const getCourseMeta = (course) => [course.duration, course.transport].filter(Boolean).join(' · ') || course.meta || '';
 
     const generatePlacesHTML = (course) => course.places.map((place, index) => {
-        const description = place.description
-            ? ` data-step-desc="${escapeHTML(place.description)}"`
-            : '';
         const arrow = index < course.places.length - 1 ? '<div class="path-arrow">→</div>' : '';
         return `
-            <div class="path-node"${description}>
+            <div class="path-node">
                 <div class="node-icon">${escapeHTML(place.icon)}</div>
                 <span class="node-name">${escapeHTML(place.name)}</span>
                 <span class="node-price">${escapeHTML(place.priceText)}</span>
@@ -139,16 +142,16 @@
         const isHome = variant === 'home';
         const actionHTML = isHome
             ? `<button type="button" class="more-btn" data-route="result" data-course-id="${escapeHTML(course.id)}">자세히 보기 &gt;</button>`
-            : `<div class="action-stack">
-                    <button class="action-btn save-btn" type="button" data-save-course data-course-id="${escapeHTML(course.id)}">나만의 코스 저장</button>
+            : `<button class="save-btn" type="button" data-save-course data-course-id="${escapeHTML(course.id)}"
+                    aria-label="나만의 코스 저장" aria-pressed="false">♡</button>
+               <div class="action-stack">
                     <button class="action-btn green-btn" type="button" data-guide-open data-course-id="${escapeHTML(course.id)}">코스 상세 가이드 보기</button>
                </div>
                <p class="save-status" data-save-status aria-live="polite"></p>`;
 
         return `
-            <article class="course-card ${escapeHTML(course.theme || 'card-green')}" data-course-card
-                data-course-id="${escapeHTML(course.id)}" data-price="${Number(course.maxPrice) || 0}"
-                data-guide-image="${escapeHTML(course.guideImage || '')}">
+            <article class="course-card ${isHome ? '' : 'has-save-action'} ${escapeHTML(course.theme || 'card-green')}" data-course-card
+                data-course-id="${escapeHTML(course.id)}" data-price="${Number(course.maxPrice) || 0}">
                 <div class="card-top">
                     <span class="price-tag">${escapeHTML(course.priceRange)}</span>
                     <h3>${escapeHTML(course.title)}</h3>
@@ -173,9 +176,43 @@
         }
     };
 
+    const clearSaveMessageTimers = (target) => {
+        const timers = saveMessageTimers.get(target);
+        if (!timers) return;
+        if (timers.hide) window.clearTimeout(timers.hide);
+        if (timers.clear) window.clearTimeout(timers.clear);
+        saveMessageTimers.delete(target);
+    };
+
     const setSaveMessage = (message, card = null) => {
-        const target = card?.querySelector('[data-save-status]') || document.querySelector('[data-save-status]');
-        if (target) target.textContent = message;
+        const target = card?.querySelector('[data-save-status]');
+        if (!target) return;
+        clearSaveMessageTimers(target);
+        target.classList.remove('is-visible');
+
+        if (!message) {
+            const clear = window.setTimeout(() => {
+                target.textContent = '';
+                saveMessageTimers.delete(target);
+            }, SAVE_MESSAGE_FADE_MS);
+            saveMessageTimers.set(target, { clear });
+            return;
+        }
+
+        target.textContent = message;
+        window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => target.classList.add('is-visible'));
+        });
+
+        const hide = window.setTimeout(() => {
+            target.classList.remove('is-visible');
+            const clear = window.setTimeout(() => {
+                target.textContent = '';
+                saveMessageTimers.delete(target);
+            }, SAVE_MESSAGE_FADE_MS);
+            saveMessageTimers.set(target, { clear });
+        }, SAVE_MESSAGE_DURATION_MS);
+        saveMessageTimers.set(target, { hide });
     };
 
     const readSavedCourses = () => {
@@ -199,43 +236,63 @@
 
     const createSavedCourseItem = (course) => {
         const item = document.createElement('article');
-        item.className = 'saved-course-item grid gap-2 rounded-2xl border border-[#f0e3da] bg-white p-4 shadow-sm';
+        item.className = 'saved-course-item';
         item.dataset.savedCourseId = course.id;
+        item.dataset.courseId = course.id;
 
         const title = document.createElement('h4');
-        title.className = 'saved-course-title text-base font-black text-[#5d4037]';
+        title.className = 'saved-course-title';
         title.textContent = course.title || '이름 없는 코스';
 
         const meta = document.createElement('p');
-        meta.className = 'saved-course-meta text-xs font-semibold leading-relaxed text-[#6d5a52]';
+        meta.className = 'saved-course-meta';
         meta.textContent = [course.description, getCourseMeta(course)].filter(Boolean).join(' · ');
 
         const route = document.createElement('p');
-        route.className = 'saved-course-route text-xs font-semibold leading-relaxed text-[#6d5a52]';
+        route.className = 'saved-course-route';
         const savedPlaces = course.places || course.steps || [];
         route.textContent = savedPlaces.map((place) => place.name).filter(Boolean).join(' → ');
 
         const footer = document.createElement('div');
-        footer.className = 'saved-course-footer flex items-center justify-between gap-3';
+        footer.className = 'saved-course-footer';
 
         const price = document.createElement('span');
-        price.className = 'saved-course-price text-sm font-black text-[#ff6e87]';
+        price.className = 'saved-course-price';
         price.textContent = course.priceRange || course.totalPrice || '';
 
         const deleteButton = document.createElement('button');
-        deleteButton.className = 'saved-course-delete rounded-full bg-[#f3ebe6] px-3 py-1 text-xs font-bold text-[#6d5a52] hover:bg-[#fff1e7] hover:text-[#ff6e87]';
+        deleteButton.className = 'saved-course-delete';
         deleteButton.type = 'button';
         deleteButton.dataset.deleteSavedCourse = course.id;
         deleteButton.textContent = '삭제';
 
-        footer.append(price, deleteButton);
+        const courseButton = document.createElement('button');
+        courseButton.className = 'saved-course-guide';
+        courseButton.type = 'button';
+        courseButton.dataset.guideOpen = '';
+        courseButton.dataset.courseId = course.id;
+        courseButton.textContent = '코스';
+
+        footer.append(price, courseButton, deleteButton);
         item.append(title, meta, route, footer);
         return item;
     };
 
+    const updateSaveButtons = (savedCourses = readSavedCourses()) => {
+        const savedIds = new Set(savedCourses.map((course) => course.id));
+
+        document.querySelectorAll('[data-save-course]').forEach((button) => {
+            const courseId = button.dataset.courseId;
+            const isSaved = savedIds.has(courseId);
+            button.classList.toggle('is-saved', isSaved);
+            button.textContent = isSaved ? '♥' : '♡';
+            button.setAttribute('aria-label', isSaved ? '저장 완료된 코스' : '나만의 코스 저장');
+            button.setAttribute('aria-pressed', String(isSaved));
+        });
+    };
+
     const renderSavedCourses = () => {
         const savedCourses = readSavedCourses();
-        const savedIds = new Set(savedCourses.map((course) => course.id));
 
         dom.savedCounts.forEach((count) => {
             count.textContent = `${savedCourses.length}개`;
@@ -246,23 +303,20 @@
         dom.savedCourseLists.forEach((list) => {
             list.replaceChildren(...savedCourses.map(createSavedCourseItem));
         });
-        document.querySelectorAll('[data-save-course]').forEach((button) => {
-            const courseId = button.dataset.courseId;
-            const isSaved = savedIds.has(courseId);
-            button.classList.toggle('is-saved', isSaved);
-            button.textContent = isSaved ? '저장 완료' : '나만의 코스 저장';
-            button.setAttribute('aria-pressed', String(isSaved));
-        });
+        updateSaveButtons(savedCourses);
     };
 
     const saveCourse = (button) => {
         const course = getCourseFromTrigger(button);
-        const card = getCourseCard(button);
+        const card = button?.closest('[data-course-card]') || null;
         if (!course) return;
 
         const savedCourses = readSavedCourses();
         if (savedCourses.some((savedCourse) => savedCourse.id === course.id)) {
-            setSaveMessage('이미 저장된 코스예요.', card);
+            const nextCourses = savedCourses.filter((savedCourse) => savedCourse.id !== course.id);
+            if (!writeSavedCourses(nextCourses, card)) return;
+            renderSavedCourses();
+            setSaveMessage('저장한 코스를 삭제했어요.', card);
             return;
         }
 
@@ -279,7 +333,7 @@
     };
 
     const showScreen = (target, options = {}) => {
-        const allowedScreens = ['home', 'courses', 'result', 'saved'];
+        const allowedScreens = ['home', 'courses', 'result', 'saved', 'guide'];
         const next = allowedScreens.includes(target) ? target : 'home';
         dom.screens.forEach((screen) => {
             const isActive = screen.dataset.screen === next;
@@ -321,7 +375,13 @@
         const targetCard = courseId
             ? getResultCards().find((card) => card.dataset.courseId === courseId)
             : getResultCards()[0];
-        targetCard?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (!targetCard) return;
+        const isMobileResultCarousel = window.matchMedia('(max-width: 1023px)').matches;
+        targetCard.scrollIntoView({
+            behavior: 'smooth',
+            block: isMobileResultCarousel ? 'nearest' : 'start',
+            inline: isMobileResultCarousel ? 'center' : 'nearest',
+        });
     };
 
     const setGuideTitle = (title) => {
@@ -334,9 +394,9 @@
     };
 
     const updateGuideSummary = (course) => {
-        const budget = dom.guideModal?.querySelector('[data-guide-summary="budget"] strong');
-        const durationNode = dom.guideModal?.querySelector('[data-guide-summary="duration"] strong');
-        const transportNode = dom.guideModal?.querySelector('[data-guide-summary="transport"] strong');
+        const budget = dom.guideScreen?.querySelector('[data-guide-summary="budget"] strong');
+        const durationNode = dom.guideScreen?.querySelector('[data-guide-summary="duration"] strong');
+        const transportNode = dom.guideScreen?.querySelector('[data-guide-summary="transport"] strong');
         if (budget) budget.textContent = (course.priceRange || '').replace(/^총\s*/, '');
         if (durationNode) durationNode.textContent = course.duration || '정보 없음';
         if (transportNode) transportNode.textContent = course.transport || '정보 없음';
@@ -344,73 +404,77 @@
 
     const createGuideStage = (place, index) => {
         const stage = document.createElement('article');
-        stage.className = 'guide-stage rounded-3xl border border-[#dff2e2] bg-[#fbfffb] p-5 text-center';
+        stage.className = 'guide-stage';
         stage.dataset.guideStage = `step-${index + 1}`;
 
+        const heading = document.createElement('div');
+        heading.className = 'guide-stage-heading';
         const icon = document.createElement('span');
-        icon.className = 'guide-stage-icon text-3xl';
+        icon.className = 'guide-stage-icon';
         icon.textContent = place.icon || '📍';
+        const copy = document.createElement('div');
+        copy.className = 'guide-stage-copy';
+        const name = document.createElement('strong');
+        name.className = 'guide-stage-name';
+        name.textContent = place.name || '코스 단계';
+        const price = document.createElement('p');
+        price.className = 'guide-stage-price';
+        price.textContent = place.priceText || '';
+        copy.append(name, price);
+        heading.append(icon, copy);
 
         const text = document.createElement('div');
-        const name = document.createElement('strong');
-        name.className = 'block text-lg font-black text-[#102034]';
-        name.textContent = place.name || '코스 단계';
+        text.className = 'guide-stage-desc';
         const desc = document.createElement('span');
-        desc.className = 'text-sm font-semibold text-[#6d5a52]';
         desc.textContent = place.description || (place.priceText === '0원'
             ? '가볍게 둘러보기 좋은 코스입니다.'
             : `${place.priceText} 정도로 즐길 수 있는 코스입니다.`);
-        text.append(name, desc);
+        text.append(desc);
 
-        const price = document.createElement('p');
-        price.className = 'guide-stage-price mt-3 font-black text-[#2b9f49]';
-        price.textContent = place.priceText || '';
-
-        stage.append(icon, text, price);
+        stage.append(heading, text);
         return stage;
     };
 
     const updateGuideFlow = (course) => {
         if (!dom.guideFlow) return;
         const places = course.places || [];
-        dom.guideFlow.style.setProperty('--guide-step-count', String(Math.max(places.length, 1)));
         dom.guideFlow.replaceChildren(...places.map(createGuideStage));
+    };
+
+    const updateGuideMapPlaceholder = (course) => {
+        if (!dom.guideMap) return;
+        dom.guideMap.dataset.courseId = course.id;
+        /*
+         * JS 담당자 메모:
+         * - data-guide-map 요소를 지도 API mount 대상으로 사용하세요.
+         * - 현재 코스 id는 data-course-id에 들어갑니다.
+         * - 장소 검색어는 course.places의 mapName || name 값을 사용하면 됩니다.
+         */
+        if (dom.guideMapPlaceholder) {
+            dom.guideMapPlaceholder.textContent = `${course.title} 코스 지도가 여기에 표시됩니다.`;
+        }
     };
 
     const updateGuide = (course) => {
         setGuideTitle(course.title);
         updateGuideSummary(course);
         updateGuideFlow(course);
-        if (dom.guideModal) dom.guideModal.dataset.courseId = course.id;
-        if (dom.guideImage) {
-            dom.guideImage.src = course.guideImage || DEFAULT_GUIDE_IMAGE;
-            dom.guideImage.alt = `${course.title} 상세 참고 이미지`;
-        }
+        updateGuideMapPlaceholder(course);
+        if (dom.guideScreen) dom.guideScreen.dataset.courseId = course.id;
+        if (dom.guideSaveButton) dom.guideSaveButton.dataset.courseId = course.id;
+        updateSaveButtons();
     };
 
-    const openGuide = (button = null) => {
+    const openGuideScreen = (button = null) => {
         const course = getCourseFromTrigger(button);
-        if (!course || !dom.guideModal) return;
-        lastGuideTrigger = button;
+        if (!course || !dom.guideScreen) return;
+        guideReturnScreen = getScreenFromTrigger(button);
         updateGuide(course);
-        dom.guideModal.hidden = false;
-        dom.guideModal.classList.remove('hidden');
-        dom.guideModal.classList.add('flex');
-        dom.guideModal.getBoundingClientRect();
-        dom.guideModal.classList.add('is-open');
+        showScreen('guide');
         dom.guideCloseButton?.focus();
     };
 
-    const closeGuide = () => {
-        if (!dom.guideModal) return;
-        dom.guideModal.classList.remove('is-open');
-        window.setTimeout(() => {
-            dom.guideModal.hidden = true;
-            dom.guideModal.classList.add('hidden');
-            dom.guideModal.classList.remove('flex');
-            lastGuideTrigger?.focus();
-        }, GUIDE_TRANSITION_MS);
-    };
+    const closeGuideScreen = () => showScreen(guideReturnScreen || 'result');
 
     const handleMenuAction = (action) => {
         closeListMenu();
@@ -429,7 +493,7 @@
         }
         if (action === 'guide') {
             showScreen('result');
-            window.setTimeout(() => openGuide(getResultCards()[0]?.querySelector('[data-guide-open]')), 320);
+            window.setTimeout(() => openGuideScreen(getResultCards()[0]?.querySelector('[data-guide-open]')), 320);
         }
     };
 
@@ -467,7 +531,7 @@
         const guideButton = event.target.closest('[data-guide-open]');
         if (guideButton) {
             event.preventDefault();
-            openGuide(guideButton);
+            openGuideScreen(guideButton);
             return;
         }
 
@@ -492,10 +556,7 @@
         });
     });
 
-    dom.guideCloseButton?.addEventListener('click', closeGuide);
-    dom.guideModal?.addEventListener('click', (event) => {
-        if (event.target === dom.guideModal) closeGuide();
-    });
+    dom.guideCloseButton?.addEventListener('click', closeGuideScreen);
     document.addEventListener('click', (event) => {
         if (!dom.listMenu || dom.listMenu.hidden) return;
         if (dom.listMenu.contains(event.target) || dom.openSavedButton?.contains(event.target)) return;
@@ -503,7 +564,7 @@
     });
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && dom.listMenu && !dom.listMenu.hidden) closeListMenu();
-        if (event.key === 'Escape' && dom.guideModal && !dom.guideModal.hidden) closeGuide();
+        if (event.key === 'Escape' && document.querySelector('[data-screen="guide"].is-active')) closeGuideScreen();
     });
 
     window.addEventListener('popstate', () => {
@@ -512,5 +573,6 @@
 
     renderCourseCards();
     renderSavedCourses();
+    if (courses[0]) updateGuide(courses[0]);
     showScreen(location.hash.replace('#', ''), { updateHash: false });
 })();
