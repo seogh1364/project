@@ -7,6 +7,7 @@
         selectedBudget: document.querySelector('[data-selected-budget]'),
         budgetForm: document.querySelector('[data-budget-form]'),
         budgetButtons: Array.from(document.querySelectorAll('[data-budget]')),
+        budgetResetButton: document.querySelector('[data-budget-reset]'),
         openSavedButton: document.querySelector('[data-open-saved]'),
         listMenu: document.querySelector('[data-list-menu]'),
         listMenuCloseButton: document.querySelector('[data-list-menu-close]'),
@@ -42,6 +43,7 @@
         if (!digits) return DEFAULT_BUDGET_TEXT;
         return `${Number(digits).toLocaleString('ko-KR')}원`;
     };
+    const parseBudget = (value) => Number(String(value || '').replace(/[^0-9]/g, '')) || 0;
 
     const getCourseById = (courseId) => courses.find((course) => course.id === courseId) || null;
     const getResultCards = () => Array.from(document.querySelectorAll('[data-screen="result"] [data-course-card]'));
@@ -138,7 +140,7 @@
     const generateCourseCardHTML = (course, variant = 'actions') => {
         const isHome = variant === 'home';
         const actionHTML = isHome
-            ? `<button type="button" class="more-btn" data-route="result" data-course-id="${escapeHTML(course.id)}">자세히 보기 &gt;</button>`
+            ? `<button type="button" class="more-btn" data-guide-open data-course-id="${escapeHTML(course.id)}">자세히 보기 &gt;</button>`
             : `<div class="action-stack">
                     <button class="action-btn save-btn" type="button" data-save-course data-course-id="${escapeHTML(course.id)}">나만의 코스 저장</button>
                     <button class="action-btn green-btn" type="button" data-guide-open data-course-id="${escapeHTML(course.id)}">코스 상세 가이드 보기</button>
@@ -445,9 +447,16 @@
     dom.budgetButtons.forEach((button) => {
         button.addEventListener('click', () => {
             if (!dom.budgetInput) return;
-            dom.budgetInput.value = Number(button.dataset.budget).toLocaleString('ko-KR');
+            const currentBudget = parseBudget(dom.budgetInput.value);
+            const addBudget = parseBudget(button.dataset.budget);
+            dom.budgetInput.value = (currentBudget + addBudget).toLocaleString('ko-KR');
             dom.budgetInput.focus();
         });
+    });
+    dom.budgetResetButton?.addEventListener('click', () => {
+        if (!dom.budgetInput) return;
+        dom.budgetInput.value = '';
+        dom.budgetInput.focus();
     });
 
     dom.budgetForm?.addEventListener('submit', (event) => {

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon.ico?v=1.1" type="image/x-icon">
     <title>만원 데이트 - 대학생 맞춤 가성비 데이트</title>
-    <link rel="stylesheet" href="main.css?v=20260528">
+    <link rel="stylesheet" href="main.css?v=20260602-3">
     <script type="text/javascript"
         src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=3a7e4e1b88191fa6235e12135a54c2ca&libraries=services"></script>
 </head>
@@ -58,7 +58,37 @@
                         </p>
 
                         <form class="search-card" data-budget-form>
-                            <p class="card-label">오늘 데이트 예산을 입력해 주세요</p>
+                            <div class="search-card-header">
+                                <p class="card-label">오늘 데이트 예산을 입력해 주세요</p>
+                                <section class="date-ratio-card" aria-labelledby="date-ratio-title">
+                                    <h3 class="date-ratio-title" id="date-ratio-title">데이트 비중</h3>
+                                    <div class="date-ratio-steps" role="radiogroup" aria-label="데이트 비중">
+                                        <input class="date-ratio-input" type="radio" name="date-ratio"
+                                            id="date-ratio-1" value="1">
+                                        <label class="date-ratio-step" for="date-ratio-1">1</label>
+
+                                        <input class="date-ratio-input" type="radio" name="date-ratio"
+                                            id="date-ratio-2" value="2">
+                                        <label class="date-ratio-step" for="date-ratio-2">2</label>
+
+                                        <input class="date-ratio-input" type="radio" name="date-ratio"
+                                            id="date-ratio-3" value="3" checked>
+                                        <label class="date-ratio-step" for="date-ratio-3">3</label>
+
+                                        <input class="date-ratio-input" type="radio" name="date-ratio"
+                                            id="date-ratio-4" value="4">
+                                        <label class="date-ratio-step" for="date-ratio-4">4</label>
+
+                                        <input class="date-ratio-input" type="radio" name="date-ratio"
+                                            id="date-ratio-5" value="5">
+                                        <label class="date-ratio-step" for="date-ratio-5">5</label>
+                                    </div>
+                                    <div class="date-ratio-labels" aria-hidden="true">
+                                        <span>길거리 위주</span>
+                                        <span>음식 위주</span>
+                                    </div>
+                                </section>
+                            </div>
                             <div class="input-row">
                                 <div class="price-box">
                                     <span class="currency">₩</span>
@@ -73,6 +103,7 @@
                                 <button class="tag" type="button" data-budget="10000">1만원</button>
                                 <button class="tag" type="button" data-budget="20000">2만원</button>
                                 <button class="tag" type="button" data-budget="30000">3만원</button>
+                                <button class="tag" type="button" data-budget-reset>초기화</button>
                             </div>
                         </form>
                         <p class="tip">💡 코스 상세 가이드에서 코스별 이미지와 순서를 확인할 수 있습니다.</p>
@@ -121,19 +152,6 @@
                     <div class="result-sidebar">
                         <div class="course-grid result-course-grid" id="result-course-grid"
                             data-result-course-grid></div>
-
-                        <section class="date-ratio-card" aria-labelledby="date-ratio-title">
-                            <h3 class="date-ratio-title" id="date-ratio-title">
-                                <span class="date-ratio-icon" aria-hidden="true">🌳</span>
-                                데이트 비중
-                            </h3>
-                            <input class="date-ratio-slider" type="range" min="0" max="100" value="50"
-                                aria-label="데이트 비중">
-                            <div class="date-ratio-labels" aria-hidden="true">
-                                <span>길거리 데이트</span>
-                                <span>음식 데이트</span>
-                            </div>
-                        </section>
                     </div>
 
                     <div class="result-map-area">
@@ -203,7 +221,7 @@
     </div>
 
     <script src="data.js?v=20260528" defer></script>
-    <script src="app.js?v=20260528" defer></script>
+    <script src="app.js?v=20260602-3" defer></script>
 </body>
 
 </html>
