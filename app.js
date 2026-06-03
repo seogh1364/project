@@ -155,6 +155,7 @@
             scrollToResultCard(course.id);
         }, 360);
     };
+    const parseBudget = (value) => Number(String(value || '').replace(/[^0-9]/g, '')) || 0;
 
     const getCourseById = (courseId) => courses.find((course) => course.id === courseId) || null;
     const getResultCards = () => Array.from(document.querySelectorAll('[data-screen="result"] [data-course-card]'));
