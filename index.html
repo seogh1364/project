@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon.ico?v=1.1" type="image/x-icon">
     <title>만원 데이트 - 대학생 맞춤 가성비 데이트</title>
-    <link rel="stylesheet" href="main.css?v=20260602-3">
+    <link rel="stylesheet" href="main.css?v=20260528">
     <script type="text/javascript"
         src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=3a7e4e1b88191fa6235e12135a54c2ca&libraries=services"></script>
 </head>
@@ -33,11 +33,11 @@
         </div>
         <div class="list-menu-items">
             <button class="list-menu-item" type="button" data-menu-action="browse">
-                <span class="list-menu-icon" aria-hidden="true">♡</span>
+                <span class="list-menu-icon" aria-hidden="true">⌘</span>
                 코스 둘러보기
             </button>
             <button class="list-menu-item" type="button" data-menu-action="saved">
-                <span class="list-menu-icon" aria-hidden="true">⌘</span>
+                <span class="list-menu-icon" aria-hidden="true">♡</span>
                 나만의 데이트 코스
             </button>
         </div>
@@ -127,8 +127,11 @@
         <section class="screen" data-screen="courses" aria-hidden="true">
             <section class="recommend-section">
                 <div class="container recommend-container">
-                    <div class="section-header">
+                    <div class="section-header section-header-row">
                         <h2 class="section-title">코스 둘러보기 ❤️</h2>
+                        <button type="button" class="screen-home-btn" data-route="home" data-home-link="courses">
+                            메인으로 돌아가기
+                        </button>
                     </div>
                     <div class="course-grid" id="browse-course-grid" data-browse-course-grid></div>
                 </div>
@@ -182,7 +185,12 @@
                         aria-labelledby="saved-courses-title">
                         <div class="saved-courses-header">
                             <h3 class="saved-courses-title" id="saved-courses-title">나만의 데이트 코스</h3>
-                            <span class="saved-count" data-saved-count>0개</span>
+                            <div class="saved-header-actions">
+                                <span class="saved-count" data-saved-count>0개</span>
+                                <button type="button" class="screen-home-btn" data-route="home" data-home-link="saved">
+                                    메인으로 돌아가기
+                                </button>
+                            </div>
                         </div>
                         <div class="saved-course-list" data-saved-course-list></div>
                         <p class="saved-empty" data-saved-empty>저장된 코스가 아직 없어요. 마음에 드는 코스를 저장해보세요.</p>
@@ -190,38 +198,63 @@
                 </div>
             </section>
         </section>
-    </div>
 
-    <div class="guide-modal" data-guide-modal data-course-id="seongsan-walk" hidden role="dialog" aria-modal="true"
-        aria-labelledby="guide-title">
-        <article class="guide-panel">
-            <section class="guide-header-card">
-                <header class="guide-header">
-                    <div>
-                        <p class="guide-kicker">COURSE GUIDE</p>
-                        <h2 class="guide-title" id="guide-title">성산 산책<br>상세 가이드</h2>
-                    </div>
-                    <button class="guide-close" type="button" data-guide-close aria-label="상세 가이드 닫기">×</button>
-                </header>
+        <section class="screen guide-screen" data-screen="guide" aria-hidden="true">
+            <section class="guide-page-section">
+                <div class="container guide-page-container">
+                    <article class="guide-panel" data-guide-screen data-course-id="seongsan-walk"
+                        aria-labelledby="guide-title">
+                        <section class="guide-header-card">
+                            <header class="guide-header">
+                                <div>
+                                    <p class="guide-kicker">COURSE GUIDE</p>
+                                    <h2 class="guide-title" id="guide-title">성산 산책<br>상세 가이드</h2>
+                                </div>
+                            </header>
 
-                <div class="guide-budget" aria-label="예산 요약">
-                    <div class="guide-budget-card" data-guide-summary="budget">총 예산<strong>3~4만원</strong></div>
-                    <div class="guide-budget-card" data-guide-summary="duration">소요 시간<strong>약 2시간</strong></div>
-                    <div class="guide-budget-card" data-guide-summary="transport">이동 방식<strong>도보 위주</strong></div>
+                            <div class="guide-budget" aria-label="예산 요약">
+                                <div class="guide-budget-card" data-guide-summary="budget">
+                                    총 예산<strong>3~4만원</strong>
+                                </div>
+                                <div class="guide-budget-card" data-guide-summary="duration">
+                                    소요 시간<strong>약 2시간</strong>
+                                </div>
+                                <div class="guide-budget-card" data-guide-summary="transport">
+                                    이동 방식<strong>도보 위주</strong>
+                                </div>
+                            </div>
+
+                            <div class="guide-actions">
+                                <button class="guide-save" type="button" data-save-course data-guide-save
+                                    data-course-id="seongsan-walk" aria-label="나만의 코스 저장"
+                                    aria-pressed="false">♡</button>
+                                <button class="guide-close" type="button" data-guide-close
+                                    aria-label="상세 가이드에서 이전 화면으로 이동">×</button>
+                            </div>
+                        </section>
+
+                        <div class="guide-body">
+                            <div class="guide-left-panel">
+                                <section class="guide-course-flow" aria-label="코스 상세 순서" data-guide-flow></section>
+                            </div>
+
+                            <section class="guide-map-panel" aria-label="코스 상세 지도 영역">
+                                <!-- JS 담당자 연결 지점: data-guide-map 요소에 지도 API를 마운트하면 됩니다. -->
+                                <div class="guide-map-canvas" id="guide-map" data-guide-map data-course-id="seongsan-walk">
+                                    <div class="guide-map-placeholder" data-guide-map-placeholder>
+                                        코스 지도가 여기에 표시됩니다.
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </article>
                 </div>
             </section>
-
-            <section class="guide-course-flow" aria-label="코스 상세 순서" data-guide-flow></section>
-
-            <section class="guide-image-preview" aria-label="코스 상세 이미지 영역" data-guide-image-target="guide-main-image">
-                <img src="course-img/성산.png" alt="코스 상세 참고 이미지" class="guide-detail-image" loading="lazy"
-                    decoding="async">
-            </section>
-        </article>
+        </section>
     </div>
 
     <script src="data.js?v=20260528" defer></script>
-    <script src="app.js?v=20260602-3" defer></script>
+    <script src="app.js?v=20260528" defer></script>
 </body>
 
 </html>
