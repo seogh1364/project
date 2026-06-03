@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon.ico?v=1.1" type="image/x-icon">
     <title>만원 데이트 - 대학생 맞춤 가성비 데이트</title>
-    <link rel="stylesheet" href="main.css?v=20260528">
+    <link rel="stylesheet" href="main.css?v=20260614">
     <script type="text/javascript"
         src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=3a7e4e1b88191fa6235e12135a54c2ca&libraries=services"></script>
 </head>
@@ -33,11 +33,11 @@
         </div>
         <div class="list-menu-items">
             <button class="list-menu-item" type="button" data-menu-action="browse">
-                <span class="list-menu-icon" aria-hidden="true">⌘</span>
+                <span class="list-menu-icon" aria-hidden="true">♡</span>
                 코스 둘러보기
             </button>
             <button class="list-menu-item" type="button" data-menu-action="saved">
-                <span class="list-menu-icon" aria-hidden="true">♡</span>
+                <span class="list-menu-icon" aria-hidden="true">⌘</span>
                 나만의 데이트 코스
             </button>
         </div>
@@ -93,17 +93,21 @@
                                 <div class="price-box">
                                     <span class="currency">₩</span>
                                     <input class="price-input" data-budget-input type="text" inputmode="numeric"
-                                        placeholder="예: 10,000">
+                                        placeholder="예: 10,000" aria-describedby="budget-total-label">
                                     <span class="unit">원</span>
+                                    <button class="budget-reset-btn" type="button" data-budget-reset
+                                        aria-label="예산 초기화">초기화</button>
                                 </div>
                                 <button class="submit-btn" type="submit">코스 추천 받기 &gt;</button>
                             </div>
-                            <div class="quick-tags" aria-label="빠른 예산 선택">
-                                <button class="tag" type="button" data-budget="5000">5천원</button>
-                                <button class="tag" type="button" data-budget="10000">1만원</button>
-                                <button class="tag" type="button" data-budget="20000">2만원</button>
-                                <button class="tag" type="button" data-budget="30000">3만원</button>
-                                <button class="tag" type="button" data-budget-reset>초기화</button>
+                            <p class="budget-total" id="budget-total-label">
+                                현재 예산 <strong data-budget-total>0원</strong>
+                            </p>
+                            <div class="quick-tags" aria-label="예산 금액 추가">
+                                <button class="tag tag-add" type="button" data-budget-add="5000">+5천원</button>
+                                <button class="tag tag-add" type="button" data-budget-add="10000">+1만원</button>
+                                <button class="tag tag-add" type="button" data-budget-add="20000">+2만원</button>
+                                <button class="tag tag-add" type="button" data-budget-add="30000">+3만원</button>
                             </div>
                         </form>
                         <p class="tip">💡 코스 상세 가이드에서 코스별 순서와 지도 영역을 확인할 수 있습니다.</p>
@@ -119,7 +123,15 @@
                     <div class="section-header">
                         <h2 class="section-title">추천 코스 미리보기 ❤️</h2>
                     </div>
-                    <div class="course-grid" id="home-course-grid" data-home-course-grid></div>
+                    <div class="home-carousel-shell">
+                        <button type="button" class="home-carousel-side-btn" data-home-carousel-prev
+                            aria-label="이전 추천 코스 보기">&lt;</button>
+                        <div class="home-carousel-track" data-home-carousel-track>
+                            <div class="course-grid" id="home-course-grid" data-home-course-grid></div>
+                        </div>
+                        <button type="button" class="home-carousel-side-btn" data-home-carousel-next
+                            aria-label="다음 추천 코스 보기">&gt;</button>
+                    </div>
                 </div>
             </section>
         </section>
@@ -253,8 +265,8 @@
         </section>
     </div>
 
-    <script src="data.js?v=20260528" defer></script>
-    <script src="app.js?v=20260528" defer></script>
+    <script src="data.js?v=20260606" defer></script>
+    <script src="app.js?v=20260611" defer></script>
 </body>
 
 </html>
