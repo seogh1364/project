@@ -110,10 +110,15 @@
             .search-card { padding: var(--space-5); border-radius: var(--radius-2xl); background: var(--color-white); box-shadow: var(--shadow-md); }
             .card-label { margin-bottom: 15px; font-weight: 700; }
             .input-row { display: flex; flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 15px; }
-            .price-box { display: flex; flex: 1; align-items: center; min-height: 52px; padding: 0 15px; border: 1px solid var(--color-gray-300); border-radius: var(--radius-lg); background: var(--color-gray-50); }
-            .currency { display: flex; align-items: center; justify-content: flex-start; width: 25px; height: 50px; margin-right: 10px; flex-shrink: 0; border-right: 1px solid var(--color-gray-300); background: var(--color-gray-100); color: #555555; font-size: 18px; font-weight: 700; }
+            .price-box { display: flex; flex: 1; align-items: center; gap: var(--space-2); min-height: 52px; padding: 0 10px 0 0; border: 1px solid var(--color-gray-300); border-radius: var(--radius-lg); background: var(--color-gray-50); }
+            .currency { display: flex; align-items: center; justify-content: flex-start; width: 25px; height: 50px; margin-right: 0; flex-shrink: 0; border-right: 1px solid var(--color-gray-300); background: var(--color-gray-100); color: #555555; font-size: 18px; font-weight: 700; }
             .price-input { display: flex; flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; }
-            .unit { color: var(--color-gray-800); font-weight: 700; }
+            .unit { color: var(--color-gray-800); font-weight: 700; flex-shrink: 0; }
+            .budget-reset-btn { flex: 0 0 auto; min-height: 36px; padding: 0 var(--space-3); border: 1px solid var(--color-gray-300); border-radius: var(--radius-full); background: var(--color-white); color: var(--color-gray-800); font-size: 12px; font-weight: 700; }
+            .budget-reset-btn:hover { border-color: var(--color-brand-500); color: var(--color-brand-600); background: var(--color-brand-50); }
+            .budget-total { margin-bottom: var(--space-2); color: var(--color-gray-700); font-size: 14px; }
+            .budget-total strong { color: var(--color-brand-600); }
+            .tag-add { border: 1px dashed var(--color-brand-500); background: var(--color-brand-50); color: var(--color-brand-600); }
             .submit-btn, .tag, .more-btn, .retry-btn, .action-btn { border: 0; border-radius: var(--radius-lg); font-weight: 700; white-space: nowrap; }
             .submit-btn { width: 100%; min-height: 50px; padding: 0 var(--space-5); background: var(--color-brand-500); color: var(--color-white); }
             .submit-btn:hover, .retry-btn:hover { background: var(--color-brand-600); box-shadow: var(--shadow-xl); transform: translateY(-1px); }
@@ -123,13 +128,41 @@
             .tip { margin-top: 15px; color: var(--color-gray-600); font-size: 16px; }
             .section-header { width: 100%; }
             .section-header-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+            .home-carousel-shell { display: flex; width: 100%; align-items: center; gap: var(--space-2); }
+            .home-carousel-track {
+                flex: 1;
+                min-width: 0;
+                overflow: hidden;
+                opacity: 1;
+                transform: translateX(0);
+                transition: opacity 320ms ease, transform 320ms ease;
+                will-change: opacity, transform;
+            }
+            .home-carousel-track.is-carousel-exit-next { opacity: 0; transform: translateX(-32px); }
+            .home-carousel-track.is-carousel-exit-prev { opacity: 0; transform: translateX(32px); }
+            .home-carousel-track.is-carousel-enter-next { opacity: 0; transform: translateX(32px); }
+            .home-carousel-track.is-carousel-enter-prev { opacity: 0; transform: translateX(-32px); }
+            .home-carousel-track.is-carousel-enter-next.is-carousel-enter-active,
+            .home-carousel-track.is-carousel-enter-prev.is-carousel-enter-active { opacity: 1; transform: translateX(0); }
+            .home-carousel-side-btn { flex: 0 0 44px; width: 44px; height: 44px; border: 1px solid var(--color-brand-500); border-radius: var(--radius-full); background: var(--color-white); color: var(--color-brand-600); font-size: 22px; font-weight: 900; line-height: 1; box-shadow: var(--shadow-sm); }
+            .home-carousel-side-btn:hover { background: var(--color-brand-500); color: var(--color-white); box-shadow: var(--shadow-xl); transform: translateY(-1px); }
+            .home-carousel-shell .course-grid { width: 100%; }
             .section-title { font-family: var(--font-display); font-size: 32px; }
             .screen-home-btn { display: inline-flex; min-height: 40px; align-items: center; justify-content: center; padding: 0 var(--space-4); border: 1px solid var(--color-brand-500); border-radius: var(--radius-full); background: var(--color-white); color: var(--color-brand-600); font-size: 13px; font-weight: 900; white-space: nowrap; }
             .screen-home-btn:hover { background: var(--color-brand-500); color: var(--color-white); box-shadow: var(--shadow-xl); transform: translateY(-1px); }
             .course-card { position: relative; display: flex; height: 100%; min-height: auto; flex-direction: column; padding: 15px var(--space-5); border: 1px solid var(--color-gray-300); border-radius: var(--radius-2xl); background: var(--color-white); text-align: center; box-shadow: var(--shadow-sm); }
             .course-card:hover { box-shadow: var(--shadow-xl); transform: translateY(-2px); }
+            .course-badge { position: absolute; top: 14px; right: 14px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; min-height: 26px; padding: 0 10px; border-radius: var(--radius-full); font-size: 11px; font-weight: 900; letter-spacing: 0.02em; box-shadow: var(--shadow-sm); }
+            .course-badge-recommend { background: var(--color-brand-500); color: var(--color-white); }
+            .course-badge-primary { background: var(--color-green-500); color: var(--color-white); }
+            .is-result-primary { border-color: rgba(76, 175, 80, 0.45); box-shadow: 0 12px 28px rgba(76, 175, 80, 0.12); }
+            .is-result-recommend .card-top { padding-right: 58px; }
+            .is-result-primary .card-top { padding-right: 72px; }
             .card-top { display: flex; min-height: 132px; flex-direction: column; align-items: flex-start; text-align: left; }
-            .has-save-action .card-top { padding-right: 58px; }
+            .has-card-actions .card-top { padding-right: 0; }
+            .course-title { margin: 0; text-align: left; }
+            .course-title-btn { display: inline-block; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; font-weight: 900; text-align: left; cursor: pointer; }
+            .course-title-btn:hover { color: var(--color-brand-600); text-decoration: underline; text-underline-offset: 3px; }
             .card-desc { margin-top: 5px; color: var(--color-gray-800); font-size: 13px; }
             .card-green { border-top: 8px solid var(--color-green-50); }
             .price-tag { display: inline-block; margin-bottom: 15px; padding: var(--space-1) var(--space-3); border-radius: var(--radius-xl); font-size: 12px; font-weight: 700; }
@@ -151,12 +184,13 @@
             .retry-btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px var(--space-5); border: 1px solid var(--color-brand-500); border-radius: 30px; background: var(--color-white); color: var(--color-brand-500); font-size: 14px; }
             .retry-btn:hover { color: var(--color-white); }
             .action-btn { display: inline-flex; width: 100%; min-height: 46px; margin-top: 15px; align-items: center; justify-content: center; padding: 0 var(--space-3); font-size: 14px; line-height: 1.3; text-align: center; }
-            .action-stack { display: grid; grid-template-rows: 46px; gap: var(--space-2); margin-top: auto; padding-top: 15px; }
-            .action-stack .action-btn { height: 46px; margin-top: 0; }
+            .card-actions-footer { display: grid; grid-template-columns: minmax(88px, 0.9fr) 1fr; gap: var(--space-2); margin-top: auto; padding-top: 15px; }
             .green-btn:hover { background: var(--color-green-500); color: var(--color-white); }
-            .save-btn { position: absolute; top: 24px; right: var(--space-5); z-index: 1; display: inline-flex; width: 48px; height: 48px; align-items: center; justify-content: center; border: 1px solid rgba(255, 124, 135, 0.32); border-radius: var(--radius-full); background: var(--color-white); color: var(--color-brand-500); font-size: 31px; font-weight: 900; line-height: 1; box-shadow: var(--shadow-sm); }
-            .save-btn:hover { background: var(--color-brand-100); box-shadow: var(--shadow-xl); transform: translateY(-1px); }
-            .save-btn.is-saved { border-color: rgba(255, 124, 135, 0.5); background: var(--color-brand-100); color: var(--color-brand-600); box-shadow: var(--shadow-md); }
+            .save-btn-inline { display: inline-flex; min-height: 46px; align-items: center; justify-content: center; gap: 6px; padding: 0 var(--space-3); border: 1px solid rgba(255, 124, 135, 0.32); border-radius: var(--radius-lg); background: var(--color-white); color: var(--color-brand-600); font-size: 13px; font-weight: 900; box-shadow: var(--shadow-sm); }
+            .save-btn-inline:hover { background: var(--color-brand-100); box-shadow: var(--shadow-xl); transform: translateY(-1px); }
+            .save-btn-inline.is-saved { border-color: rgba(255, 124, 135, 0.5); background: var(--color-brand-100); }
+            .save-btn-icon { font-size: 18px; line-height: 1; }
+            .card-actions-footer .action-btn { margin-top: 0; min-height: 46px; }
             .save-status { min-height: 20px; margin-top: var(--space-2); color: var(--color-brand-600); font-size: 13px; font-weight: 700; text-align: center; opacity: 0; transform: translateY(4px); transition: opacity 450ms ease, transform 450ms ease; }
             .save-status.is-visible { opacity: 1; transform: translateY(0); }
             .result-flex-layout { --result-panel-height: 350px; --result-card-width: clamp(285px, 80vw, 340px); --result-card-peek: max(20px, calc((100vw - var(--result-card-width)) / 2)); display: flex; width: 100%; max-width: 1500px; flex-direction: column; gap: 30px; align-items: flex-start; }
@@ -178,6 +212,9 @@
             .result-saved-panel .saved-course-item { flex: 0 0 var(--result-card-width); scroll-snap-align: center; }
             .saved-course-title { color: var(--color-brown-700); font-size: 15px; font-weight: 900; }
             .saved-course-meta, .saved-course-route { color: var(--color-gray-700); font-size: 12px; line-height: 1.5; }
+            .saved-course-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+            .saved-course-detail, .saved-course-result { flex: 0 0 auto; border: 0; border-radius: var(--radius-full); padding: var(--space-1) var(--space-3); background: var(--color-brand-50); color: var(--color-brand-600); font-size: 12px; font-weight: 900; }
+            .saved-course-detail:hover, .saved-course-result:hover { background: var(--color-brand-500); color: var(--color-white); }
             .saved-course-footer { display: flex; align-items: center; justify-content: flex-start; gap: var(--space-3); }
             .saved-course-price { margin-right: auto; color: var(--color-brand-600); font-size: 13px; font-weight: 900; }
             .saved-course-guide { flex: 0 0 auto; border: 0; border-radius: var(--radius-full); padding: var(--space-1) var(--space-3); background: var(--color-green-50); color: var(--color-green-500); font-size: 12px; font-weight: 900; }
@@ -189,6 +226,9 @@
             .result-course-grid > .course-card { flex: 0 0 var(--result-card-width); scroll-snap-align: center; height: auto; min-height: 360px; }
             .map-container { width: 100%; height: var(--result-panel-height); overflow: hidden; border: 1px solid rgba(255, 124, 135, 0.32); border-radius: 0; background: var(--color-gray-50); box-shadow: var(--shadow-sm); }
             .map-placeholder { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; background: var(--color-gray-100); color: var(--color-gray-500); font-size: 16px; text-align: center; }
+            .map-marker-label { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border: 1px solid rgba(255, 124, 135, 0.35); border-radius: var(--radius-full); background: rgba(255, 255, 255, 0.96); color: var(--color-brown-700); font-size: 12px; font-weight: 900; white-space: nowrap; box-shadow: var(--shadow-sm); transform: translate(-50%, -100%); }
+            .map-marker-index { display: inline-flex; width: 20px; height: 20px; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--color-brand-500); color: var(--color-white); font-size: 11px; }
+            .guide-map-canvas .map-marker-label { font-size: 11px; }
             .guide-page-section { min-height: calc(100vh - 80px); padding: var(--space-7) 0 var(--space-10); background: var(--color-white); }
             .guide-page-container { display: flex; max-width: 1220px; justify-content: center; }
             .guide-panel { width: 100%; display: flex; flex-direction: column; gap: clamp(44px, 4vw, 64px); padding: 0; background: transparent; }
@@ -216,7 +256,8 @@
             .guide-stage-desc span { color: var(--color-gray-800); font-size: 15px; line-height: 1.7; }
             .guide-stage-price { margin: 0; color: var(--color-brand-600); font-size: 17px; font-weight: 900; }
             .guide-map-panel { min-height: 0; width: 100%; display: flex; padding: 10px; border: 2px solid rgba(255, 124, 135, 0.32); border-radius: var(--radius-xl); background: #fff8f4; box-shadow: var(--shadow-md); overflow: hidden; }
-            .guide-map-canvas { width: 100%; min-height: 360px; display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(255, 124, 135, 0.36); border-radius: var(--radius-lg); background: var(--color-white); }
+            .guide-map-canvas { width: 100%; min-height: 360px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(255, 124, 135, 0.36); border-radius: var(--radius-lg); background: var(--color-white); }
+            .guide-map-canvas > div { width: 100% !important; height: 100% !important; }
             .guide-map-placeholder { padding: var(--space-5); color: var(--color-gray-700); font-size: 15px; font-weight: 700; text-align: center; word-break: keep-all; }
         }
 
@@ -229,6 +270,7 @@
             @media (prefers-reduced-motion: reduce) {
                 .screen.is-active { animation: none; }
                 button, a, input { transition: none; }
+                .home-carousel-track { transition: none; will-change: auto; }
             }
         }
 

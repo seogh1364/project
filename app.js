@@ -4,14 +4,19 @@
     const dom = {
         screens: Array.from(document.querySelectorAll('[data-screen]')),
         budgetInput: document.querySelector('[data-budget-input]'),
+        budgetTotal: document.querySelector('[data-budget-total]'),
         selectedBudget: document.querySelector('[data-selected-budget]'),
         budgetForm: document.querySelector('[data-budget-form]'),
-        budgetButtons: Array.from(document.querySelectorAll('[data-budget]')),
+        budgetResetButton: document.querySelector('[data-budget-reset]'),
+        budgetAddButtons: Array.from(document.querySelectorAll('[data-budget-add]')),
         openSavedButton: document.querySelector('[data-open-saved]'),
         listMenu: document.querySelector('[data-list-menu]'),
         listMenuCloseButton: document.querySelector('[data-list-menu-close]'),
         listMenuItems: Array.from(document.querySelectorAll('[data-menu-action]')),
         homeCourseGrid: document.querySelector('[data-home-course-grid]'),
+        homeCarouselPrev: document.querySelector('[data-home-carousel-prev]'),
+        homeCarouselNext: document.querySelector('[data-home-carousel-next]'),
+        homeCarouselTrack: document.querySelector('[data-home-carousel-track]'),
         browseCourseGrid: document.querySelector('[data-browse-course-grid]'),
         resultCourseGrid: document.querySelector('[data-result-course-grid]'),
         savedCourseLists: Array.from(document.querySelectorAll('[data-saved-course-list]')),
@@ -27,11 +32,19 @@
     };
 
     const DEFAULT_BUDGET_TEXT = '10,000원';
+    const DEFAULT_BUDGET_VALUE = 10000;
+    const RESULT_COURSE_LIMIT = 4;
+    const HOME_PREVIEW_LIMIT = 3;
+    const HOME_CAROUSEL_TRANSITION_MS = 320;
     const SAVED_COURSES_KEY = 'manwon-date.savedCourses';
     const SAVE_MESSAGE_DURATION_MS = 5000;
     const SAVE_MESSAGE_FADE_MS = 450;
     const saveMessageTimers = new WeakMap();
     let guideReturnScreen = 'result';
+    let resultRecommendSeed = 0;
+    let resultFocusCourseId = '';
+    let homeCarouselPage = 0;
+    let homeCarouselAnimating = false;
 
     const escapeHTML = (value = '') => String(value)
         .replace(/&/g, '&amp;')
@@ -40,10 +53,107 @@
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
 
-    const formatBudget = (value) => {
+    const parseBudgetNumber = (value) => {
         const digits = String(value || '').replace(/[^0-9]/g, '');
-        if (!digits) return DEFAULT_BUDGET_TEXT;
-        return `${Number(digits).toLocaleString('ko-KR')}원`;
+        return digits ? Number(digits) : 0;
+    };
+
+    const formatBudget = (value) => {
+        const amount = typeof value === 'number' ? value : parseBudgetNumber(value);
+        if (!amount) return DEFAULT_BUDGET_TEXT;
+        return `${amount.toLocaleString('ko-KR')}원`;
+    };
+
+    const setBudgetInputValue = (amount) => {
+        if (!dom.budgetInput) return;
+        dom.budgetInput.value = amount > 0 ? amount.toLocaleString('ko-KR') : '';
+        updateBudgetTotalDisplay();
+    };
+
+    const updateBudgetTotalDisplay = () => {
+        const amount = parseBudgetNumber(dom.budgetInput?.value);
+        if (dom.budgetTotal) {
+            dom.budgetTotal.textContent = amount > 0 ? formatBudget(amount) : '0원';
+        }
+    };
+
+    const getActiveBudget = () => {
+        const amount = parseBudgetNumber(dom.budgetInput?.value);
+        return amount > 0 ? amount : DEFAULT_BUDGET_VALUE;
+    };
+
+    const getCoursesForResult = () => {
+        const budget = getActiveBudget();
+        const scored = courses.map((course) => ({
+            course,
+            diff: Math.abs((Number(course.maxPrice) || 0) - budget),
+            fitsBudget: (Number(course.maxPrice) || 0) <= budget + 5000,
+        }));
+
+        const fitsBudget = scored.filter((item) => item.fitsBudget);
+        const pool = fitsBudget.length > 0 ? fitsBudget : scored;
+
+        const tiers = new Map();
+        pool.forEach((item) => {
+            if (!tiers.has(item.diff)) tiers.set(item.diff, []);
+            tiers.get(item.diff).push(item);
+        });
+
+        const rotateTier = (tierItems, offset) => {
+            if (tierItems.length <= 1) return tierItems;
+            const start = offset % tierItems.length;
+            return [...tierItems.slice(start), ...tierItems.slice(0, start)];
+        };
+
+        const ordered = [...tiers.keys()]
+            .sort((left, right) => left - right)
+            .flatMap((diff, tierIndex) => rotateTier(tiers.get(diff), budget + resultRecommendSeed + tierIndex * 7));
+
+        const selected = [];
+        const usedIds = new Set();
+        ordered.forEach((item) => {
+            if (selected.length >= RESULT_COURSE_LIMIT) return;
+            if (usedIds.has(item.course.id)) return;
+            usedIds.add(item.course.id);
+            selected.push(item.course);
+        });
+
+        if (selected.length < RESULT_COURSE_LIMIT) {
+            courses.forEach((course) => {
+                if (selected.length >= RESULT_COURSE_LIMIT) return;
+                if (usedIds.has(course.id)) return;
+                usedIds.add(course.id);
+                selected.push(course);
+            });
+        }
+
+        if (resultFocusCourseId) {
+            const focusCourse = getCourseById(resultFocusCourseId);
+            if (focusCourse) {
+                const withoutFocus = selected.filter((course) => course.id !== focusCourse.id);
+                return [focusCourse, ...withoutFocus].slice(0, RESULT_COURSE_LIMIT);
+            }
+        }
+
+        return selected;
+    };
+
+    const openResultForCourse = (courseId = '') => {
+        const course = getCourseById(courseId);
+        if (!course) return;
+
+        resultRecommendSeed += 1;
+        resultFocusCourseId = course.id;
+        const budget = Number(course.maxPrice) || DEFAULT_BUDGET_VALUE;
+        setBudgetInputValue(budget);
+        if (dom.selectedBudget) dom.selectedBudget.textContent = formatBudget(budget);
+        renderCourseCards();
+        resultFocusCourseId = '';
+        showScreen('result');
+        window.setTimeout(() => {
+            initMap(course.id);
+            scrollToResultCard(course.id);
+        }, 360);
     };
 
     const getCourseById = (courseId) => courses.find((course) => course.id === courseId) || null;
@@ -59,69 +169,204 @@
 
     const getMapCourseId = (fallback = '') => fallback || getResultCards()[0]?.dataset.courseId || courses[0]?.id || '';
 
-    const setMapPlaceholder = (message) => {
-        const mapContainer = document.getElementById('map');
-        if (mapContainer) {
-            mapContainer.innerHTML = `<div class="map-placeholder">${escapeHTML(message)}</div>`;
-        }
+    const SEOUL_CENTER = { lat: 37.5665, lng: 126.978 };
+    const SEOUL_BOUNDS = { minLat: 37.41, maxLat: 37.72, minLng: 126.74, maxLng: 127.2 };
+    const MAP_SEARCH_RADIUS_M = 18000;
+    const MAP_NEARBY_RADIUS_M = 4500;
+    const MAX_ROUTE_LEG_KM = 6;
+
+    const isInSeoulMetro = (lat, lng) => (
+        lat >= SEOUL_BOUNDS.minLat
+        && lat <= SEOUL_BOUNDS.maxLat
+        && lng >= SEOUL_BOUNDS.minLng
+        && lng <= SEOUL_BOUNDS.maxLng
+    );
+
+    const distanceKm = (left, right) => {
+        const toRad = (value) => (value * Math.PI) / 180;
+        const dLat = toRad(right.lat - left.lat);
+        const dLng = toRad(right.lng - left.lng);
+        const a = Math.sin(dLat / 2) ** 2
+            + Math.cos(toRad(left.lat)) * Math.cos(toRad(right.lat)) * Math.sin(dLng / 2) ** 2;
+        return 6371 * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
     };
 
-    const initMap = async (courseId = '') => {
-        const mapContainer = document.getElementById('map');
-        const course = getCourseById(getMapCourseId(courseId));
+    const inferMapArea = (course) => {
+        if (course.mapArea) return course.mapArea;
+        const text = `${course.title} ${course.description}`;
+        const areaRules = [
+            ['망원', '망원'],
+            ['홍제', '홍제'],
+            ['성산', '마포 성산'],
+            ['합정', '합정'],
+            ['연남', '연남동'],
+            ['서교', '서교동'],
+            ['홍대', '홍대'],
+            ['양화', '양화'],
+            ['마포', '마포'],
+        ];
+        const matched = areaRules.find(([keyword]) => text.includes(keyword));
+        return matched ? matched[1] : '서울';
+    };
+
+    const buildMapSearchQueries = (place, mapArea) => {
+        const base = (place.mapName || place.name || '').trim();
+        const queries = [base];
+        const hasRegionHint = /서울|마포|홍대|연남|합정|망원|홍제|서교|양화|구 |동 |역/.test(base);
+        if (!hasRegionHint) {
+            queries.push(`${base} ${mapArea}`);
+            queries.push(`${base} 서울 ${mapArea}`);
+        }
+        return [...new Set(queries.filter(Boolean))];
+    };
+
+    const pickMapSearchResult = (results, anchor) => {
+        const candidates = (results || [])
+            .map((item) => ({
+                lat: Number.parseFloat(item.y),
+                lng: Number.parseFloat(item.x),
+                placeName: item.place_name,
+            }))
+            .filter((item) => Number.isFinite(item.lat) && Number.isFinite(item.lng))
+            .filter((item) => isInSeoulMetro(item.lat, item.lng));
+
+        if (!candidates.length) return null;
+
+        if (!anchor) {
+            return candidates
+                .map((item) => ({ ...item, dist: distanceKm(SEOUL_CENTER, item) }))
+                .sort((left, right) => left.dist - right.dist)[0];
+        }
+
+        return candidates
+            .map((item) => ({ ...item, dist: distanceKm(anchor, item) }))
+            .filter((item) => item.dist <= MAX_ROUTE_LEG_KM)
+            .sort((left, right) => left.dist - right.dist)[0] || null;
+    };
+
+    const keywordSearchPlaces = (placesService, keyword, anchor) => new Promise((resolve) => {
+        const center = anchor
+            ? new window.kakao.maps.LatLng(anchor.lat, anchor.lng)
+            : new window.kakao.maps.LatLng(SEOUL_CENTER.lat, SEOUL_CENTER.lng);
+        const radius = anchor ? MAP_NEARBY_RADIUS_M : MAP_SEARCH_RADIUS_M;
+
+        placesService.keywordSearch(keyword, (data, status) => {
+            if (status !== window.kakao.maps.services.Status.OK) {
+                resolve([]);
+                return;
+            }
+            resolve(data || []);
+        }, { location: center, radius });
+    });
+
+    const resolveMapSpot = async (placesService, place, mapArea, anchor) => {
+        const queries = buildMapSearchQueries(place, mapArea);
+        for (const query of queries) {
+            const results = await keywordSearchPlaces(placesService, query, anchor);
+            const picked = pickMapSearchResult(results, anchor);
+            if (picked) {
+                return {
+                    title: place.name || place.mapName || query,
+                    lat: picked.lat,
+                    lng: picked.lng,
+                    placeName: picked.placeName,
+                };
+            }
+        }
+        return null;
+    };
+
+    const setMapPlaceholder = (mapContainer, message) => {
+        if (!mapContainer) return;
+        mapContainer.innerHTML = `<div class="map-placeholder">${escapeHTML(message)}</div>`;
+    };
+
+    const renderCourseMap = async (mapContainer, courseId = '') => {
+        const course = getCourseById(courseId || getMapCourseId(courseId));
         if (!mapContainer || !course) return;
 
         if (!window.kakao?.maps?.services) {
-            setMapPlaceholder('📍 지도 API를 불러오는 중입니다.');
+            setMapPlaceholder(mapContainer, '📍 지도 API를 불러오는 중입니다.');
             return;
         }
 
-        const placeNames = (course.places || [])
-            .map((place) => place.mapName || place.name)
-            .filter(Boolean);
-        if (placeNames.length === 0) {
-            setMapPlaceholder('📍 지도에 표시할 장소 정보가 없어요.');
+        const coursePlaces = (course.places || []).filter((place) => place.mapName || place.name);
+        if (coursePlaces.length === 0) {
+            setMapPlaceholder(mapContainer, '📍 지도에 표시할 장소 정보가 없어요.');
             return;
         }
 
-        setMapPlaceholder('📍 선택한 코스 지도를 불러오는 중입니다.');
-        const places = new window.kakao.maps.services.Places();
-        const searchResults = await Promise.all(placeNames.map((placeName) => new Promise((resolve) => {
-            places.keywordSearch(placeName, (data, status) => {
-                const matchedPlace = status === window.kakao.maps.services.Status.OK ? data[0] : null;
-                resolve(matchedPlace ? { title: placeName, lat: matchedPlace.y, lng: matchedPlace.x } : null);
-            });
-        })));
-        const mapSpots = searchResults.filter(Boolean);
+        setMapPlaceholder(mapContainer, '📍 선택한 코스 지도를 불러오는 중입니다.');
+        const placesService = new window.kakao.maps.services.Places();
+        const mapArea = inferMapArea(course);
+        const mapSpots = [];
+        let anchor = null;
+
+        for (const place of coursePlaces) {
+            const spot = await resolveMapSpot(placesService, place, mapArea, anchor);
+            if (!spot) continue;
+            mapSpots.push(spot);
+            anchor = { lat: spot.lat, lng: spot.lng };
+        }
 
         if (mapSpots.length === 0) {
-            setMapPlaceholder('📍 좌표를 찾지 못했어요. 장소명을 확인해 주세요.');
+            setMapPlaceholder(mapContainer, '📍 서울 지역 장소를 찾지 못했어요. 장소명을 확인해 주세요.');
             return;
         }
 
         mapContainer.innerHTML = '';
         const map = new window.kakao.maps.Map(mapContainer, {
             center: new window.kakao.maps.LatLng(mapSpots[0].lat, mapSpots[0].lng),
-            level: 4,
+            level: 5,
         });
         const bounds = new window.kakao.maps.LatLngBounds();
-        const linePath = mapSpots.map((spot) => {
+        const routeSegments = [];
+
+        mapSpots.forEach((spot, index) => {
             const position = new window.kakao.maps.LatLng(spot.lat, spot.lng);
             bounds.extend(position);
-            new window.kakao.maps.Marker({ map, position, title: spot.title });
-            return position;
+            new window.kakao.maps.Marker({ map, position, title: spot.placeName || spot.title });
+            const labelHTML = `<div class="map-marker-label"><span class="map-marker-index">${index + 1}</span>${escapeHTML(spot.title)}</div>`;
+            new window.kakao.maps.CustomOverlay({
+                map,
+                position,
+                content: labelHTML,
+                yAnchor: 2.4,
+            });
+
+            if (index === 0) {
+                routeSegments.push([position]);
+                return;
+            }
+
+            const legKm = distanceKm(mapSpots[index - 1], spot);
+            if (legKm <= MAX_ROUTE_LEG_KM) {
+                routeSegments[routeSegments.length - 1].push(position);
+            } else {
+                routeSegments.push([position]);
+            }
         });
 
-        if (linePath.length > 1) {
+        routeSegments.forEach((segment) => {
+            if (segment.length < 2) return;
             new window.kakao.maps.Polyline({
-                path: linePath,
+                path: segment,
                 strokeWeight: 4,
                 strokeColor: '#ff6e87',
                 strokeOpacity: 0.8,
                 strokeStyle: 'solid',
             }).setMap(map);
-            map.setBounds(bounds);
-        }
+        });
+
+        map.setBounds(bounds);
+    };
+
+    const initMap = (courseId = '') => renderCourseMap(document.getElementById('map'), getMapCourseId(courseId));
+
+    const initGuideMap = (courseId = '') => {
+        if (!dom.guideMap) return;
+        dom.guideMapPlaceholder?.remove();
+        renderCourseMap(dom.guideMap, courseId || dom.guideMap.dataset.courseId);
     };
 
     const getCourseMeta = (course) => [course.duration, course.transport].filter(Boolean).join(' · ') || course.meta || '';
@@ -138,23 +383,37 @@
         `;
     }).join('');
 
-    const generateCourseCardHTML = (course, variant = 'actions') => {
+    const generateCourseCardHTML = (course, variant = 'actions', options = {}) => {
         const isHome = variant === 'home';
+        const isResultPrimary = options.resultRole === 'primary';
+        const isResultRecommend = options.resultRole === 'recommend';
+        const badgeHTML = isResultRecommend
+            ? '<span class="course-badge course-badge-recommend">추천</span>'
+            : isResultPrimary
+                ? '<span class="course-badge course-badge-primary">예산 맞춤</span>'
+                : '';
+        const titleHTML = isHome || variant === 'actions'
+            ? `<button type="button" class="course-title-btn" data-result-open data-course-id="${escapeHTML(course.id)}">${escapeHTML(course.title)}</button>`
+            : escapeHTML(course.title);
         const actionHTML = isHome
-            ? `<button type="button" class="more-btn" data-route="result" data-course-id="${escapeHTML(course.id)}">자세히 보기 &gt;</button>`
-            : `<button class="save-btn" type="button" data-save-course data-course-id="${escapeHTML(course.id)}"
-                    aria-label="나만의 코스 저장" aria-pressed="false">♡</button>
-               <div class="action-stack">
-                    <button class="action-btn green-btn" type="button" data-guide-open data-course-id="${escapeHTML(course.id)}">코스 상세 가이드 보기</button>
+            ? `<button type="button" class="more-btn" data-guide-open data-course-id="${escapeHTML(course.id)}">자세히 보기 &gt;</button>`
+            : `<div class="card-actions-footer">
+                    <button class="save-btn-inline" type="button" data-save-course data-course-id="${escapeHTML(course.id)}"
+                        aria-label="나만의 코스 저장" aria-pressed="false">
+                        <span class="save-btn-icon" aria-hidden="true">♡</span>
+                        <span class="save-btn-text">저장</span>
+                    </button>
+                    <button class="action-btn green-btn" type="button" data-guide-open data-course-id="${escapeHTML(course.id)}">자세히 보기</button>
                </div>
                <p class="save-status" data-save-status aria-live="polite"></p>`;
 
         return `
-            <article class="course-card ${isHome ? '' : 'has-save-action'} ${escapeHTML(course.theme || 'card-green')}" data-course-card
+            <article class="course-card ${isHome ? '' : 'has-card-actions'} ${isResultPrimary ? 'is-result-primary' : ''} ${isResultRecommend ? 'is-result-recommend' : ''} ${escapeHTML(course.theme || 'card-green')}" data-course-card
                 data-course-id="${escapeHTML(course.id)}" data-price="${Number(course.maxPrice) || 0}">
+                ${badgeHTML}
                 <div class="card-top">
                     <span class="price-tag">${escapeHTML(course.priceRange)}</span>
-                    <h3>${escapeHTML(course.title)}</h3>
+                    <h3 class="course-title">${titleHTML}</h3>
                     <p class="card-desc">${escapeHTML(course.description)}</p>
                     <div class="card-info">${escapeHTML(getCourseMeta(course))}</div>
                 </div>
@@ -164,16 +423,95 @@
         `;
     };
 
-    const renderCourseCards = () => {
-        if (dom.homeCourseGrid) {
-            dom.homeCourseGrid.innerHTML = courses.map((course) => generateCourseCardHTML(course, 'home')).join('');
+    const getHomeCarouselPageCount = () => Math.max(1, Math.ceil(courses.length / HOME_PREVIEW_LIMIT));
+
+    const getHomePreviewCourses = (page = homeCarouselPage) => {
+        const pageCount = getHomeCarouselPageCount();
+        const safePage = ((page % pageCount) + pageCount) % pageCount;
+        const start = safePage * HOME_PREVIEW_LIMIT;
+        return courses.slice(start, start + HOME_PREVIEW_LIMIT);
+    };
+
+    const renderHomePreviewCarousel = () => {
+        if (!dom.homeCourseGrid) return;
+        const pageCount = getHomeCarouselPageCount();
+        homeCarouselPage = ((homeCarouselPage % pageCount) + pageCount) % pageCount;
+        dom.homeCourseGrid.innerHTML = getHomePreviewCourses(homeCarouselPage)
+            .map((course) => generateCourseCardHTML(course, 'home'))
+            .join('');
+    };
+
+    const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const clearHomeCarouselMotionClasses = () => {
+        dom.homeCarouselTrack?.classList.remove(
+            'is-carousel-exit-next',
+            'is-carousel-exit-prev',
+            'is-carousel-enter-next',
+            'is-carousel-enter-prev',
+            'is-carousel-enter-active'
+        );
+    };
+
+    const shiftHomeCarousel = (direction) => {
+        const pageCount = getHomeCarouselPageCount();
+        if (pageCount <= 1 || homeCarouselAnimating) return;
+
+        const applyPageChange = () => {
+            homeCarouselPage = (homeCarouselPage + direction + pageCount) % pageCount;
+            renderHomePreviewCarousel();
+        };
+
+        const track = dom.homeCarouselTrack;
+        if (!track || prefersReducedMotion()) {
+            applyPageChange();
+            return;
         }
+
+        homeCarouselAnimating = true;
+        clearHomeCarouselMotionClasses();
+
+        const exitClass = direction > 0 ? 'is-carousel-exit-next' : 'is-carousel-exit-prev';
+        const enterClass = direction > 0 ? 'is-carousel-enter-next' : 'is-carousel-enter-prev';
+
+        let enterFinished = false;
+        const finishEnter = () => {
+            if (enterFinished) return;
+            enterFinished = true;
+            track.classList.remove(enterClass, 'is-carousel-enter-active');
+            homeCarouselAnimating = false;
+        };
+
+        let exitFinished = false;
+        const startEnter = () => {
+            if (exitFinished) return;
+            exitFinished = true;
+            track.classList.remove(exitClass);
+            applyPageChange();
+            track.classList.add(enterClass);
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => track.classList.add('is-carousel-enter-active'));
+            });
+            window.setTimeout(finishEnter, HOME_CAROUSEL_TRANSITION_MS + 80);
+        };
+
+        track.classList.add(exitClass);
+        window.setTimeout(startEnter, HOME_CAROUSEL_TRANSITION_MS);
+    };
+
+    const renderCourseCards = () => {
+        renderHomePreviewCarousel();
         if (dom.browseCourseGrid) {
             dom.browseCourseGrid.innerHTML = courses.map((course) => generateCourseCardHTML(course, 'actions')).join('');
         }
         if (dom.resultCourseGrid) {
-            dom.resultCourseGrid.innerHTML = courses.map((course) => generateCourseCardHTML(course, 'actions')).join('');
+            dom.resultCourseGrid.innerHTML = getCoursesForResult()
+                .map((course, index) => generateCourseCardHTML(course, 'actions', {
+                    resultRole: index === 0 ? 'primary' : 'recommend',
+                }))
+                .join('');
         }
+        updateSaveButtons();
     };
 
     const clearSaveMessageTimers = (target) => {
@@ -234,7 +572,7 @@
         }
     };
 
-    const createSavedCourseItem = (course) => {
+    const createSavedCourseItem = (course, context = 'result') => {
         const item = document.createElement('article');
         item.className = 'saved-course-item';
         item.dataset.savedCourseId = course.id;
@@ -253,6 +591,30 @@
         const savedPlaces = course.places || course.steps || [];
         route.textContent = savedPlaces.map((place) => place.name).filter(Boolean).join(' → ');
 
+        const actions = document.createElement('div');
+        actions.className = 'saved-course-actions';
+
+        const detailButton = document.createElement('button');
+        detailButton.className = 'saved-course-detail';
+        detailButton.type = 'button';
+        detailButton.dataset.guideOpen = '';
+        detailButton.dataset.courseId = course.id;
+        detailButton.textContent = '자세히 보기';
+
+        const guideButton = document.createElement('button');
+        guideButton.className = 'saved-course-guide';
+        guideButton.type = 'button';
+        guideButton.dataset.guideOpen = '';
+        guideButton.dataset.courseId = course.id;
+        guideButton.textContent = '상세 가이드';
+
+        const viewResultButton = document.createElement('button');
+        viewResultButton.className = 'saved-course-result';
+        viewResultButton.type = 'button';
+        viewResultButton.dataset.route = 'result';
+        viewResultButton.dataset.courseId = course.id;
+        viewResultButton.textContent = '결과에서 보기';
+
         const footer = document.createElement('div');
         footer.className = 'saved-course-footer';
 
@@ -266,13 +628,19 @@
         deleteButton.dataset.deleteSavedCourse = course.id;
         deleteButton.textContent = '삭제';
 
+        if (context === 'saved') {
+            actions.append(detailButton, guideButton, viewResultButton);
+            footer.append(price, deleteButton);
+            item.append(title, meta, route, actions, footer);
+            return item;
+        }
+
         const courseButton = document.createElement('button');
         courseButton.className = 'saved-course-guide';
         courseButton.type = 'button';
         courseButton.dataset.guideOpen = '';
         courseButton.dataset.courseId = course.id;
         courseButton.textContent = '코스';
-
         footer.append(price, courseButton, deleteButton);
         item.append(title, meta, route, footer);
         return item;
@@ -285,7 +653,11 @@
             const courseId = button.dataset.courseId;
             const isSaved = savedIds.has(courseId);
             button.classList.toggle('is-saved', isSaved);
-            button.textContent = isSaved ? '♥' : '♡';
+            const icon = button.querySelector('.save-btn-icon');
+            const text = button.querySelector('.save-btn-text');
+            if (icon) icon.textContent = isSaved ? '♥' : '♡';
+            if (text) text.textContent = isSaved ? '저장됨' : '저장';
+            if (!icon && !text) button.textContent = isSaved ? '♥' : '♡';
             button.setAttribute('aria-label', isSaved ? '저장 완료된 코스' : '나만의 코스 저장');
             button.setAttribute('aria-pressed', String(isSaved));
         });
@@ -301,7 +673,8 @@
             message.hidden = savedCourses.length > 0;
         });
         dom.savedCourseLists.forEach((list) => {
-            list.replaceChildren(...savedCourses.map(createSavedCourseItem));
+            const context = list.closest('[data-screen="saved"]') ? 'saved' : 'result';
+            list.replaceChildren(...savedCourses.map((course) => createSavedCourseItem(course, context)));
         });
         updateSaveButtons(savedCourses);
     };
@@ -444,14 +817,8 @@
     const updateGuideMapPlaceholder = (course) => {
         if (!dom.guideMap) return;
         dom.guideMap.dataset.courseId = course.id;
-        /*
-         * JS 담당자 메모:
-         * - data-guide-map 요소를 지도 API mount 대상으로 사용하세요.
-         * - 현재 코스 id는 data-course-id에 들어갑니다.
-         * - 장소 검색어는 course.places의 mapName || name 값을 사용하면 됩니다.
-         */
         if (dom.guideMapPlaceholder) {
-            dom.guideMapPlaceholder.textContent = `${course.title} 코스 지도가 여기에 표시됩니다.`;
+            dom.guideMapPlaceholder.textContent = `${course.title} 코스 지도를 불러오는 중입니다.`;
         }
     };
 
@@ -471,6 +838,7 @@
         guideReturnScreen = getScreenFromTrigger(button);
         updateGuide(course);
         showScreen('guide');
+        window.setTimeout(() => initGuideMap(course.id), 120);
         dom.guideCloseButton?.focus();
     };
 
@@ -506,18 +874,37 @@
         item.addEventListener('click', () => handleMenuAction(item.dataset.menuAction));
     });
 
-    dom.budgetButtons.forEach((button) => {
+    dom.budgetAddButtons.forEach((button) => {
         button.addEventListener('click', () => {
-            if (!dom.budgetInput) return;
-            dom.budgetInput.value = Number(button.dataset.budget).toLocaleString('ko-KR');
-            dom.budgetInput.focus();
+            const addAmount = Number(button.dataset.budgetAdd) || 0;
+            setBudgetInputValue(parseBudgetNumber(dom.budgetInput?.value) + addAmount);
+            dom.budgetInput?.focus();
         });
     });
 
+    dom.budgetResetButton?.addEventListener('click', () => {
+        setBudgetInputValue(0);
+        dom.budgetInput?.focus();
+    });
+
+    dom.budgetInput?.addEventListener('input', updateBudgetTotalDisplay);
+
+    dom.homeCarouselPrev?.addEventListener('click', () => shiftHomeCarousel(-1));
+    dom.homeCarouselNext?.addEventListener('click', () => shiftHomeCarousel(1));
+
     dom.budgetForm?.addEventListener('submit', (event) => {
         event.preventDefault();
-        if (dom.selectedBudget) dom.selectedBudget.textContent = formatBudget(dom.budgetInput?.value);
+        resultRecommendSeed += 1;
+        resultFocusCourseId = '';
+        const budget = getActiveBudget();
+        setBudgetInputValue(budget);
+        if (dom.selectedBudget) dom.selectedBudget.textContent = formatBudget(budget);
+        renderCourseCards();
         showScreen('result');
+        window.setTimeout(() => {
+            initMap(getCoursesForResult()[0]?.id);
+            scrollToResultCard(getCoursesForResult()[0]?.id);
+        }, 360);
     });
 
     document.addEventListener('click', (event) => {
@@ -532,6 +919,13 @@
         if (guideButton) {
             event.preventDefault();
             openGuideScreen(guideButton);
+            return;
+        }
+
+        const resultOpenButton = event.target.closest('[data-result-open]');
+        if (resultOpenButton) {
+            event.preventDefault();
+            openResultForCourse(resultOpenButton.dataset.courseId);
             return;
         }
 
@@ -571,6 +965,7 @@
         showScreen(location.hash.replace('#', ''), { updateHash: false });
     });
 
+    setBudgetInputValue(DEFAULT_BUDGET_VALUE);
     renderCourseCards();
     renderSavedCourses();
     if (courses[0]) updateGuide(courses[0]);
