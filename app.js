@@ -332,7 +332,7 @@
                 map,
                 position,
                 content: labelHTML,
-                yAnchor: 2.4,
+                yAnchor: 1.1,
             });
 
             if (index === 0) {
@@ -346,17 +346,6 @@
             } else {
                 routeSegments.push([position]);
             }
-        });
-
-        routeSegments.forEach((segment) => {
-            if (segment.length < 2) return;
-            new window.kakao.maps.Polyline({
-                path: segment,
-                strokeWeight: 4,
-                strokeColor: '#ff6e87',
-                strokeOpacity: 0.8,
-                strokeStyle: 'solid',
-            }).setMap(map);
         });
 
         map.setBounds(bounds);
